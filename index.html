@@ -340,6 +340,16 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     </div>
   </div>
   <div class="card"><h2><span class="dot"></span>面试题库</h2><div id="ivResult"><div class="empty"><div class="big">🎯</div>选择版本并点击上方按钮，开始生成专属面试题</div></div></div>
+  <div class="card" style="margin-top:16px">
+    <h2><span class="dot"></span>📚 面试手册库
+      <span style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-soft btn-sm" onclick="document.getElementById('manualFile').click()">⬆️ 上传面试手册</button>
+        <input type="file" id="manualFile" accept=".html,.htm" style="display:none" onchange="manualsUpload(this)">
+      </span>
+    </h2>
+    <div style="font-size:11.5px;color:var(--sub);margin:-4px 0 8px">保存 AI 生成的面试备战手册（HTML 文件）：登录账号后自动云同步，换设备登录不丢失。</div>
+    <div id="manualList"></div>
+  </div>
 </section>
 
 <!-- ============ 页3：版本管理 ============ -->
@@ -402,15 +412,15 @@ const SB_PRESET={url:'https://pekbwjoahlwadthnzybj.supabase.co',anon:'eyJhbGciOi
 let state={
   profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},
   jd:'', jdCompany:'', jdPosition:'',
-  versions:[], applications:[], interview:null, seq:1
+  versions:[], applications:[], interview:null, manuals:[], seq:1
 };
 function save(){
   try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){console.warn('存储失败',e)}
   if(cloud.on())cloud.schedulePush();   // 已登录账号 → 延迟同步到云端
 }
-function load(){try{const r=localStorage.getItem(STORE_KEY);if(r){const d=JSON.parse(r);state=Object.assign(state,d);state.profile=Object.assign({internships:[],projects:[]},d.profile||{})}}catch(e){}}
-function blankState(){const t={profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},jd:'',jdCompany:'',jdPosition:'',versions:[],applications:[],interview:null,seq:1};return t}
-function replaceState(ns){state=ns;try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){}}
+function load(){try{const r=localStorage.getItem(STORE_KEY);if(r){const d=JSON.parse(r);state=Object.assign(state,d);state.profile=Object.assign({internships:[],projects:[]},d.profile||{});if(!Array.isArray(state.manuals))state.manuals=[]}}catch(e){}}
+function blankState(){const t={profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},jd:'',jdCompany:'',jdPosition:'',versions:[],applications:[],interview:null,manuals:[],seq:1};return t}
+function replaceState(ns){state=ns;if(!Array.isArray(state.manuals))state.manuals=[];try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){}}
 
 /* ================================================================
    云账号模块（Supabase 免费版）
@@ -1872,6 +1882,7 @@ function fillInterviewSetting(){
   $('#ivJd').value=$('#ivJd').value||state.jd||'';
   if(!$('#ivCompany').value)$('#ivCompany').value=state.jdCompany||'';
   if(!$('#ivPosition').value)$('#ivPosition').value=state.jdPosition||state.profile.intent||'';
+  renderManuals();
 }
 function oneLiner(desc){
   const l=String(desc||'').split(/\n|；|;|。/).map(s=>s.trim()).filter(Boolean);
@@ -2141,7 +2152,83 @@ function doSeed(){
   toast('示例数据已加载：简历 + JD 已填好，V1 版本与看板就绪','ok');
 }
 function renderAll(){
-  fillForm();renderEntries();renderVersions();renderVersionOptions();renderBoard();renderBoardStats();renderTopChips();renderInterview();
+  fillForm();renderEntries();renderVersions();renderVersionOptions();renderBoard();renderBoardStats();renderTopChips();renderInterview();renderManuals();
+}
+/* ================================================================
+   六、面试手册库：保存/查看/下载/删除 AI 生成的面试手册（HTML）
+   数据存在 state.manuals，走统一的 save() → localStorage + 云同步
+================================================================ */
+const MANUAL_MAX=1.5*1024*1024;   // 单本手册上限 1.5MB
+const MANUAL_LIMIT=30;            // 最多保存 30 本
+function manualsEnsure(){if(!Array.isArray(state.manuals))state.manuals=[];return state.manuals}
+function renderManuals(){
+  const box=$('#manualList');if(!box)return;
+  const list=manualsEnsure();
+  if(!list.length){box.innerHTML='<div class="empty"><div class="big">📚</div>还没有手册 —— 让 AI 生成「面试备战手册」后，把下载的 HTML 文件上传到这里保存</div>';return}
+  box.innerHTML=list.map(m=>{
+    const d=new Date(m.at),ds=d.toLocaleDateString('zh-CN')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    return `<div class="ver-item">
+      <div class="ver-badge">📕</div>
+      <div class="ver-main">
+        <div class="t">${esc(m.name)}</div>
+        <div class="m">${ds} · ${(m.size/1024).toFixed(0)}KB</div>
+      </div>
+      <div class="ver-ops">
+        <button class="btn btn-soft btn-sm" onclick="manualView('${m.id}')">👁️ 查看</button>
+        <button class="btn btn-ghost btn-sm" onclick="manualDownload('${m.id}')">📥 下载</button>
+        <button class="btn btn-danger btn-sm" onclick="manualDel('${m.id}')">删除</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function manualsUpload(input){
+  const f=input.files&&input.files[0];input.value='';if(!f)return;
+  if(!/\.html?$/i.test(f.name)){toast('请上传 .html 格式的面试手册文件','warn');return}
+  if(f.size>MANUAL_MAX){toast('手册文件超过 1.5MB，请确认是否传错文件','err');return}
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const html=String(rd.result||'');
+      if(!/<html|<!doctype/i.test(html)){toast('文件内容不是有效的 HTML 手册','warn');return}
+      const list=manualsEnsure();
+      const name=f.name.replace(/\.html?$/i,'');
+      const item={id:'mn'+Date.now()+Math.random().toString(36).slice(2,6),name,size:f.size,at:Date.now(),html};
+      const exist=list.findIndex(m=>m.name===name);
+      if(exist>-1){list[exist]=item;toast('已更新同名手册「'+name+'」','ok')}
+      else{
+        if(list.length>=MANUAL_LIMIT){toast('手册库已满（'+MANUAL_LIMIT+' 本），请先删除一些','warn');return}
+        list.unshift(item);
+        toast(cloud.on()?'手册已保存并同步到云端':'手册已保存到本机，登录账号后可云同步','ok');
+      }
+      save();renderManuals();
+    }catch(e){toast('保存失败：'+e.message,'err')}
+  };
+  rd.onerror=()=>toast('读取文件失败','err');
+  rd.readAsText(f,'utf-8');
+}
+function manualView(id){
+  const m=manualsEnsure().find(x=>x.id===id);if(!m)return;
+  const blob=new Blob([m.html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const w=window.open(url,'_blank');
+  if(!w)toast('浏览器拦截了新窗口，请允许弹窗后重试','warn');
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function manualDownload(id){
+  const m=manualsEnsure().find(x=>x.id===id);if(!m)return;
+  const blob=new Blob([m.html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=m.name+'.html';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+}
+function manualDel(id){
+  const m=manualsEnsure().find(x=>x.id===id);if(!m)return;
+  openModal('删除确认',`<p>确定删除手册 <b>${esc(m.name)}</b> 吗？登录账号时云端也会同步删除，此操作不可撤销。</p>`,
+    `<button class="btn btn-danger" onclick="doManualDel('${id}')">确认删除</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function doManualDel(id){
+  state.manuals=manualsEnsure().filter(x=>x.id!==id);
+  save();renderManuals();closeModal();toast('手册已删除');
 }
 
 /* ---------- 访问口令门禁 ---------- */
