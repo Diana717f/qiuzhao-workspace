@@ -237,8 +237,8 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 <!-- ============ Tabs ============ -->
 <nav class="tabs">
   <button class="tab active" data-page="resume" onclick="switchTab('resume')">📄 简历智能优化</button>
-  <button class="tab" data-page="interview" onclick="switchTab('interview')">🎤 面试准备生成</button>
   <button class="tab" data-page="versions" onclick="switchTab('versions')">🗂️ 简历版本管理</button>
+  <button class="tab" data-page="interview" onclick="switchTab('interview')">🎤 面试前期准备</button>
   <button class="tab" data-page="kanban" onclick="switchTab('kanban')">📊 秋招投递看板</button>
 </nav>
 
@@ -323,7 +323,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
   </div>
 </section>
 
-<!-- ============ 页2：面试准备 ============ -->
+<!-- ============ 页2：面试前期准备 ============ -->
 <section class="page" id="page-interview">
   <div class="hint">选择一份简历版本 + 目标岗位 JD，一键生成该岗位高频面试题与参考回答（含答题思路），支持导出 Word 版面试作战手册。</div>
   <div class="card" style="margin-bottom:16px">
@@ -1845,7 +1845,7 @@ function renderVersionOptions(){
 }
 
 /* ================================================================
-   五、面试准备生成
+   五、面试前期准备
 ================================================================ */
 const CAT_RULES=[
   ['产品',['产品经理','产品','PRD','Axure','需求分析','用户调研','竞品']],
