@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秋招作战室 · 求职SOP工作台</title>
+<style>
+:root{
+  --bg:#F5F6FA; --card:#FFFFFF; --ink:#1F2333; --sub:#6B7280; --line:#E8EAF2;
+  --primary:#5B5FEF; --primary-deep:#4649D8; --primary-soft:#EEF0FF;
+  --green:#10B981; --green-soft:#E7F8F1; --orange:#F59E0B; --orange-soft:#FEF4E2;
+  --red:#EF4444; --red-soft:#FDECEC; --teal:#06B6D4; --blue:#3B82F6;
+  --purple:#8B5CF6; --slate:#94A3B8; --radius:14px;
+  --shadow:0 2px 10px rgba(31,35,51,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink);border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:#FCFCFE;outline:none;transition:border .15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);background:#fff}
+textarea{resize:vertical;min-height:74px;line-height:1.65}
+label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-bottom:4px}
+::-webkit-scrollbar{height:8px;width:8px}
+::-webkit-scrollbar-thumb{background:#D3D6E4;border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ===== 顶栏 ===== */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:.5px}
+.brand .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#5B5FEF,#9F6BFF);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+.brand small{font-size:11px;color:var(--sub);font-weight:500;display:block;letter-spacing:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:4px 12px;font-size:12px;color:var(--sub);white-space:nowrap}
+.chip b{color:var(--ink);font-size:14px;margin:0 2px}
+.chip.ok b{color:var(--green)} .chip.bad b{color:var(--red)}
+.topbtns{display:flex;gap:8px}
+
+/* ===== 按钮 ===== */
+.btn{border-radius:9px;padding:8px 16px;font-size:13px;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-p{background:var(--primary);color:#fff}
+.btn-p:hover{background:var(--primary-deep);transform:translateY(-1px)}
+.btn-soft{background:var(--primary-soft);color:var(--primary)}
+.btn-soft:hover{background:#E2E5FF}
+.btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+.btn-danger{background:var(--red-soft);color:var(--red)}
+.btn-danger:hover{background:#FAD4D4}
+.btn-sm{padding:4px 10px;font-size:12px;border-radius:7px}
+.btn:active{transform:scale(.97)}
+
+/* ===== Tabs ===== */
+.tabs{display:flex;gap:6px;padding:12px 22px 0;max-width:1440px;margin:0 auto;width:100%}
+.tab{padding:9px 18px;border-radius:11px 11px 0 0;font-weight:600;font-size:13.5px;color:var(--sub);border:1px solid transparent;border-bottom:none}
+.tab:hover{color:var(--primary)}
+.tab.active{background:var(--card);color:var(--primary);border-color:var(--line);box-shadow:0 -2px 8px rgba(31,35,51,.04)}
+.wrap{max-width:1440px;margin:0 auto;padding:0 22px 50px;width:100%}
+.page{display:none}
+.page.active{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.card h2{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.card h2 .dot{width:8px;height:8px;border-radius:3px;background:var(--primary)}
+.hint{font-size:12px;color:var(--sub);background:var(--primary-soft);border-radius:9px;padding:8px 12px;margin-bottom:12px}
+
+/* ===== 表单 ===== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 12px}
+.resume-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
+.entry{border:1.5px dashed var(--line);border-radius:11px;padding:12px;margin-bottom:10px;position:relative;background:#FBFBFE}
+.entry .del{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:6px;color:var(--red);background:var(--red-soft);font-size:12px;line-height:22px;text-align:center}
+.entry .star-tag{position:absolute;top:8px;right:36px;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700}
+.star-ok{background:var(--green-soft);color:var(--green)}
+.star-warn{background:var(--orange-soft);color:var(--orange)}
+.addbtn{width:100%;border:1.5px dashed #C9CCE8;color:var(--primary);border-radius:11px;padding:9px;font-size:13px;font-weight:600;background:var(--primary-soft)}
+.addbtn:hover{border-color:var(--primary)}
+
+/* ===== JD / 分析 ===== */
+.jd-box textarea{min-height:150px}
+.rowbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.score-wrap{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.ring{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.ring::before{content:'';position:absolute;inset:7px;background:#fff;border-radius:50%}
+.ring .num{position:relative;font-size:20px;font-weight:800}
+.ring .num small{font-size:10px;color:var(--sub);display:block;text-align:center;font-weight:500}
+.kwzone{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.kw{font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600}
+.kw.m{background:var(--green-soft);color:#0B8A66}
+.kw.x{background:var(--orange-soft);color:#B47409;border:1px dashed #F0C060}
+.sug{background:#FFFEFB;border:1px solid #F2EBDA;border-radius:10px;padding:9px 12px;margin-bottom:7px;font-size:12.5px;color:#7A6A40;display:flex;gap:7px}
+.sug b{color:#B47409}
+.sug .n{flex-shrink:1;width:17px;height:17px;border-radius:50%;background:var(--orange-soft);color:var(--orange);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+
+/* ===== A4 预览 ===== */
+.a4{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 6px 24px rgba(31,35,51,.09);padding:34px 38px;min-height:600px;font-size:12px;line-height:1.65;color:#222}
+.a4 .rh{border-bottom:2px solid var(--primary);padding-bottom:9px;margin-bottom:13px}
+.a4 .rh h1{font-size:19px;letter-spacing:2px}
+.a4 .rh .ct{font-size:11px;color:#555;margin-top:3px}
+.a4 h3{font-size:13px;color:var(--primary-deep);border-left:3.5px solid var(--primary);padding-left:7px;margin:13px 0 6px;letter-spacing:1px}
+.a4 .edu b{font-size:12.5px}
+.a4 .edu .r{float:right;color:#555;font-size:11px}
+.a4 ul{padding-left:16px}
+.a4 li{margin-bottom:3px}
+.a4 .kw-hit{color:var(--primary-deep);font-weight:700}
+.a4 .kw-new{color:#B47409;font-weight:700}
+.a4 .ph{color:#C47F17;background:#FFF6E4;border-radius:3px;padding:0 3px}
+.a4 .time{font-size:10.5px;color:#777}
+
+/* ===== 版本管理 ===== */
+.ver-item{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;flex-wrap:wrap;transition:border .15s}
+.ver-item:hover{border-color:#C3C6F5}
+.ver-badge{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#5B5FEF,#9F6BFF);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ver-main{flex:1;min-width:220px}
+.ver-main .t{font-weight:700;font-size:14px}
+.ver-main .m{font-size:12px;color:var(--sub);margin-top:2px}
+.ver-kws{max-width:100%;font-size:11.5px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ver-ops{display:flex;gap:6px;flex-wrap:wrap}
+.score-pill{font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px}
+.sp-hi{background:var(--green-soft);color:#0B8A66}.sp-mid{background:var(--orange-soft);color:#B47409}.sp-lo{background:var(--red-soft);color:#C53030}
+
+/* ===== 面试 ===== */
+.qa-group{margin-bottom:16px}
+.qa-group>h3{font-size:13.5px;font-weight:800;padding:7px 13px;border-radius:9px;background:var(--primary-soft);color:var(--primary-deep);display:inline-block;margin-bottom:9px}
+.qa{border:1.5px solid var(--line);border-radius:12px;margin-bottom:9px;overflow:hidden}
+.qa summary{padding:11px 14px;font-weight:700;font-size:13.5px;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:flex-start;background:#fff}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::before{content:'💬';flex-shrink:0}
+.qa[open] summary{border-bottom:1px dashed var(--line);background:#FBFBFE}
+.qa .body{padding:12px 15px;background:#FCFCFE;font-size:13px}
+.ans{border-left:3px solid var(--primary);background:#fff;border-radius:0 9px 9px 0;padding:10px 13px;white-space:pre-wrap}
+.ans .tip{color:var(--sub);font-size:12px;margin-bottom:7px;display:block}
+.ans .tag{font-size:10.5px;color:#fff;background:var(--primary);border-radius:5px;padding:1px 7px;margin-right:6px;font-weight:600}
+
+/* ===== 看板 ===== */
+.board-stats{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.bstat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--sub)}
+.bstat b{font-size:15px;color:var(--ink);margin-right:2px}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(178px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px;align-items:start}
+.col{background:#F1F2F8;border-radius:12px;padding:8px;min-height:320px;transition:background .15s,transform .15s}
+.col.over{background:#E4E6F7;transform:scale(1.015)}
+.col-h{display:flex;align-items:center;gap:6px;padding:4px 6px 8px;font-size:12.5px;font-weight:800}
+.col-h .cnt{margin-left:auto;font-size:11px;color:#fff;border-radius:99px;padding:1px 8px;font-weight:700}
+.col-list{min-height:60px;border-radius:8px}
+.app-card{background:#fff;border-radius:10px;padding:9px 11px;margin-bottom:7px;box-shadow:0 1px 4px rgba(31,35,51,.08);cursor:pointer;border-top:3px solid transparent;transition:transform .12s,box-shadow .12s}
+.app-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(31,35,51,.13)}
+.app-card.dragging{opacity:.4}
+.app-card .co{font-weight:800;font-size:13px}
+.app-card .po{font-size:11.5px;color:var(--sub);margin:1px 0 5px}
+.app-card .meta{display:flex;gap:5px;flex-wrap:wrap;font-size:10px;color:#888}
+.app-card .meta span{background:var(--bg);border-radius:5px;padding:1px 6px}
+.app-card .arrow{position:absolute;right:8px;top:9px;font-size:11px;color:#C3C6E8;opacity:0;transition:opacity .15s}
+.app-card:hover .arrow{opacity:1}
+
+/* ===== 模态 / 提示 ===== */
+.mask{position:fixed;inset:0;background:rgba(24,26,40,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.mask.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:86vh;display:flex;flex-direction:column;animation:pop .2s;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.modal-h{padding:15px 20px;border-bottom:1px solid var(--line);font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.modal-h .x{width:26px;height:26px;border-radius:8px;background:var(--bg);color:var(--sub);font-size:14px}
+.modal-b{padding:18px 20px;overflow-y:auto}
+.modal-f{padding:13px 20px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-16px);background:#1F2333;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;z-index:200;opacity:0;transition:all .25s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok::before{content:'✅ '}.toast.warn::before{content:'⚠️ '}.toast.err::before{content:'❌ '}
+.timeline{margin:8px 0;border-left:2px solid var(--line);padding-left:14px}
+.timeline .tl{position:relative;font-size:12px;color:var(--sub);margin-bottom:7px}
+.timeline .tl::before{content:'';position:absolute;left:-19px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--primary);border:2px solid #fff}
+.field-full{margin-bottom:10px}
+.empty{text-align:center;color:var(--sub);padding:36px 10px;font-size:13px}
+.empty .big{font-size:34px;margin-bottom:8px}
+@media (max-width:1000px){.resume-layout{grid-template-columns:1fr}}
+
+/* ===== 云账号 ===== */
+.acct-btn{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s}
+.acct-btn.off{background:var(--primary-soft);color:var(--primary);border:1px solid #D9DDFF}
+.acct-btn.off:hover{background:#E2E5FF}
+.acct-btn.on{background:#EAF7F1;color:#0B8A66;border:1px solid #CDEBDD}
+.acct-btn.on:hover{background:#DDF3E7}
+.acct-btn .dotl{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.85}
+.lc-in{width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13.5px;background:#fff;color:var(--ink);outline:none}
+.lc-in:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.lc-form{display:flex;flex-direction:column;gap:10px}
+.lc-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.lc-note{font-size:12px;color:var(--sub);line-height:1.7;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.lc-note b{color:var(--ink)}
+.lc-tag{display:inline-block;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px}
+.lc-hr{border:none;border-top:1px dashed var(--line);margin:14px 0}
+.lc-pill{display:inline-flex;align-items:center;gap:6px;background:#F3F4FB;border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--sub)}
+.lc-pill.ok{background:#EAF7F1;border-color:#CDEBDD;color:#0B8A66}
+.lc-pill.err{background:#FDECEC;border-color:#F5CACA;color:#C2362E}
+.lc-spin{width:14px;height:14px;border:2px solid #D9DDFF;border-top-color:var(--primary);border-radius:50%;animation:lcspin .8s linear infinite;display:inline-block;vertical-align:-3px}
+@keyframes lcspin{to{transform:rotate(360deg)}}
+.lc-steps{counter-reset:st;list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--ink);line-height:1.8}
+.lc-steps li{counter-increment:st;position:relative;padding-left:30px;margin-bottom:6px}
+.lc-steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
+.lc-code{background:#1F2333;color:#C9CEF0;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;padding:1px 6px;border-radius:5px}
+.lc-warn{background:#FFF7E8;border:1px solid #F5DFB5;color:#8A5A00;font-size:12px;border-radius:10px;padding:9px 12px;line-height:1.7}
+/* 访问口令门禁（仅在部署口令版时启用；普通本地版 ACCESS_PASS_HASH 为空不显示） */
+#gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#F6F7FF,#EDEFFF);display:flex;align-items:center;justify-content:center}
+#gate .gate-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px 34px 26px;width:min(92vw,370px);text-align:center;box-shadow:0 18px 50px rgba(91,95,239,.14)}
+#gate .gate-title{font-size:21px;font-weight:800;margin:12px 0 6px;color:var(--ink)}
+#gate .gate-sub{font-size:12.5px;color:var(--sub);line-height:1.7;margin:0 0 18px}
+#gate .gate-in{text-align:center;letter-spacing:3px;font-size:16px;padding:11px 12px;margin-bottom:14px}
+#gate .gate-hint{font-size:11px;color:var(--slate);margin-top:10px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- ============ 访问口令门禁（仅部署口令版启用） ============ -->
+<div id="gate" style="display:none">
+  <div class="gate-card">
+    <div style="font-size:42px;line-height:1">🍂</div>
+    <div class="gate-title">秋招作战室</div>
+    <div class="gate-sub">这个工作台目前只对内部同学开放。<br>请输入分享者告知的<b>访问口令</b>：</div>
+    <input class="gate-in" id="gatePwd" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')gateTry()">
+    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="gateTry()">🔓 进入工作台</button>
+    <div class="gate-hint">🔒 数据只保存在你自己的浏览器与账号云端，同学之间互不可见；<br>注册账号后换设备也能同步回来。</div>
+  </div>
+</div>
+
+<!-- ============ 顶栏 ============ -->
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">🍂</div>
+    <div>秋招作战室<small>求职SOP工作台 · 支持注册账号 · 云端多端同步</small></div>
+  </div>
+  <div class="chips" id="topChips"></div>
+  <div class="topbtns">
+    <button class="acct-btn off" id="acctBtn" onclick="cloud.openAccountPanel()">☁️ 云端账号</button>
+    <button class="btn btn-ghost btn-sm" onclick="seedSample()">🧪 示例数据</button>
+    <button class="btn btn-ghost btn-sm" onclick="exportAll()">⬇️ 备份</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">⬆️ 恢复</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importAll(this)">
+  </div>
+</header>
+
+<!-- ============ Tabs ============ -->
+<nav class="tabs">
+  <button class="tab active" data-page="resume" onclick="switchTab('resume')">📄 简历智能优化</button>
+  <button class="tab" data-page="interview" onclick="switchTab('interview')">🎤 面试准备生成</button>
+  <button class="tab" data-page="versions" onclick="switchTab('versions')">🗂️ 简历版本管理</button>
+  <button class="tab" data-page="kanban" onclick="switchTab('kanban')">📊 秋招投递看板</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ 页1：简历优化 ============ -->
+<section class="page active" id="page-resume">
+  <div class="hint">SOP 流程：① 填写简历（或上传文件自动解析）→ ② 粘贴目标岗位 JD → ③ 点击「开始智能优化」自动对齐关键词 + STAR 量化体检 → ④ 导出 1 页 A4 Word 简历（自动存为新版本）</div>
+  <div class="resume-layout">
+    <div><!-- 左：编辑区 -->
+      <div class="card" style="margin-bottom:16px">
+        <h2><span class="dot"></span>基本信息与教育背景</h2>
+        <input type="file" id="resumeFile" accept=".pdf,.docx,.txt,.md,.html,.htm" style="display:none" onchange="handleResumeFile(this)">
+        <div class="rowbtns" style="margin:-4px 0 12px">
+          <button class="btn btn-soft btn-sm" onclick="document.getElementById('resumeFile').click()">📎 上传已有简历（PDF / Word / txt / md / html）</button>
+        </div>
+        <div class="grid3">
+          <div><label>姓名</label><input data-p="name" placeholder="张三"></div>
+          <div><label>电话</label><input data-p="phone" placeholder="138xxxx xxxx"></div>
+          <div><label>邮箱</label><input data-p="email" placeholder="name@mail.com"></div>
+          <div><label>求职意向岗位</label><input data-p="intent" placeholder="产品运营"></div>
+          <div><label>期望城市</label><input data-p="city" placeholder="深圳"></div>
+          <div><label>毕业时间</label><input data-p="grad" placeholder="2027.06"></div>
+          <div><label>学校</label><input data-p="school" placeholder="xx大学"></div>
+          <div><label>专业</label><input data-p="major" placeholder="工商管理"></div>
+          <div><label>学历</label><select data-p="degree"><option>本科</option><option>硕士</option><option>博士</option></select></div>
+        </div>
+        <div style="margin-top:10px"><label>GPA / 排名（可选）</label><input data-p="gpa" placeholder="3.7/4.0（专业前10%）"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h2><span class="dot"></span>实习经历 <span style="font-size:11px;color:var(--sub);font-weight:500">（每条建议：动词开头 + 量化结果）</span></h2>
+        <div id="internList"></div>
+        <button class="addbtn" onclick="addEntry('intern')">＋ 添加一段实习经历</button>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <h2><span class="dot"></span>项目经历</h2>
+        <div id="projList"></div>
+        <button class="addbtn" onclick="addEntry('proj')">＋ 添加一个项目经历</button>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot"></span>技能 · 荣誉 · 自我评价</h2>
+        <div class="field-full"><label>专业技能（逗号分隔，尽量使用 JD 中的关键词）</label><textarea data-p="skills" placeholder="用户调研, 数据分析, SQL, Excel, 新媒体运营"></textarea></div>
+        <div class="field-full"><label>荣誉奖项</label><textarea data-p="honors" placeholder="国家奖学金；挑战杯省赛二等奖…"></textarea></div>
+        <div class="field-full" style="margin-bottom:0"><label>自我评价</label><textarea data-p="selfEval" placeholder="对用户与数据敏感，抗压能力强…"></textarea></div>
+      </div>
+    </div>
+
+    <div><!-- 右：JD + 分析 + 预览 -->
+      <div class="card jd-box" style="margin-bottom:16px">
+        <h2><span class="dot"></span>目标岗位 JD</h2>
+        <div class="grid2" style="margin-bottom:10px">
+          <div><label>投递公司（用于版本命名）</label><input id="jdCompany" placeholder="如：腾讯"></div>
+          <div><label>目标岗位</label><input id="jdPosition" placeholder="如：产品运营"></div>
+        </div>
+        <label>粘贴完整 JD（岗位职责 + 任职要求）</label>
+        <textarea id="jdInput" placeholder="把招聘官网 / BOSS 直聘上的 JD 原文粘贴到这里…"></textarea>
+        <div class="rowbtns">
+          <button class="btn btn-p" onclick="doOptimize()">✨ 开始智能优化</button>
+          <button class="btn btn-ghost" onclick="doOptimize(true)">👁️ 仅分析（不存版本）</button>
+        </div>
+      </div>
+
+      <div class="card" id="analysisCard" style="margin-bottom:16px;display:none">
+        <h2><span class="dot"></span>J D 匹配分析</h2>
+        <div id="analysisBox"></div>
+      </div>
+
+      <div class="card" id="previewCard" style="display:none">
+        <h2><span class="dot"></span>优化后简历预览（A4 · 1页）</h2>
+        <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:5px;margin:0;cursor:pointer;font-size:12px">
+            <input type="checkbox" id="autoKw" checked style="width:auto"> 自动将缺失 JD 关键词补充到技能栏（<b style="color:#B47409">◈标记</b>，请确认真实掌握）
+          </label>
+          <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="exportResumeWord()">📥 导出 Word 简历</button>
+        </div>
+        <div style="max-height:640px;overflow:auto"><div class="a4" id="resumePreview"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 页2：面试准备 ============ -->
+<section class="page" id="page-interview">
+  <div class="hint">选择一份简历版本 + 目标岗位 JD，一键生成该岗位高频面试题与参考回答（含答题思路），支持导出 Word 版面试作战手册。</div>
+  <div class="card" style="margin-bottom:16px">
+    <h2><span class="dot"></span>生成设置</h2>
+    <div class="grid3">
+      <div><label>使用的简历版本</label><select id="ivVersion"></select></div>
+      <div><label>目标公司</label><input id="ivCompany" placeholder="腾讯"></div>
+      <div><label>目标岗位</label><input id="ivPosition" placeholder="产品运营"></div>
+    </div>
+    <div style="margin-top:10px"><label>岗位 JD（与简历优化共用）</label><textarea id="ivJd" placeholder="粘贴 JD 原文，生成的题目会更贴合岗位…"></textarea></div>
+    <div class="rowbtns">
+      <button class="btn btn-p" onclick="generateInterview()">🎤 生成面试题与参考回答</button>
+      <button class="btn btn-ghost" onclick="exportInterviewWord()">📥 导出 Word 面试手册</button>
+    </div>
+  </div>
+  <div class="card"><h2><span class="dot"></span>面试题库</h2><div id="ivResult"><div class="empty"><div class="big">🎯</div>选择版本并点击上方按钮，开始生成专属面试题</div></div></div>
+</section>
+
+<!-- ============ 页3：版本管理 ============ -->
+<section class="page" id="page-versions">
+  <div class="hint">每次「开始智能优化」都会自动快照一个新版本；可按投递公司 / 岗位重命名，支持恢复到编辑器、导出 Word / JSON、导入他人或历史备份的版本。</div>
+  <div class="card">
+    <h2><span class="dot"></span>历史版本
+      <span style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-soft btn-sm" onclick="document.getElementById('verFile').click()">⬆️ 导入版本</button>
+        <input type="file" id="verFile" accept=".json" style="display:none" onchange="importVersion(this)">
+      </span>
+    </h2>
+    <div id="verList"></div>
+  </div>
+</section>
+
+<!-- ============ 页4：投递看板 ============ -->
+<section class="page" id="page-kanban">
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <h2 style="margin:0"><span class="dot"></span>秋招全局一览</h2>
+      <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="openAppModal()">＋ 记录一次投递</button>
+      <span style="font-size:11.5px;color:var(--sub)">提示：卡片可拖拽到任意状态列，或点击卡片编辑 / 推进状态</span>
+    </div>
+    <div class="board-stats" id="boardStats"></div>
+  </div>
+  <div class="board" id="board"></div>
+</section>
+
+</div>
+
+<!-- 模态 -->
+<div class="mask" id="mask"><div class="modal">
+  <div class="modal-h"><span id="mTitle"></span><button class="x" onclick="closeModal()">✕</button></div>
+  <div class="modal-b" id="mBody"></div>
+  <div class="modal-f" id="mFoot"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+   秋招作战室 · 单文件工作台
+   未登录：数据保存在本机浏览器 localStorage（刷新不丢失）
+   已登录：本地缓存 + LeanCloud 云端同步（换设备登录同一账号可拉回，
+           每个账号数据彼此隔离，互不可见）
+================================================================ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const regEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const STORE_KEY='autumnRecruitSOP_v1';
+/* 访问口令（部署分享版用）：填入口令的 FNV-1a 64 位哈希即开启门禁；留空 = 不启用。
+   生成哈希：node -e "console.log((()=>{let h=0xcbf29ce484222325n,p=0x100000001b3n;for(const c of process.argv[1]){h^=BigInt(c.charCodeAt(0));h=(h*p)&0xffffffffffffffffn}return h.toString(16)})())" "你的口令" */
+const ACCESS_PASS_HASH='28c719289fba91fa';   // 口令: qiuzhao2026
+/* 分享版可内嵌云端 Key：管理员（你）建好 Supabase 项目后填入这两项并重新部署，
+   同学打开网页即自动连上、可直接注册/登录 —— 零配置，像 App 一样。
+   留空 = 不内嵌，使用者需按界面引导自行配置一次。 */
+const SB_PRESET={url:'https://pekbwjoahlwadthnzybj.supabase.co',anon:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBla2J3am9haGx3YWR0aG56eWJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4NTQwMTAsImV4cCI6MjEwNDQzMDAxMH0.mNNyzA9m-GyL7lZfBsabn5Urjp7xirg5vbZSFjvoeD4'};
+
+/* ---------- 状态 ---------- */
+let state={
+  profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},
+  jd:'', jdCompany:'', jdPosition:'',
+  versions:[], applications:[], interview:null, seq:1
+};
+function save(){
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){console.warn('存储失败',e)}
+  if(cloud.on())cloud.schedulePush();   // 已登录账号 → 延迟同步到云端
+}
+function load(){try{const r=localStorage.getItem(STORE_KEY);if(r){const d=JSON.parse(r);state=Object.assign(state,d);state.profile=Object.assign({internships:[],projects:[]},d.profile||{})}}catch(e){}}
+function blankState(){const t={profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},jd:'',jdCompany:'',jdPosition:'',versions:[],applications:[],interview:null,seq:1};return t}
+function replaceState(ns){state=ns;try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){}}
+
+/* ================================================================
+   云账号模块（Supabase 免费版）
+   - 账号体系：注册用邮箱+密码；每个账号的数据在云端只存"自己那一行"，
+     由数据库行级安全（RLS）保证互不可见；
+     同设备多账号隔离、换设备登录同一账号可同步回来
+   - 一次性配置（管理员你）：supabase.com 建免费项目 → SQL Editor 执行
+     下方建表 SQL → 关闭邮箱验证 → 填 Project URL + anon public 两项
+================================================================ */
+const SB_CFG_KEY='qz_sb_cfg_v1';
+const SB_SDKS=[
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js',
+  'https://unpkg.com/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js'
+];
+const SB_TABLE='qz_state';
+const SB_MAKE_SQL=`create table if not exists public.qz_state (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  payload text not null default '{}',
+  saved_at bigint not null default 0
+);
+alter table public.qz_state enable row level security;
+drop policy if exists qz_state_own on public.qz_state;
+create policy qz_state_own on public.qz_state
+  for all to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);`;
+
+const cloud={
+  cfg:null,user:null,sdk:null,client:null,pushTimer:null,busy:false,
+  init(){try{const r=localStorage.getItem(SB_CFG_KEY);if(r)this.cfg=JSON.parse(r)}catch(e){}
+    // 页面内嵌了云端 Key 且本机从未配置过 → 自动采用（同学零配置直接注册登录）
+    if(!this.cfg&&SB_PRESET.url)this.cfg={url:SB_PRESET.url,anon:SB_PRESET.anon};},
+  on(){return !!(this.cfg&&this.cfg.url&&this.user)},
+  hasCfg(){return !!(this.cfg&&this.cfg.url&&this.cfg.anon)},
+  saveCfg(c){this.cfg=c;try{localStorage.setItem(SB_CFG_KEY,JSON.stringify(c))}catch(e){}},
+  async loadSDK(){
+    if(this.sdk)return this.sdk;
+    for(const url of SB_SDKS){
+      try{await loadScript(url);if(window.supabase){this.sdk=window.supabase;break}}catch(e){}
+    }
+    if(!this.sdk)throw new Error('无法加载云端组件，请检查网络后重试');
+    return this.sdk;
+  },
+  async ensure(){
+    if(!this.hasCfg())throw new Error('还没有配置云端。请先在顶栏「云端账号」里完成配置（需免费注册 supabase.com）');
+    if(!this.client){
+      const SB=await this.loadSDK();
+      this.client=SB.createClient(this.cfg.url,this.cfg.anon,{auth:{persistSession:true,autoRefreshToken:true,storageKey:'qz_sb_auth_v1'}});
+      try{const {data}=await this.client.auth.getSession();this.user=(data&&data.session&&data.session.user)||null}catch(e){this.user=null}
+      if(this.user)this.renderBtn();
+    }
+    return this.client;
+  },
+  uname(){
+    const u=this.user;if(!u)return'';
+    return u.email||(u.user_metadata&&u.user_metadata.name)||'同学';
+  },
+  /* 顶栏按钮状态 */
+  renderBtn(){
+    const b=$('#acctBtn');if(!b)return;
+    if(!this.hasCfg()){b.className='acct-btn off';b.textContent='☁️ 开启云端';return}
+    if(this.user){b.className='acct-btn on';b.textContent='👤 '+this.uname();}
+    else{b.className='acct-btn off';b.textContent='☁️ 登录 / 注册';}
+  },
+  /* ============ 面板 ============ */
+  async openAccountPanel(){
+    try{await this.ensure()}catch(e){}
+    if(!this.hasCfg()){this.viewSetup();return}
+    if(this.user){this.viewProfile();return}
+    this.viewLogin();
+  },
+  /* 注册 / 登录直达入口：未配置云端时先进一次性引导 */
+  gotoAuth(mode){
+    if(!this.hasCfg()){this.viewSetup();return}
+    if(mode==='signup')this.viewSignup();else this.viewLogin();
+  },
+  copySql(){
+    try{
+      const ta=document.getElementById('sbSql');
+      const doCopy=()=>{if(ta){ta.select();ta.setSelectionRange(0,ta.value.length);document.execCommand('copy');toast('SQL 已复制，去 SQL Editor 粘贴并 Run','ok')}};
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(SB_MAKE_SQL).then(()=>toast('SQL 已复制，去 SQL Editor 粘贴并 Run','ok'),doCopy);
+      }else doCopy();
+    }catch(e){toast('请手动全选复制下方 SQL','warn')}
+  },
+  viewSetup(msg){
+    const c=this.cfg||{};
+    const body=`<div class="lc-form">
+      <div class="lc-note"><b>为何需要云端？</b>让"每个账号只能看到自己的数据、换设备数据跟着走"，需要一个免费云端。本工作台接入 <b>Supabase</b>（supabase.com 免费版，邮箱注册即可、无需备案、无需绑卡）。这套配置<b>只需做一次</b>，之后发给同学直接注册登录即可用。</div>
+      ${msg?`<div class="lc-warn">${msg}</div>`:''}
+      <ol class="lc-steps">
+        <li>打开 <b>supabase.com</b> 注册并登录 → <b>New project</b>（名称随意如 qiuzhao，区域可选 Singapore）→ 等 1~2 分钟创建完成</li>
+        <li>左侧 <b>SQL Editor</b> → New query → 粘贴下方 SQL → <b>Run</b>（看到 Success 即建表成功）</li>
+        <li>左侧 <b>Authentication → Sign In / Providers → Email</b>：关闭 <b>Confirm email</b>（同学注册后免去邮箱点链接，直接进入）</li>
+        <li>项目页右上角绿色 <b>Connect</b>（或左侧底部 <b>⚙️ Settings → API Keys</b>）：复制 <b>Project URL</b> 和 <b>API Key</b>（新版 <b>publishable</b> 或旧版 <b>anon public</b> 均可）填入下面两项 → 「🔌 测试并保存」</li>
+      </ol>
+      <div style="border:1px dashed var(--line);border-radius:10px;padding:8px;margin:10px 0">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:12px;font-weight:700">📦 一键建表 SQL（第 2 步用）</span>
+          <button class="btn btn-soft btn-sm" style="font-size:11px" onclick="cloud.copySql()">📋 复制 SQL</button>
+        </div>
+        <textarea id="sbSql" readonly spellcheck="false" style="width:100%;height:88px;font:11px/1.5 monospace;background:var(--bg2,#f6f7f9);border:1px solid var(--line);border-radius:6px;padding:6px;box-sizing:border-box">${esc(SB_MAKE_SQL)}</textarea>
+      </div>
+      <div><label style="font-size:12px;font-weight:700">Project URL</label><input class="lc-in" id="sbUrl" placeholder="如 https://abcxyz.supabase.co" value="${esc(c.url||'')}"></div>
+      <div><label style="font-size:12px;font-weight:700">API Key（新版 publishable / 旧版 anon public 均可，一长串）</label><input class="lc-in" id="sbAnon" placeholder="eyJhbGciOiJIUzI1NiIs… 或 sb_publishable_…" value="${esc(c.anon||'')}"></div>
+      <div class="lc-warn">🔒 只填浏览器可用的 <b>publishable / anon public</b>，千万别复制 <b>secret key / service_role</b>（管理员密钥，泄露等于交出自己的数据）。每行数据由数据库 RLS 规则隔离，账号之间互不可见。</div>
+    </div>`;
+    openModal('☁️ 开启云端（一次性配置）',body,
+      `<button class="btn btn-ghost" onclick="cloud.testSetup()">🔌 测试并保存</button><button class="btn btn-ghost" onclick="closeModal()">稍后再说</button>`);
+  },
+  async testSetup(){
+    const url=$('#sbUrl').value.trim().replace(/\/+$/,''),anon=$('#sbAnon').value.trim();
+    if(!url||!anon){toast('Project URL 和 API Key 都要填','warn');return}
+    $('#mFoot').innerHTML='<span class="lc-spin"></span><span style="font-size:12px;color:var(--sub)">正在连接…</span>';
+    try{
+      const SB=await this.loadSDK();
+      const cli=SB.createClient(url,anon,{auth:{persistSession:false}});
+      // 轻量探活：未建表会报 relation ... does not exist
+      const {error}=await cli.from(SB_TABLE).select('user_id').limit(1);
+      this.saveCfg({url,anon});
+      this.client=null;this.user=null;
+      this.renderBtn();
+      if(error&&this.isNoTable(error)){
+        closeModal();
+        toast('云端已连通 ✅ 还差建表','ok');
+        this.viewSetup('✅ 连接成功！最后一步：点下方「📋 复制 SQL」→ 到 SQL Editor 新建查询粘贴并 Run，然后回来点右上角「☁️ 登录 / 注册」');
+        setTimeout(()=>this.copySql(),120);
+      }else{
+        closeModal();
+        toast('连接成功，请注册或登录','ok');
+        this.viewLogin();
+      }
+    }catch(e){
+      $('#mFoot').innerHTML=`<button class="btn btn-ghost" onclick="cloud.viewSetup()">返回修改</button><button class="btn btn-p" onclick="cloud.testSetup()">重试</button>`;
+      toast('连接失败：'+sbErr(e),'err');
+    }
+  },
+  viewLogin(msg){
+    const body=`<div class="lc-form">
+      ${msg?`<div class="lc-warn">${msg}</div>`:''}
+      <div class="lc-note">✅ 云端已连接。<b>注册账号</b>后，你的简历、版本、面试题、投递看板会隔离地存到云端 —— 换电脑/手机登录同一账号即可找回；别人登录自己账号<b>看不到你的任何数据</b>。</div>
+      <div><label style="font-size:12px;font-weight:700">邮箱（注册时的邮箱）</label><input class="lc-in" id="lcU" type="email" autocomplete="email" placeholder="如 name@qq.com"></div>
+      <div><label style="font-size:12px;font-weight:700">密码</label><input class="lc-in" id="lcP" type="password" autocomplete="current-password" placeholder="至少 6 位"></div>
+      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doLogin()">🔓 登录</button></div>
+      <div style="font-size:12px;color:var(--sub);text-align:center">还没有账号？<a style="color:var(--primary);font-weight:700;cursor:pointer" onclick="cloud.viewSignup()">点此注册（免费）</a></div>
+    </div>`;
+    openModal('🔓 登录云端账号',body,
+      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">⚙️ 更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">暂不登录</button>`);
+  },
+  viewSignup(msg){
+    const body=`<div class="lc-form">
+      ${msg?`<div class="lc-warn">${msg}</div>`:''}
+      <div><label style="font-size:12px;font-weight:700">邮箱（建议 QQ / 163 / 学校邮箱，它就是你的登录账号）</label><input class="lc-in" id="lcU" type="email" autocomplete="email" placeholder="如 name@qq.com"></div>
+      <div><label style="font-size:12px;font-weight:700">密码</label><input class="lc-in" id="lcP" type="password" autocomplete="new-password" placeholder="至少 6 位"></div>
+      <div><label style="font-size:12px;font-weight:700">再输一次密码</label><input class="lc-in" id="lcP2" type="password" placeholder="与上面一致"></div>
+      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doSignup()">📝 注册并登录</button></div>
+      <div style="font-size:12px;color:var(--sub);text-align:center">已有账号？<a style="color:var(--primary);font-weight:700;cursor:pointer" onclick="cloud.viewLogin()">直接登录</a></div>
+    </div>`;
+    openModal('📝 注册新账号（免费）',body,
+      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">⚙️ 更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+  },
+  viewProfile(msg){
+    const u=this.user;if(!u)return this.viewLogin();
+    const last=this.lastSyncText();
+    const body=`<div class="lc-form">
+      ${msg?`<div class="lc-warn">${msg}</div>`:''}
+      <div class="lc-row">
+        <span class="lc-pill ok">👤 已登录：${esc(this.uname())}</span>
+        <span class="lc-pill" id="lcSyncStat">🔄 ${last}</span>
+      </div>
+      <div class="lc-note">
+        <b>云端模式说明</b><br>
+        · 数据同时存在<b>本机缓存</b>与<b>云端</b>，改动后约 2 秒自动上传<br>
+        · 换设备时，用同一账号登录即可拉回全部数据<br>
+        · 同一电脑多人使用：各自登录自己的账号，互不可见；<b>退出登录会清除本机缓存</b>，保护隐私<br>
+        · 未登录时数据只存本机，不影响单独使用
+      </div>
+      <div class="lc-row">
+        <button class="btn btn-soft" style="flex:1;justify-content:center" onclick="cloud.syncNow(true)">🔄 立即同步</button>
+        <button class="btn btn-danger" onclick="cloud.doLogout()">退出登录</button>
+      </div>
+      <div class="lc-row" style="justify-content:space-between;font-size:11px;color:var(--sub)">
+        <span>云端：${esc((this.cfg&&this.cfg.url)||'')}</span>
+        <a style="cursor:pointer;color:var(--sub);text-decoration:underline" onclick="cloud.viewSetup()">更换云配置</a>
+      </div>
+    </div>`;
+    openModal('👤 我的云端账号',body,`<button class="btn btn-ghost" onclick="closeModal()">关闭</button>`);
+  },
+  lastSyncText(){
+    const t=this._lastSync;
+    if(!t)return this.busy?'同步中…':'尚未同步';
+    const d=Math.max(1,Math.round((Date.now()-t)/1000));
+    return (this.busy?'同步中… · ':'')+(d<60?('刚刚('+d+'s 前)'):(Math.round(d/60)+' 分钟前同步'));
+  },
+  /* ============ 注册 / 登录 / 登出 ============ */
+  async doSignup(){
+    const em=$('#lcU').value.trim().toLowerCase(),p=$('#lcP').value,p2=$('#lcP2').value;
+    if(!em||!p){toast('请填写邮箱与密码','warn');return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){toast('请输入正确邮箱（它是你的登录账号，也用于找回密码）','warn');return}
+    if(p.length<6){toast('密码至少 6 位','warn');return}
+    if(p!==p2){toast('两次输入的密码不一致','warn');return}
+    try{
+      const sb=await this.ensure();
+      $('#mFoot').innerHTML='<span class="lc-spin"></span><span style="font-size:12px;color:var(--sub)">注册中…</span>';
+      const {data,error}=await sb.auth.signUp({email:em,password:p});
+      if(error)throw error;
+      const u=(data&&(data.session&&data.session.user||data.user))||null;
+      if(!u){this.viewLogin('📧 已提交注册，请到 '+esc(em)+' 的收件箱（或垃圾箱）点确认链接，再回来登录');return}
+      if(!data.session){this.viewLogin('📧 注册成功！请到 '+esc(em)+' 的收件箱（或垃圾箱）点确认链接激活账号，再回来登录');return}
+      this.user=u;this._lastSync=Date.now();this.renderBtn();
+      this.afterLogin(true);
+    }catch(e){this.user=null;this.viewSignup(sbErr(e));}
+  },
+  async doLogin(){
+    const em=$('#lcU').value.trim().toLowerCase(),p=$('#lcP').value;
+    if(!em||!p){toast('请输入邮箱与密码','warn');return}
+    try{
+      const sb=await this.ensure();
+      $('#mFoot').innerHTML='<span class="lc-spin"></span><span style="font-size:12px;color:var(--sub)">登录中…</span>';
+      const {data,error}=await sb.auth.signInWithPassword({email:em,password:p});
+      if(error)throw error;
+      if(!data||!data.user){this.viewLogin('登录返回异常，请重试');return}
+      this.user=data.user;this.renderBtn();
+      this.afterLogin(false);
+    }catch(e){this.user=null;this.viewLogin(sbErr(e));}
+  },
+  async doLogout(){
+    try{const sb=await this.ensure();await sb.auth.signOut()}catch(e){}
+    this.user=null;this.client=null;
+    // 隐私：清除本机数据缓存，避免下一人看到（保留云端配置，下次可直接登录）
+    try{localStorage.removeItem(STORE_KEY)}catch(e){}
+    state=blankState();fillForm();renderBoard();renderBoardStats();renderTopChips();renderVersions();renderVersionOptions();
+    this.renderBtn();closeModal();
+    toast('已退出登录，本机数据缓存已清除');
+  },
+  /* ============ 登录后数据策略 ============ */
+  afterLogin(isNew){
+    const self=this;
+    this.pull().then(remote=>{
+      closeModal();
+      const hasCloud=!!remote;
+      const ls=localStorage.getItem(STORE_KEY);
+      const hasLocal=!!(ls&&JSON.parse(ls).profile);
+      if(isNew&&!hasCloud){
+        if(hasLocal)self.askMigrate();
+        else{toast('注册成功，欢迎使用云同步！','ok');self.openAccountPanel()}
+        return;
+      }
+      if(!hasCloud){if(hasLocal)self.askMigrate();else{self.openAccountPanel();toast('已登录，云端暂无数据，改动后会自动创建','ok')}return}
+      self.askChoose(remote);
+    }).catch(err=>{self.openAccountPanel();toast('登录成功，但拉取数据失败：'+sbErr(err),'err')});
+  },
+  localTs(){const s=localStorage.getItem(STORE_KEY);if(!s)return 0;try{return JSON.parse(s)._ts||0}catch(e){return 0}},
+  askMigrate(){
+    const body=`<div class="lc-form">
+      <div class="lc-note">你的<b>本机</b>存有之前填写的数据。是否上传到刚登录的账号，实现云端备份与多端同步？
+      <br>（不迁移也可：本机数据会保留给"未登录"状态使用，但不会进入你的账号）</div>
+    </div>`;
+    openModal('发现本机数据',body,
+      `<button class="btn btn-p" onclick="cloud.migrateLocal()">⬆️ 上传到我的账号</button><button class="btn btn-ghost" onclick="closeModal()">不迁移</button>`);
+  },
+  migrateLocal(){try{this.saveTs();this.syncNow(true)}catch(e){toast('上传失败：'+sbErr(e),'err')}this.openAccountPanel();toast('已上传到账号云端','ok')},
+  askChoose(remote){
+    const tR=remote.savedAt||0,tL=this.localTs();
+    const rec=tR>=tL?'cloud':'local';
+    const body=`<div class="lc-form">
+      <div class="lc-note">检测到两边都有数据，请选择以哪份为准：</div>
+      <div class="lc-row" style="align-items:stretch">
+        <div style="flex:1;border:1.5px solid ${rec==='cloud'?'var(--primary)':'var(--line)'};border-radius:10px;padding:10px">
+          <div style="font-weight:700;font-size:13px">☁️ 云端数据${rec==='cloud'?' · 较新':''}</div>
+          <div style="font-size:11px;color:var(--sub);margin-top:3px">最后修改：${timeText(tR)}</div>
+          <button class="btn btn-soft btn-sm" style="width:100%;margin-top:8px;justify-content:center" onclick="cloud.useRemote()">载入云端</button>
+        </div>
+        <div style="flex:1;border:1.5px solid ${rec==='local'?'var(--primary)':'var(--line)'};border-radius:10px;padding:10px">
+          <div style="font-weight:700;font-size:13px">💻 本机数据${rec==='local'?' · 较新':''}</div>
+          <div style="font-size:11px;color:var(--sub);margin-top:3px">最后修改：${timeText(tL)}</div>
+          <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;justify-content:center" onclick="cloud.useLocal()">保留本机并上传</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--sub)">同一账号在别的设备登录过、或本机曾有游客数据时会出现此选择，选一次即可。</div>
+    </div>`;
+    openModal('同步数据',body,`<button class="btn btn-ghost" onclick="closeModal()">稍后处理</button>`);
+  },
+  async useRemote(){try{const r=await this.pull();if(r)await this.applyRemote(r,true)}catch(e){toast('失败：'+sbErr(e),'err')}this.openAccountPanel()},
+  async useLocal(){try{this.saveTs();await this.syncNow(true)}catch(e){toast('失败：'+sbErr(e),'err')}this.openAccountPanel();toast('已用本机数据覆盖云端','ok')},
+  saveTs(){try{const s=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');s._ts=Date.now();localStorage.setItem(STORE_KEY,JSON.stringify(s))}catch(e){}},
+  /* ============ 云数据存取 ============ */
+  async applyRemote(r,toastOk){
+    if(r&&r.state){replaceState(r.state);fillForm();renderBoard();renderBoardStats();renderTopChips();renderVersions();renderVersionOptions();if(typeof fillInterviewSetting==='function')fillInterviewSetting();}
+    this._lastSync=Date.now();this.renderBtn();this.syncStat();
+    if(toastOk)toast('已载入云端数据','ok');
+  },
+  schedulePush(){
+    if(this.pushTimer)clearTimeout(this.pushTimer);
+    this.pushTimer=setTimeout(()=>{this.pushTimer=null;this.syncNow(false).catch(()=>{})},2200);
+  },
+  isNoTable(e){return /relation .* does not exist|42P01|PGRST\d+|Could not find the table/i.test(String((e&&(e.message||e.code))||e))},
+  async syncNow(showToast){
+    if(!this.on()){if(showToast)toast('尚未登录，无法同步','warn');return}
+    if(this.busy)return;
+    this.busy=true;this.syncStat();
+    try{
+      const sb=await this.ensure();
+      const payload=this.wrapState();
+      const savedAt=Date.now();
+      const {error}=await sb.from(SB_TABLE).upsert({user_id:this.user.id,payload:payload,saved_at:savedAt},{onConflict:'user_id'});
+      if(error){
+        if(this.isNoTable(error)){this.syncStat();if(showToast)toast('云端表未创建：点右上角「☁️」→ ⚙️更换云配置 → 复制建表 SQL 去执行','err');return}
+        throw error;
+      }
+      this._lastSync=Date.now();this.renderBtn();this.syncStat();
+      if(showToast)toast('已同步到云端 ✓','ok');
+    }catch(e){if(showToast)toast('同步失败：'+sbErr(e),'err')}
+    finally{this.busy=false;this.syncStat()}
+  },
+  wrapState(){const s=JSON.parse(JSON.stringify(state));s._ts=Date.now();try{localStorage.setItem(STORE_KEY,JSON.stringify(s))}catch(e){}return JSON.stringify({savedAt:Date.now(),state:s})},
+  async pull(){
+    try{
+      const sb=await this.ensure();
+      const {data,error}=await sb.from(SB_TABLE).select('payload,saved_at').maybeSingle();
+      if(error){if(this.isNoTable(error))return null;throw error}
+      if(!data||!data.payload)return null;
+      let parsed;try{parsed=JSON.parse(data.payload)}catch(e){throw new Error('云端数据格式异常，可到 Supabase 控制台清空 qz_state 表后重新同步')}
+      return {savedAt:parsed.savedAt||data.saved_at||0,state:parsed.state||null};
+    }catch(e){throw e}
+  },
+  syncStat(){const el=$('#lcSyncStat');if(el)el.textContent='🔄 '+(this.busy?'同步中…':this.lastSyncText())},
+  async restoreSession(){
+    try{
+      if(!this.hasCfg()){this.renderBtn();return}
+      const sb=await this.ensure();
+      const {data}=await sb.auth.getSession();
+      const u=(data&&data.session&&data.session.user)||null;
+      if(!u){this.renderBtn();return}
+      this.user=u;this.renderBtn();
+      try{
+        const remote=await this.pull();
+        if(remote&&remote.state){
+          if((remote.savedAt||0)>=this.localTs())await this.applyRemote(remote,false);
+          else this.schedulePush();
+        }
+      }catch(e){/* 静默失败：保持本地可用 */}
+    }catch(e){/* 未配置或网络异常：保持游客模式 */}
+  }
+};
+try{window.cloud=cloud}catch(e){}   // 供按钮 onclick 等内联事件跨引擎访问
+function sbErr(e){
+  const m=String((e&&(e.message||e.error_description||e.error||e.code))||e||'');
+  if(/already registered|User already|has already been|已注册|duplicate/i.test(m))return '该邮箱已注册，请直接登录（或先找回密码）';
+  if(/invalid login credentials/i.test(m))return '邮箱或密码不对，请重试';
+  if(/email not confirmed|Email not confirmed/i.test(m))return '邮箱还没验证：先到邮箱（或垃圾箱）点确认链接，再回来登录';
+  if(/rate.?limit|too many requests|429/i.test(m))return '尝试太频繁，请等 1 分钟再试';
+  if(/network|failed to fetch|load failed|timeout|ERR_/i.test(m))return '连不上云端，请检查网络后重试';
+  if(/does not exist|42P01|relation/i.test(m))return '云端数据表未创建：请按配置向导里的指引执行建表 SQL';
+  return m||'操作失败，请检查网络后重试';
+}
+function timeText(ts){if(!ts)return '未知';const d=Date.now()-ts;if(d<60e3)return '刚刚';if(d<3600e3)return Math.round(d/60e3)+' 分钟前';if(d<86400e3)return Math.round(d/3600e3)+' 小时前';return new Date(ts).toLocaleString()}
+cloud.init();
+
+/* ---------- Tab ---------- */
+function switchTab(p){
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.page===p));
+  $$('.page').forEach(t=>t.classList.toggle('active',t.id==='page-'+p));
+  if(p==='kanban'){renderBoard();renderBoardStats()}
+  if(p==='versions')renderVersions();
+  if(p==='interview')fillInterviewSetting();
+}
+
+/* ---------- Toast / Modal ---------- */
+let toastTimer=null;
+function toast(msg,type){const t=$('#toast');t.textContent=msg;t.className='toast show '+(type||'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600)}
+function openModal(title,body,foot){$('#mTitle').innerHTML=title;$('#mBody').innerHTML=body;$('#mFoot').innerHTML=foot||'<button class="btn btn-ghost" onclick="closeModal()">关闭</button>';$('#mask').classList.add('show')}
+function closeModal(){$('#mask').classList.remove('show')}
+$('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal()});
+
+/* ================================================================
+   一、简历编辑区
+================================================================ */
+function entryHTML(type,e){
+  const isI=type==='intern';
+  return `<div class="entry" data-type="${type}">
+    <button class="del" title="删除" onclick="removeEntry(this)">✕</button>
+    <span class="star-tag" style="display:none"></span>
+    <div class="grid3">
+      <div><label>${isI?'公司':'项目名称'}</label><input data-e="${isI?'company':'name'}" value="${esc(e[isI?'company':'name']||'')}" placeholder="${isI?'字节跳动':'校园二手书小程序'}"></div>
+      <div><label>${isI?'岗位':'担任角色'}</label><input data-e="${isI?'title':'role'}" value="${esc(e[isI?'title':'role']||'')}" placeholder="${isI?'产品运营实习生':'发起人 / 产品负责人'}"></div>
+      <div><label>时间</label><input data-e="duration" value="${esc(e.duration||'')}" placeholder="2026.03 - 2026.08"></div>
+    </div>
+    <div style="margin-top:9px"><label>经历描述（建议 2-4 条，动词开头，含量化数据）</label>
+    <textarea data-e="desc" style="min-height:96px" placeholder="负责xx社群运营，维护12个用户群共6000+用户；策划3场打卡活动，参与率45%，带动次日留存提升8%…">${esc(e.desc||'')}</textarea></div>
+  </div>`;
+}
+function renderEntries(){
+  const p=state.profile;
+  $('#internList').innerHTML=p.internships.map(e=>entryHTML('intern',e)).join('')||'<div class="empty" style="padding:14px;font-size:12px">暂无实习经历，点击下方按钮添加</div>';
+  $('#projList').innerHTML=p.projects.map(e=>entryHTML('proj',e)).join('')||'<div class="empty" style="padding:14px;font-size:12px">暂无项目经历，点击下方按钮添加</div>';
+}
+function addEntry(type){
+  const p=state.profile, blank={duration:''};
+  if(type==='intern'){blank.company='';blank.title='';blank.desc='';p.internships.push(blank)}
+  else{blank.name='';blank.role='';blank.desc='';p.projects.push(blank)}
+  renderEntries();collectForm();save();
+  $$('#'+(type==='intern'?'internList':'projList')+' .entry').pop().scrollIntoView({behavior:'smooth',block:'center'});
+}
+function removeEntry(btn){
+  const box=btn.closest('.entry'),type=box.dataset.type;
+  const list=box.parentElement.children,idx=[...list].indexOf(box);
+  if(type==='intern')state.profile.internships.splice(idx,1);else state.profile.projects.splice(idx,1);
+  renderEntries();save();toast('已删除该段经历');
+}
+function collectForm(){
+  const p=state.profile;
+  $$('[data-p]').forEach(el=>p[el.dataset.p]=el.value);
+  p.internships=[...$$('#internList .entry')].map(b=>({company:b.querySelector('[data-e=company]').value,title:b.querySelector('[data-e=title]').value,duration:b.querySelector('[data-e=duration]').value,desc:b.querySelector('[data-e=desc]').value}));
+  p.projects=[...$$('#projList .entry')].map(b=>({name:b.querySelector('[data-e=name]').value,role:b.querySelector('[data-e=duration]')&&b.querySelector('[data-e=role]').value,duration:b.querySelector('[data-e=duration]').value,desc:b.querySelector('[data-e=desc]').value}));
+  state.jd=$('#jdInput').value;state.jdCompany=$('#jdCompany').value;state.jdPosition=$('#jdPosition').value;
+}
+function fillForm(){
+  const p=state.profile;
+  $$('[data-p]').forEach(el=>{if(p[el.dataset.p]!=null)el.value=p[el.dataset.p]});
+  $('#jdInput').value=state.jd||'';$('#jdCompany').value=state.jdCompany||'';$('#jdPosition').value=state.jdPosition||'';
+  renderEntries();
+}
+let saveTimer=null;
+document.addEventListener('input',e=>{
+  if(e.target.closest('#page-resume')){collectForm();clearTimeout(saveTimer);saveTimer=setTimeout(save,400)}
+});
+
+/* ---------- 简历文件上传解析（PDF / Word / txt / md / html） ---------- */
+function loadScript(src){
+  return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('组件加载失败'));document.head.appendChild(s)});
+}
+async function extractPdfText(f){
+  if(!window.pdfjsLib)await loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.min.js');
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/legacy/build/pdf.worker.min.js';
+  const pdf=await window.pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+  const parts=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    const tc=await(await pdf.getPage(p)).getTextContent();
+    tc.items.forEach(it=>{if(it.str)parts.push(it.str);if(it.hasEOL)parts.push('\n')});
+    parts.push('\n');
+  }
+  return parts.join('').replace(/[ \t]{2,}/g,' ');
+}
+async function handleResumeFile(inp){
+  const f=inp.files[0];if(!f)return;
+  const ext=f.name.split('.').pop().toLowerCase();
+  try{
+    let text='';
+    if(ext==='pdf'){
+      toast('正在解析 PDF，请稍候…');
+      text=await extractPdfText(f);
+    }else if(ext==='docx'){
+      toast('正在解析 Word，请稍候…');
+      if(!window.mammoth)await loadScript('https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js');
+      text=(await window.mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value;
+    }else if(ext==='doc'){
+      toast('暂不支持旧版 .doc，请在 Word 中另存为 .docx 或 PDF 后重试','warn');inp.value='';return;
+    }else{
+      text=await f.text();
+      if(ext==='html'||ext==='htm'){const d=document.createElement('div');d.innerHTML=text;text=d.textContent}
+    }
+    if(!text||text.replace(/\s/g,'').length<20){
+      toast('未提取到文本（可能是扫描/图片版简历），请手动填写表单','warn');inp.value='';return;
+    }
+    openParseConfirm(parseResumeStructured(text),ext);
+  }catch(err){
+    console.error(err);
+    toast('解析失败：'+(navigator.onLine?'文件可能加密或格式异常，可另存为 PDF 重试':'当前离线，PDF/Word 解析组件需联网加载一次'),'err');
+  }
+  inp.value='';
+}
+
+/* ---------- 智能解析引擎（分节 + 经历定位 + 换行续接合并） ---------- */
+const DATE_RE=/(?:19|20)\d{2}\s*[年.．\/\-]?\s*\d{0,2}\s*[月.．\/]?\s*[-–—~至到]{1,2}\s*(?:(?:19|20)\d{2}\s*[年.．\/\-]?\s*\d{0,2}\s*[月.．\/]?|至今|present|now|(?:\d{2})(?!\d))/i;
+const SEC_RULES=[
+  ['edu',/(教育背景|教育经历|教育情况|教育$|education)/i],
+  ['intern',/(实习经历|实习经验|工作经历|工作经验|实践经历|internship|work\s*experience)/i],
+  ['proj',/(项目经历|项目经验|项目实践|项目$|projects?)/i],
+  ['campus',/(校园经历|校园经验|学生工作|社团经历|社会实践|在校经历)/i],
+  ['skill',/(专业技能|技能特长|职业技能|个人技能|技能$|skills?|技术栈)/i],
+  ['honor',/(荣誉奖项|所获荣誉|获奖情况|奖项$|荣誉$|awards?|honors?)/i],
+  ['self',/(自我评价|个人评价|个人简介|自我描述|个人优势|summary|about\s*me)/i]
+];
+function headerOf(line){
+  const bare=line.replace(/[【】\[\]（）()<>《》\s#*•·—–\-、，。:：!！│|▍█◤◆★░▌]/g,'');
+  if(!bare||bare.length>16)return null;
+  for(const[k,re]of SEC_RULES){const m=bare.match(re);if(m&&m[0].length>=Math.max(2,bare.length*0.35))return k}
+  return null;
+}
+function cleanLines(raw){
+  return String(raw).replace(/\r\n?/g,'\n').replace(/\u00a0/g,' ')
+    .replace(/[\u2022\u25aa\u25cf\u2023\u2043]/g,'•')
+    .split('\n').map(l=>l.replace(/\s+/g,' ').replace(/^\s*(?:\d{1,2}[.、)）]|[（(]\d{1,2}[)）])\s*/,'').trim())
+    .filter(l=>l!=='');
+}
+const TITLE_WORDS=/实习生|实习|助理|专员|工程师|经理|主管|总监|组长|队长|负责人|创始人|发起人|顾问|设计师|设计|开发|程序|运营|营销|市场|品牌|推广|广告|公关|渠道|战略|策划|编辑|记者|翻译|教师|医生|医师|律师|法务|会计|审计|出纳|财务|管培|管培生|储备|储备干部|分析师|分析员|研究员|研究|架构师|架构|测试|算法|前端|后端|全栈|产品|数据|人力|HR|人事|行政|采购|供应链|物流|客服|销售|咨询|投研|行研|投资|调研|助教|销售员|客户经理|客户总监|运营专员|营销策划|营销活动|品牌专员|品牌策划|内容运营|用户研究|用户运营|活动运营|社群运营|电商运营|海外运营|投放|竞价|BD|商务|质量|品质|QA|QC|培训|教务|编辑|文案|设计师|插画|运维|技术支持|售前|售后|网管|网优/;
+const SEC_LABEL_RE=/^(教育背景|教育经历|教育情况|实习经历|实习经验|工作经历|工作经验|实践经历|项目经历|项目经验|项目实践|校园经历|校园经验|学生工作|社团经历|社会实践|在校经历|专业技能|技能特长|职业技能|个人技能|技能|荣誉奖项|所获荣誉|获奖情况|自我评价|个人评价|个人简介|自我描述|个人优势)\s*[:：]\s*(.*)$/;
+function parseResumeStructured(raw){
+  let lines=cleanLines(raw);
+  // 标签式栏目行（如“技能: xxx”）拆成标题行+内容行，避免内容被吸入上一栏目
+  lines=lines.flatMap(ln=>{
+    const m=ln.match(SEC_LABEL_RE);
+    if(!m)return[ln];
+    return m[2].trim()?[m[1],m[2].trim()]:[m[1]];
+  });
+  const full=lines.join('\n');
+  const R={name:'',phone:'',email:'',school:'',major:'',degree:'',grad:'',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[],warn:[]};
+  const marks=[];
+  lines.forEach((ln,i)=>{const h=headerOf(ln);if(h&&!marks.some(m=>m[0]===h))marks.push([h,i])});
+  marks.sort((a,b)=>a[1]-b[1]);
+  const secs={};
+  marks.forEach(([h,i],idx)=>{secs[h]=lines.slice(i+1,idx+1<marks.length?marks[idx+1][1]:lines.length)});
+  const topLines=lines.slice(0,marks.length?marks[0][1]:Math.min(10,lines.length));
+  const pm=full.match(/(?<!\d)1[3-9]\d[-\s]?\d{4}[-\s]?\d{4}(?!\d)/);
+  R.phone=pm?pm[0].replace(/[-\s]/g,''):'';
+  R.email=(full.match(/[\w.+-]+@[\w-]+\.[\w.]{2,}/)||[])[0]||'';
+  const headZone=topLines.join('\n');
+  let nm=headZone.match(/姓\s*名\s*[:：]?\s*([\u4e00-\u9fa5]{2,4})/);
+  if(!nm){for(const ln of topLines){const t=ln.replace(/\s/g,'');if(/^[\u4e00-\u9fa5·]{2,4}$/.test(t)&&!/简历|求职|个人|大学|学院|教育|经历|电话|邮箱|实习|项目/.test(t)){nm=[,t];break}}}
+  if(!nm){ // PDF垂直拆分：单字成行的姓名拼接（“李/小/梅 138...”）
+    let run='';
+    for(const ln of topLines.slice(0,5)){
+      const tk=ln.trim().split(/\s+/)[0]||'';
+      if(/^[\u4e00-\u9fa5]$/.test(tk)){run+=tk;if(run.length>=4)break}
+      else if(run)break;
+    }
+    if(run.length>=2&&run.length<=4&&!/(经历|背景|技能|评价|意向|简历)/.test(run))nm=[,run];
+  }
+  R.name=nm?nm[1]:'';
+  const eduTxt=secs.edu?secs.edu.join('\n'):headZone;
+  const sm=eduTxt.match(/([\u4e00-\u9fa5A-Za-z]{2,14}(?:大学|学院|University))/)||full.match(/([\u4e00-\u9fa5]{2,12}(?:大学|学院))/);
+  if(sm)R.school=sm[1];
+  const dm=eduTxt.match(/(博士|硕士研究生|硕士|研究生|本科|大专|专科|Master|Bachelor|Ph\.?D)/i);
+  if(dm){const d=dm[1].toLowerCase();R.degree=/博|ph/.test(d)?'博士':(/硕|master/.test(d)?'硕士':'本科')}
+  const mm=eduTxt.match(/(?:所学)?专业\s*[:：]\s*([^\n]{2,25})/)||eduTxt.replace(/(?:学校|院校|毕业时间|学历)\s*[:：][^\n]+/g,'').match(/([\u4e00-\u9fa5A-Za-z（）()·，,\-]{2,25}?)\s*专业/);
+  if(mm)R.major=mm[1].trim().replace(/^[·，,\s\-—–]+/,'').replace(/[,，、·\s]+$/,'');
+  const gp=eduTxt.match(/(?:GPA|绩点)\s*[:：]?\s*([0-9.]{1,6}\s*\/\s*[0-9.]{1,4})/i);
+  if(gp)R.gpa=gp[1];
+  const jm=eduTxt.match(/(20\d{2})\s*届/);
+  if(jm)R.grad=jm[1]+'.06';
+  else{const gd=eduTxt.match(DATE_RE)||eduTxt.match(/20\d{2}\s*年\s*\d{1,2}\s*月/)||eduTxt.match(/20\d{2}[.\/-]\d{1,2}(?![\d.])/);if(gd)R.grad=gd[0].replace(/\s+/g,' ')}
+  if(secs.intern)R.internships=parseExpLines(secs.intern,'intern');
+  if(secs.proj)R.projects=parseExpLines(secs.proj,'proj');
+  if(secs.campus)R.projects=R.projects.concat(parseExpLines(secs.campus,'proj'));
+  if(!marks.length)R.internships=parseExpLines(lines,'intern');
+  if(secs.skill){R.skills=[...new Set(secs.skill.join('\n').split(/[,，、;；•\n|｜\/]+/).map(s=>s.trim()).filter(Boolean).flatMap(s=>{
+    if(/\s{2,}/.test(s)||(/[\u4e00-\u9fa5]/.test(s)&&/\s/.test(s)))return s.split(/\s+/); // 空格分隔的技能列表
+    return[s];
+  }).filter(s=>s.length>1&&s.length<=25))].slice(0,15).join(', ')}
+  if(secs.honor)R.honors=secs.honor.map(l=>l.replace(/^[•·\-*]\s*/,'')).join('；').slice(0,300);
+  if(secs.self)R.selfEval=secs.self.join(' ').slice(0,300);
+  if(!R.name)R.warn.push('未识别出姓名');
+  if(!R.phone)R.warn.push('未识别出手机号');
+  if(!R.email)R.warn.push('未识别出邮箱');
+  if(!R.school)R.warn.push('未识别出学校');
+  if(!R.internships.length&&!R.projects.length)R.warn.push('未识别出实习/项目经历（复杂排版可能导致栏目错位，请手动补充）');
+  const SUSPECT=/\d+\s*%|[0-9]+\s*[万千百人天刀次笔名个件款种]|[A-Za-z]{4,}/;
+  R.internships.forEach((e,i)=>{
+    if(e.company&&SUSPECT.test(e.company)&&e.company.length>=15)R.warn.push(`第${i+1}段实习“${e.company.slice(0,14)}…”疑似含描述，已尝试纠正，请人工核对岗位`);
+    if(!e.title&&e.company)R.warn.push(`第${i+1}段实习岗位名为空，可能公司名与描述混排，请人工补岗位`);
+  });
+  return R;
+}
+function parseExpLines(lines,type){
+  const groups=[];let cur=null;
+  for(const ln of lines){
+    const t=ln.trim();if(!t)continue;
+    const bullet=/^[•·\-*>▪◦]/.test(t);
+    const core=t.replace(/^[•·\-*>▪◦]+\s*/,'').trim();
+    if(!core)continue;
+    const hasDate=DATE_RE.test(core)||/至今|present/i.test(core);
+    const looksHead=(TITLE_WORDS.test(core)&&core.length<=20&&!/[，,、。；;]/.test(core))||/(公司|集团|银行|事业部|工作室|中心|实验室|研究所|部门|团队)$/.test(core);
+    // 更准的"描述/句子"判定：含数字+单位、含数字+百分号、含较长尾标点
+    const sentenceLike=(!looksHead)&&(core.length>=14||/[。；;！!？?，]$/.test(core)||/\d+\s*[%万千百人天刀次笔名个件款种条单场笔篇块]/.test(core)||/[一二三四五六七八九十]/.test(core)&&/\d/.test(core));
+    if(!cur)cur={heads:[],bullets:[]};
+    if(hasDate){
+      const headHasDate=cur.heads.length>0&&DATE_RE.test(cur.heads.join(' '));
+      if(cur.heads.length>0&&cur.bullets.length===0&&!headHasDate){
+        cur.heads.push(core); // PDF式排版：公司/项目行后紧跟的独立日期行，归入当前条目
+      }else{
+        if(cur.heads.length||cur.bullets.length)groups.push(cur);
+        cur={heads:[core],bullets:[]};
+      }
+      continue;
+    }
+    if(bullet){cur.bullets.push(core);continue}
+    if(sentenceLike){
+      if(looksHead&&cur.bullets.length){groups.push(cur);cur={heads:[core],bullets:[]};continue}
+      if(cur.bullets.length){
+        const lastB=cur.bullets[cur.bullets.length-1];
+        const wrapCont=core.length>=18||/[，、]$/.test(core);
+        if(wrapCont&&!/[。；;.！!？?]$/.test(lastB))cur.bullets[cur.bullets.length-1]+=(/[a-zA-Z0-9]$/.test(lastB)?' ':'')+core;
+        else cur.bullets.push(core);
+      }else if(cur.heads.length){cur.bullets.push(core)}
+      else{cur.heads.push(core)}
+      continue;
+    }
+    if(cur.bullets.length){
+      const lastB=cur.bullets[cur.bullets.length-1];
+      // 默认延续判定：仅当核心是"硬头部信号"（公司后缀或 ≤8字纯岗位词）才开新组；否则续接到上一条描述
+      const looksHead2=/(公司|集团|银行|事业部|事务所|医院|学校|学院|部门|团队|工作室|中心|实验室|研究所)$/.test(core) || (TITLE_WORDS.test(core) && core.length<=8 && !/[0-9]/.test(core) && !/[，。,、]/.test(core));
+      if(!looksHead2&&core.length<=14&&!/[。；;.！!？?%]$/.test(lastB)){
+        cur.bullets[cur.bullets.length-1]+=core; // PDF硬换行：短行续接上一条描述
+      }else{groups.push(cur);cur={heads:[core],bullets:[]}}
+    }
+    else cur.heads.push(core);
+  }
+  if(cur&&(cur.heads.length||cur.bullets.length))groups.push(cur);
+  const out=[];
+  groups.forEach(g=>{
+    const heads=g.heads.filter(h=>!/^(主要)?(工作|职责|内容|描述|业绩|成果)(内容|描述)?[：:]?$/.test(h.trim()));
+    if(!heads.length&&!g.bullets.length)return;
+    const o=headToEntry(heads,g.bullets,type);
+    if(o&&(o.company||o.title||o.name||o.role||o.desc))out.push(o);
+  });
+  return out;
+}
+function headToEntry(heads,bullets,type){
+  const DESC_LIKE=/\d+\s*%|[0-9]+\s*[万千百人天刀次笔名个件款种]|\d+\s*[A-Za-z]|[A-Za-z]{4,}|.*[，,].*[，,]/;
+  const headText=heads.join(' ');
+  const duration=(headText.match(DATE_RE)||[])[0]||(/至今/.test(headText)?'至今':'');
+  let rest=headText.replace(DATE_RE,' ');
+  let company='',title='',desc=bullets.join('\n');
+  const cm=rest.match(/(?:公\s*司|单\s*位|企\s*业)\s*[:：]\s*([^\s,，;；|｜]{2,20})/);
+  const tm=rest.match(/(?:岗\s*位|职\s*位|职\s*务)\s*[:：]\s*([^\s,，;；|｜]{2,20})/);
+  if(cm)company=cm[1];
+  if(tm)title=tm[1];
+  if(company||title)rest=rest.replace(/(?:公\s*司|单\s*位|企\s*业|岗\s*位|职\s*位|职\s*务)\s*[:：][^\s,，;；|｜]{2,20}/g,' ');
+  if(!company&&!title){
+    let parts=rest.split(/\s*[|｜@／/·•]\s*|\s{2,}/).map(s=>s.trim()).filter(Boolean); // 移除逗号切分，避免描述被切成多段
+    if(parts.length===1&&/\s/.test(parts[0]))parts=parts[0].split(/\s+/).filter(Boolean); // 单空格分隔的公司+岗位
+    const ORG_SUFFIX=/(公司|集团|有限|科技|网络|信息|互联|银行|事务所|研究院|实验室|中心|工作室|医院|学校|学院|部门|事业部)$/;
+    const isShortJob=p=>{
+      if(!p)return false;
+      if(p.length>16)return false; // 放宽到 16 字（覆盖"营销活动负责人"等修饰全称）
+      if(!TITLE_WORDS.test(p))return false;
+      if(/[0-9A-Za-z]{3,}/.test(p))return false;
+      if(/\d+\s*%|[0-9]+\s*[万千百人天刀次笔名个件款种]/.test(p))return false;
+      if(/[，。,;；、]/.test(p))return false;
+      return true;
+    };
+    const isLooseJob=p=>isShortJob(p)||(!!p&&p.length<=18&&TITLE_WORDS.test(p));
+    if(parts.length>=2){
+      const ti=parts.findIndex(isShortJob);
+      if(ti>=0){
+        title=parts[ti];
+        company=parts.filter((p,i)=>i!==ti).find(p=>ORG_SUFFIX.test(p)||(p.length>=2&&p.length<=15&&!/[A-Za-z]{3,}/.test(p)&&!DESC_LIKE.test(p)))||parts.filter((p,i)=>i!==ti)[0]||'';
+      }else{
+        // 严格岗位词找不到：尝试宽松版（含 TITLE_WORDS 即可，覆盖"营销活动负责人"等修饰全称）
+        const looseTi=parts.findIndex(isLooseJob);
+        if(looseTi>=0){
+          title=parts[looseTi].slice(0,20);
+          const others=parts.filter((_,i)=>i!==looseTi);
+          company=others.find(p=>ORG_SUFFIX.test(p))||others.find(p=>/^[一-龥]{2,12}$/.test(p)&&!/[0-9]/.test(p)&&!/[，。,;；、]/.test(p))||others[0]||'';
+          const rest2=others.filter(p=>p!==company).join('；');
+          if(rest2)desc=rest2+(desc?'\n'+desc:'');
+        }else{
+          // 都没有：找公司名候选，剩余归 desc
+          const cIdx=parts.findIndex(p=>(ORG_SUFFIX.test(p)||/^[一-龥]{2,8}$/.test(p))&&p.length<=20&&!/[A-Za-z]{3,}/.test(p)&&!/[0-9]{2,}/.test(p)&&!/[，。,;；、]/.test(p));
+          if(cIdx>=0){
+            company=parts[cIdx];
+            const rest2=parts.filter((_,i)=>i!==cIdx).join('；');
+            if(rest2)desc=rest2+(desc?'\n'+desc:'');
+          }else{
+            company=parts[0];
+            const rest2=parts.slice(1).join('；');
+            if(rest2)desc=rest2+(desc?'\n'+desc:'');
+          }
+        }
+      }
+    }else if(parts.length===1){
+      if(type==='intern'&&TITLE_WORDS.test(parts[0])&&parts[0].length<=18)title=parts[0];
+      else company=parts[0];
+    }
+  }
+  if(type==='intern'){
+    // 事后复检：公司名疑似含描述片段（无岗位词且包含数字%/长英文/连续逗号）→ 提示用户
+    if(company&&!title&&DESC_LIKE.test(company)&&company.length>=12){
+      const keep=company.split(/[，。;；,\n]/)[0].slice(0,25);
+      desc=(company+(desc?'\n'+desc:'')).trim();
+      company=keep;
+    }
+    // 岗位与描述粘连修复：docx 三列/表格布局提取后，岗位和首行描述可能连写
+    // 例："产品运营实习生产品调研：参与..." → title=产品运营实习生，desc=产品调研：...
+    if(!title&&company){
+      const firstDescLine=(desc||'').split('\n')[0]||'';
+      const probe=(rest+' '+firstDescLine).replace(/\s+/g,' ').trim();
+      // 只认真正的岗位词后缀（不含"产品/数据/市场"等单独前缀），避免把工作内容词当岗位
+      const JOB_SUFFIX=/实习生|助理|专员|工程师|经理|主管|总监|组长|队长|负责人|创始人|发起人|顾问|设计师|开发|程序|分析师|分析员|研究员|架构师|测试|算法|前端|后端|全栈|人力|HR|人事|行政|采购|销售|咨询|投研|行研|投资|助教|客户经理|客户总监|运营专员|营销策划|营销活动|品牌专员|品牌策划|内容运营|用户研究|用户运营|活动运营|社群运营|电商运营|海外运营|投放|竞价|BD|商务|QA|QC|培训|教务|设计师|插画|运维|技术支持|售前|售后|网管|网优|教师|医生|医师|律师|法务|会计|审计|出纳|财务|管培生|储备干部|文案|编辑|记者|翻译|产品运营|产品经理|数据分析师|数据运营|市场经理|活动策划/;
+      const WORK_START=/(?:调研|分析|运营|营销|设计|负责|执行|策划|推广|管理|协调|维护|支持|工作|职责|内容|项目|产品|数据|市场|用户|技术|测试|开发|：|:)/g;
+      const titleRe=new RegExp('([\u4e00-\u9fa5]{2,12}(?:'+JOB_SUFFIX.source+'))$');
+      let bestTitle='',bestCut=0;
+      let ws;
+      while((ws=WORK_START.exec(probe))!==null){
+        const before=probe.slice(0,ws.index).trim();
+        const tm=before.match(titleRe);
+        if(tm){
+          bestTitle=tm[1];bestCut=tm[1].length;
+        }
+      }
+      if(bestTitle){
+        title=bestTitle.slice(0,25);
+        if(firstDescLine.startsWith(bestTitle)){
+          const cleaned=firstDescLine.slice(bestCut).replace(/^[：:：]\s*/,'').trim();
+          const tail=desc.includes('\n')?'\n'+desc.split('\n').slice(1).join('\n'):'';
+          desc=(cleaned+tail).trim();
+        }else if(rest.includes(bestTitle)){
+          const leftover=rest.replace(bestTitle,'').replace(/^[：:：]\s*/,'').trim();
+          if(leftover)desc=leftover+(desc?'\n'+desc:'');
+        }
+      }
+    }
+    return{company:company.slice(0,25),title:title.slice(0,25),duration:duration.trim(),desc};
+  }
+  let name='',role='';
+  const rm=rest.match(/(?:角\s*色|担\s*任)\s*[:：]\s*([^\s,，;；|｜]{2,15})/);
+  if(rm)role=rm[1];
+  let parts2=rest.split(/\s*[|｜@／/·•]\s*|\s{2,}|[,，、]\s*/).map(s=>s.trim()).filter(Boolean);
+  if(parts2.length===1&&/\s/.test(parts2[0]))parts2=parts2[0].split(/\s+/).filter(Boolean);
+  name=parts2.slice().sort((a,b)=>b.length-a.length)[0]||heads[0]||'';
+  if(!role){const ri=parts2.findIndex(p=>/(负责人|组长|队长|发起|主导|成员|核心)/.test(p));if(ri>=0)role=parts2[ri].slice(0,15)}
+  return{name:name.slice(0,30),role:role.slice(0,20),duration:duration.trim(),desc};
+}
+
+/* ---------- 解析结果确认弹窗 ---------- */
+function pmEntryHTML(type,e){
+  const isI=type==='intern';
+  return `<div class="entry pm-e" data-type="${type}">
+    <button class="del" title="删除" onclick="this.closest('.pm-e').remove()">✕</button>
+    <div class="grid3">
+      <div><label>${isI?'公司':'项目名称'}</label><input data-e="${isI?'company':'name'}" value="${esc(isI?e.company:e.name)}"></div>
+      <div><label>${isI?'岗位':'角色'}</label><input data-e="${isI?'title':'role'}" value="${esc(isI?e.title:e.role)}"></div>
+      <div><label>时间</label><input data-e="duration" value="${esc(e.duration)}"></div>
+    </div>
+    <div style="margin-top:8px"><label>描述</label><textarea data-e="desc" style="min-height:70px">${esc(e.desc)}</textarea></div>
+  </div>`;
+}
+function openParseConfirm(R,ext){
+  const warn=R.warn.length
+    ?`<div class="hint" style="background:var(--orange-soft);color:#8a5a00">⚠️ 自动识别不完全：${R.warn.map(esc).join('；')}。请核对并手动修正下方内容。</div>`
+    :`<div class="hint">✅ 已完成自动解析，请核对下方内容（自动识别可能有误差），确认后填入表单。</div>`;
+  openModal('解析结果确认 · 来源：'+ext.toUpperCase()+' 文件',
+    warn+`
+    <div class="grid3">
+      <div><label>姓名</label><input id="pmName" value="${esc(R.name)}"></div>
+      <div><label>电话</label><input id="pmPhone" value="${esc(R.phone)}"></div>
+      <div><label>邮箱</label><input id="pmEmail" value="${esc(R.email)}"></div>
+      <div><label>学校</label><input id="pmSchool" value="${esc(R.school)}"></div>
+      <div><label>专业</label><input id="pmMajor" value="${esc(R.major)}"></div>
+      <div><label>学历</label><select id="pmDegree">${['本科','硕士','博士'].map(x=>`<option ${R.degree===x?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div><label>毕业时间</label><input id="pmGrad" value="${esc(R.grad)}"></div>
+      <div><label>GPA / 排名</label><input id="pmGpa" value="${esc(R.gpa)}"></div>
+    </div>
+    <div style="margin-top:10px"><label>专业技能</label><textarea id="pmSkills" style="min-height:52px">${esc(R.skills)}</textarea></div>
+    <div class="grid2">
+      <div><label>荣誉奖项</label><textarea id="pmHonors" style="min-height:52px">${esc(R.honors)}</textarea></div>
+      <div><label>自我评价</label><textarea id="pmSelf" style="min-height:52px">${esc(R.selfEval)}</textarea></div>
+    </div>
+    <label style="margin-top:14px;font-weight:700;color:var(--ink)">实习经历（${R.internships.length}段）</label>
+    <div id="pmInterns">${R.internships.map(e=>pmEntryHTML('intern',e)).join('')}</div>
+    <button class="addbtn" onclick="addPmEntry('intern')">＋ 添加一段实习</button>
+    <label style="margin-top:12px;font-weight:700;color:var(--ink)">项目经历（${R.projects.length}个）</label>
+    <div id="pmProjs">${R.projects.map(e=>pmEntryHTML('proj',e)).join('')}</div>
+    <button class="addbtn" onclick="addPmEntry('proj')">＋ 添加一个项目</button>`,
+    `<button class="btn btn-p" onclick="applyParseConfirm()">✅ 确认填入表单</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function addPmEntry(type){
+  const box=$(type==='intern'?'#pmInterns':'#pmProjs');
+  box.insertAdjacentHTML('beforeend',pmEntryHTML(type,{company:'',title:'',name:'',role:'',duration:'',desc:''}));
+  box.lastElementChild.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function applyParseConfirm(){
+  const p=state.profile;
+  p.name=$('#pmName').value.trim();p.phone=$('#pmPhone').value.trim();p.email=$('#pmEmail').value.trim();
+  p.school=$('#pmSchool').value.trim();p.major=$('#pmMajor').value.trim();p.degree=$('#pmDegree').value;
+  p.grad=$('#pmGrad').value.trim();p.gpa=$('#pmGpa').value.trim();
+  p.skills=$('#pmSkills').value.trim();p.honors=$('#pmHonors').value.trim();p.selfEval=$('#pmSelf').value.trim();
+  p.internships=[...$$('#pmInterns .pm-e')].map(b=>({company:b.querySelector('[data-e=company]').value.trim(),title:b.querySelector('[data-e=title]').value.trim(),duration:b.querySelector('[data-e=duration]').value.trim(),desc:b.querySelector('[data-e=desc]').value.trim()})).filter(e=>e.company||e.title||e.desc);
+  p.projects=[...$$('#pmProjs .pm-e')].map(b=>({name:b.querySelector('[data-e=name]').value.trim(),role:b.querySelector('[data-e=role]').value.trim(),duration:b.querySelector('[data-e=duration]').value.trim(),desc:b.querySelector('[data-e=desc]').value.trim()})).filter(e=>e.name||e.role||e.desc);
+  fillForm();save();closeModal();switchTab('resume');
+  toast('已填入 '+p.internships.length+' 段实习、'+p.projects.length+' 个项目，请继续核对补充','ok');
+}
+
+/* ================================================================
+   二、JD 关键词分析引擎
+================================================================ */
+const SKILL_TERMS=['产品','需求分析','PRD','Axure','原型','用户调研','竞品分析','用户画像','B端','C端','商业化','运营','用户运营','内容运营','活动运营','社群','私域','增长','拉新','留存','转化','裂变','新媒体','公众号','小红书','抖音','直播','投放','ROI','GMV','DAU','MAU','KOL','KOC','SEO','SEM','数据分析','SQL','Python','Excel','Tableau','Power BI','SPSS','Hive','Spark','数据挖掘','机器学习','深度学习','算法','A/B测试','A/B','埋点','指标','数据可视化','Pandas','Java','JavaScript','TypeScript','C++','Go语言','前端','后端','React','Vue','Spring','MySQL','Redis','Linux','Git','Docker','K8s','微服务','API','爬虫','自动化测试','性能测试','数据结构','计算机网络','操作系统','市场营销','品牌','策划','文案','广告','公关','渠道','BD','销售','谈判','客户','沟通','协作','团队','抗压','学习能力','执行力','责任心','逻辑','创新','领导力','组织','时间管理','英语','PPT','汇报','人力资源','招聘','绩效','薪酬','培训','企业文化','会计','财务','审计','税务','估值','建模','行业研究','office','Python','实习'];
+const EN_STOP=new Set(['and','the','of','to','in','for','with','a','an','or','is','are','be','as','at','on','by','we','you','your','our','it','its','that','this','will','can','not','from','have','has','do','does','if','they','their','them','who','what','when','where','how','more','most','other','than','then','also','into','over','such','may','should','must','need','needs','plus','etc','job','work','team','role','years','year','new','using','use','used','strong','good','well','able','about','across','within','per','via','e','g','etc.','related','etc']);
+function extractKeywords(jd){
+  if(!jd.trim())return [];
+  const found=new Map();
+  SKILL_TERMS.forEach(t=>{const re=new RegExp(regEsc(t),'gi');const m=jd.match(re);if(m)found.set(t,m.length)});
+  (jd.match(/[A-Za-z][A-Za-z0-9+#./]{1,14}/g)||[]).forEach(w=>{
+    w=w.replace(/[.\/]+$/,'');
+    const lw=w.toLowerCase();
+    if(lw.length<2||EN_STOP.has(lw))return;
+    if(SKILL_TERMS.some(t=>t.toLowerCase()===lw))return;
+    found.set(w,(found.get(w)||0)+1);
+  });
+  (jd.match(/[\u4e00-\u9fa5]{2,4}?(?:能力|经验|意识|思维)/g)||[]).forEach(w=>{
+    const core=w.replace(/(能力|经验|意识|思维)$/,'');
+    const dup=[...found.keys()].some(k=>k.includes(core)||core.includes(k));
+    if(!dup)found.set(w,(found.get(w)||0)+1);
+  });
+  let arr=[...found.entries()].map(([term,freq])=>({term,freq}));
+  arr=arr.filter((k,i)=>!arr.some((o,j)=>j!==i&&o.freq>=k.freq&&o.term.includes(k.term)&&o.term!==k.term));
+  arr.sort((a,b)=>b.freq-a.freq||b.term.length-a.term.length);
+  return arr.slice(0,18);
+}
+function collectResumeText(p){
+  return [p.skills,p.honors,p.selfEval,p.intent,p.major,
+    ...p.internships.map(e=>e.company+' '+e.title+' '+e.desc),
+    ...p.projects.map(e=>e.name+' '+e.role+' '+e.desc)].join(' ');
+}
+
+/* ================================================================
+   AI 简历教练诊断引擎（纯前端规则版）
+   不依赖联网调用 API，基于 JD + 简历内容生成真正可用的建议
+================================================================ */
+const ROLE_PROFILES={
+  product:{
+    name:'产品经理/产品助理',
+    mustHaves:['需求分析','PRD','Axure','原型','用户调研','竞品分析','用户画像','项目推动','跨部门协作'],
+    nice:['B端','C端','商业化','数据分析','SQL','A/B测试','埋点'],
+    hidden:['逻辑清晰','抗压','沟通','自驱','owner意识','数据敏感'],
+    dimWeights:{专业能力:0.30,项目经历:0.30,数据化思维:0.15,行业认知:0.15,软素质:0.10}
+  },
+  operation:{
+    name:'运营',
+    mustHaves:['用户运营','内容运营','活动运营','社群','用户增长','留存','转化','拉新'],
+    nice:['私域','小红书','抖音','公众号','新媒体','裂变','A/B测试','SQL','数据分析'],
+    hidden:['文案','策划','执行力','抗压','审美','网感','用户视角'],
+    dimWeights:{专业能力:0.25,项目经历:0.30,数据化思维:0.15,行业认知:0.10,软素质:0.20}
+  },
+  tech:{
+    name:'技术研发（前后端/算法/测试）',
+    mustHaves:['数据结构','算法','Linux','Git','项目经验'],
+    nice:['Java','Python','C++','Go','React','Vue','Spring','MySQL','Redis','Docker','K8s','微服务','机器学习','深度学习','Spark','Hive'],
+    hidden:['学习能力','逻辑','英语','开源贡献','源码阅读','技术博客'],
+    dimWeights:{专业能力:0.40,项目经历:0.30,数据化思维:0.15,行业认知:0.05,软素质:0.10}
+  },
+  market:{
+    name:'市场营销/品牌',
+    mustHaves:['品牌','策划','文案','投放','ROI','渠道'],
+    nice:['新媒体','小红书','抖音','公众号','内容运营','整合营销','公关','BD','SEO','SEM'],
+    hidden:['审美','创意','网感','抗压','沟通','市场敏感度'],
+    dimWeights:{专业能力:0.25,项目经历:0.25,数据化思维:0.10,行业认知:0.20,软素质:0.20}
+  },
+  data:{
+    name:'数据分析',
+    mustHaves:['SQL','Excel','Python','数据分析','数据可视化','指标'],
+    nice:['Tableau','Power BI','SPSS','Pandas','Hive','Spark','A/B测试','埋点','用户画像','R','回归'],
+    hidden:['业务理解','逻辑','细致','商业敏感度','自驱'],
+    dimWeights:{专业能力:0.30,项目经历:0.25,数据化思维:0.30,行业认知:0.10,软素质:0.05}
+  },
+  design:{
+    name:'设计（UI/UX/视觉）',
+    mustHaves:['设计','用户调研','原型','交互'],
+    nice:['Figma','Sketch','PS','AI','Axure','用户画像','设计规范','组件库','动效'],
+    hidden:['审美','沟通','抗压','细节','自驱','作品集'],
+    dimWeights:{专业能力:0.30,项目经历:0.30,数据化思维:0.05,行业认知:0.15,软素质:0.20}
+  },
+  finance:{
+    name:'金融/投资/咨询',
+    mustHaves:['行业研究','建模','估值','Excel'],
+    nice:['PPT','财务','审计','税务','会计','英语','CFA','CPA','FRM'],
+    hidden:['抗压','细致','逻辑','沟通','英语','商业判断'],
+    dimWeights:{专业能力:0.25,项目经历:0.30,数据化思维:0.20,行业认知:0.20,软素质:0.05}
+  },
+  hr:{
+    name:'人力/HR',
+    mustHaves:['招聘','培训','绩效','企业文化'],
+    nice:['薪酬','人力资源','HR','员工关系','组织发展','OD','Excel','PPT'],
+    hidden:['沟通','抗压','同理心','细致','保密意识'],
+    dimWeights:{专业能力:0.25,项目经历:0.25,数据化思维:0.10,行业认知:0.15,软素质:0.25}
+  },
+  sales:{
+    name:'销售/BD',
+    mustHaves:['销售','客户','谈判','渠道','BD'],
+    nice:['大客户','KA','CRM','招投标','行业客户','SaaS','续费','回款'],
+    hidden:['抗压','沟通','目标感','狼性','自驱','应变'],
+    dimWeights:{专业能力:0.20,项目经历:0.30,数据化思维:0.10,行业认知:0.15,软素质:0.25}
+  },
+  general:{
+    name:'通用职能/管培',
+    mustHaves:['沟通','协作','团队','执行力','学习能力'],
+    nice:['PPT','Excel','英语','社团','学生组织','竞赛'],
+    hidden:['抗压','自驱','逻辑','领导力','责任心','综合素质'],
+    dimWeights:{专业能力:0.15,项目经历:0.25,数据化思维:0.10,行业认知:0.15,软素质:0.35}
+  }
+};
+
+// 根据 JD 自动识别岗位类型
+function detectRole(jd){
+  const jdLow=jd.toLowerCase();
+  const scores=Object.entries(ROLE_PROFILES).map(([k,p])=>{
+    let s=0;
+    [...p.mustHaves,...p.nice].forEach(w=>{if(jd.includes(w)||jdLow.includes(w.toLowerCase()))s+=w.length<=4?2:1});
+    return {k,s};
+  });
+  scores.sort((a,b)=>b.s-a.s);
+  if(scores[0].s<2)return{key:'general',...ROLE_PROFILES.general};
+  return{key:scores[0].k,...ROLE_PROFILES[scores[0].k]};
+}
+
+// 抽取 JD 中的隐性素质词和具体能力
+function extractJDInsights(jd){
+  const ins={
+    hard:new Set(),       // 硬技能
+    soft:new Set(),       // 软素质
+    action:new Set(),     // 动词
+    scenes:new Set(),     // 业务场景
+    seniority:'',         // 资历
+    bizType:''            // 业务类型
+  };
+  const SOFT_DB=['抗压','自驱','owner','责任心','主动性','执行力','沟通','协作','团队','逻辑','学习能力','领导力','创新','细致','认真','抗压能力','抗挫折','结果导向','用户视角','业务理解','商业判断','审美','网感','狼性','抗压能力','应变','保密','同理心','抗压能力'];
+  const ACTION_DB=['负责','主导','搭建','设计','优化','推动','策划','运营','分析','调研','管理','协调','撰写','落地','迭代','复盘','跟进','对接','交付'];
+  const SENIOR_RE=/(\d+)\s*年以上|(\d+)\s*年经验|senior|高级|资深|初级|应届|实习生|管培|校招|社招/i;
+  const mSEN=jd.match(SENIOR_RE);
+  if(mSEN)ins.seniority=mSEN[0];
+  // 业务类型
+  if(/B\s*端|企业服务|SaaS|商家/.test(jd))ins.bizType='B端';
+  else if(/C\s*端|消费者|用户增长|社区/.test(jd))ins.bizType='C端';
+  else if(/海外|跨境|国际化|global/i.test(jd))ins.bizType='海外';
+  else if(/电商|直播带货|淘宝|京东|拼多多/.test(jd))ins.bizType='电商';
+  else if(/内容|媒体|视频|小红书|抖音/.test(jd))ins.bizType='内容/媒体';
+  else if(/金融|银行|证券|基金|保险|投资/.test(jd))ins.bizType='金融';
+  SOFT_DB.forEach(w=>{if(jd.includes(w))ins.soft.add(w)});
+  ACTION_DB.forEach(w=>{if(jd.includes(w))ins.action.add(w)});
+  // 简单切句，提取场景
+  const scenes=jd.split(/[，。；;\n]/)
+    .map(s=>s.trim())
+    .filter(s=>s.length>=8&&s.length<=40&&/[具备熟悉精通了解有]+/.test(s));
+  scenes.slice(0,5).forEach(s=>ins.scenes.add(s));
+  return ins;
+}
+
+// 维度评分：基于 JD 关键词在简历不同部分的出现情况
+function scoreDimensions(p,jd,role,ins){
+  const parts={
+    '专业能力':(p.skills||''),
+    '项目经历':p.internships.map(e=>e.title+' '+e.desc).join(' ')+p.projects.map(e=>e.role+' '+e.desc).join(' '),
+    '数据化思维':p.internships.map(e=>e.desc).join(' ')+p.projects.map(e=>e.desc).join(' '),
+    '行业认知':(p.selfEval||'')+p.internships.map(e=>e.desc).join(' '),
+    '软素质':(p.selfEval||'')
+  };
+  const score={};
+  const detail={};
+  Object.entries(role.dimWeights).forEach(([dim,w])=>{
+    let max=10,hit=0;
+    if(dim==='专业能力'){
+      const checks=[...role.mustHaves,...role.nice];
+      hit=checks.filter(k=>parts['专业能力'].toLowerCase().includes(k.toLowerCase())).length;
+      max=Math.max(role.mustHaves.length,5);
+    }else if(dim==='项目经历'){
+      const total=p.internships.length+p.projects.length;
+      const withQuant=[...p.internships,...p.projects].filter(e=>starCheck(e.desc).quant).length;
+      const withAction=[...p.internships,...p.projects].filter(e=>starCheck(e.desc).action).length;
+      const segScore=Math.min(total/2,3)+Math.min(withQuant,3)+Math.min(withAction,3);
+      hit=segScore;max=9;
+    }else if(dim==='数据化思维'){
+      const text=parts['数据化思维'];
+      const hasNum=/\d+%|\d+\s*[万千百人天]/.test(text);
+      const hasTool=/SQL|Python|Excel|Tableau|埋点|A\/B|指标|转化率|留存率|GMV|ROI|DAU/.test(text);
+      hit=(hasNum?4:1)+(hasTool?4:0);
+      max=8;
+    }else if(dim==='行业认知'){
+      const text=parts['行业认知'];
+      const hasBizType=ins.bizType&&text.includes(ins.bizType);
+      const hasSoft=ins.bizType&&ins.scenes.size>0?text.length>50?2:0:0;
+      hit=(hasBizType?4:0)+(hasSoft?3:0)+(text.length>80?3:0);
+      max=8;
+    }else if(dim==='软素质'){
+      const text=parts['软素质'];
+      const hits=[...ins.soft].filter(w=>text.includes(w)).length;
+      hit=Math.min(hits*2+2,8);
+      max=8;
+    }
+    score[dim]=Math.round(Math.min(hit/max,1)*100);
+    detail[dim]=hit;
+  });
+  return{score,detail};
+}
+
+// 针对单段经历给出"现状 → 改写"建议
+function coachOneExp(e,jd,role){
+  const desc=e.desc||'';
+  const checks=starCheck(desc);
+  const issues=[];
+  if(!checks.action)issues.push({tag:'动词',msg:'首句没有动作动词开头（建议：负责/主导/搭建/策划/优化…）'});
+  if(!checks.quant)issues.push({tag:'量化',msg:'整段没有任何数字成果（招聘方最看重的就是量化）'});
+  if(!checks.result)issues.push({tag:'结果',msg:'没有体现业务结果/影响（提升/增长/降低/覆盖/达成…）'});
+  if(desc.length<60)issues.push({tag:'厚度',msg:'描述过短（建议至少 3 个 bullet，每条 25-40 字）'});
+  if(!/[，,、]/.test(desc))issues.push({tag:'结构',msg:'仅一句话不够分点（用逗号或换行拆分多个职责）'});
+  // 生成改写示例
+  let rewrite=null;
+  const title=e.title||(e.company?'该岗位':'这段经历');
+  const placeholders={
+    action:`【职责动词 1】负责【具体业务/项目】，【用什么方法/工具】，【做出什么结果 - 用数字说话】`,
+    bullet:[`【动词 + 对象】+【方法/工具】+【量化结果】`,
+            `独立/主导完成【项目名】，从 0 到 1 搭建【某体系】，【周期内】实现【数字+单位】`,
+            `通过【策略/动作】，【影响范围】提升【百分比/绝对值】，获得【奖项/老板认可/数据验证】`]
+  };
+  if(issues.length>=2){
+    rewrite={
+      before:desc.slice(0,80)+(desc.length>80?'…':''),
+      after:`建议改写思路（以「${title}」为例）：\n• ${placeholders.bullet[0]}\n• ${placeholders.bullet[1]}\n• ${placeholders.bullet[2]}\n\n公式：动词 + 对象 + 方法 + 量化结果 + 业务影响`
+    };
+  }
+  return{issues,rewrite,label:(e.company||'')+(e.title?'·'+e.title:'')||'经历'};
+}
+
+// 生成 1 句话核心推荐语（求职信/自我介绍可用）
+function generateOneLiner(p,jd,role){
+  const topSkill=(p.skills||'').split(/[,，、\n]+/).map(s=>s.trim()).filter(s=>s&&s.length<=8)[0]||'XX方向';
+  const bestExp=p.internships[0]||p.projects[0];
+  const expSnippet=bestExp?(bestExp.company||bestExp.name||'某公司')+' '+ (bestExp.title||bestExp.role||'实习'):'校园经历';
+  const major=(p.major||'专业').slice(0,12);
+  const school=(p.school||'').slice(0,15);
+  return `【${p.name||'我'}｜${school}${major?'·'+major:''}】${expSnippet}期间聚焦${topSkill}方向，${bestExp?(starCheck(bestExp.desc).quant?'具备可量化的实战成果':'完成核心项目交付'):'积极参与项目实践'}，希望在${role.name.replace(/\/.+/,'')}方向持续深耕。`;
+}
+
+// 生成自我评价三版（不同风格）
+function generateSelfEvals(p,jd,role,topKws){
+  const bestExp=p.internships[0]||p.projects[0];
+  const expText=bestExp?(bestExp.title||bestExp.role||'实习')+' @ '+(bestExp.company||bestExp.name||'某公司'):'';
+  const kw1=topKws[0]||'用户思维';
+  const kw2=topKws[1]||'数据驱动';
+  const kw3=topKws[2]||'跨部门协作';
+  const base=[p.name||'我',p.school||'在校生',p.major||'相关背景'];
+  return {
+    concise:`${base[0]}｜${base[1]}${base[2]?'·'+base[2]:''}。${expText?expText+'经历，让我对'+role.name+'有真实体感；':''}擅长${kw1}与${kw2}，具备${kw3}经验，做事重结果、可落地。`,
+    story:`「用 ${kw1} 解决真问题」是我做事的方式。${expText?`在${expText}期间，`+(p.internships[0]?.desc?p.internships[0].desc.split(/[，。；;\n]/)[0]:'完成多个项目交付')+'；':''}熟练掌握${kw2}方法论，对${kw3}有体感。希望在${role.name.replace(/\/.+/,'')}方向与团队一起把事情做成。`,
+    data:`${base[0]}，${base[1]}${base[2]?' '+base[2]:''}，${expText?`有${expText}实战经历，`:`拥有 ${role.name} 相关项目经验，`}擅长${kw1}、${kw2}、${kw3}。${bestExp&&starCheck(bestExp.desc).quant?'过往经历具备可量化成果（'+bestExp.desc.match(/\d+(?:\.\d+)?\s*[%万千百人天个次篇份场]/)?.slice(-1)[0]+'等）。':''}期待加入贵司${role.name.replace(/\/.+/,'')}团队。`
+  };
+}
+
+// 拼装整份"教练报告"
+function buildCoachAdvice(p,jd,a){
+  const role=detectRole(jd);
+  const ins=extractJDInsights(jd);
+  const dim=scoreDimensions(p,jd,role,ins);
+  const expCoaching=[...p.internships,...p.projects].map(e=>coachOneExp(e,jd,role));
+  const topKws=a.kws.slice(0,5).map(k=>k.term);
+  const oneLiner=generateOneLiner(p,jd,role);
+  const selfEvals=generateSelfEvals(p,jd,role,topKws);
+  // 优先级建议（按缺口紧急度排序）
+  const priority=[];
+  if(!p.name||!p.phone||!p.email)priority.push({lvl:'P0',text:'基本信息缺失：姓名/电话/邮箱必填，否则 HR 5 秒内会跳过'});
+  if(p.internships.length+p.projects.length<2)priority.push({lvl:'P0',text:'经历数量不足：建议至少有 2 段实习 + 1 个项目（或 3 段实习）'});
+  expCoaching.filter(c=>c.issues.length>=2).forEach((c,i)=>{
+    if(i<3)priority.push({lvl:'P1',text:`「${c.label}」需重写：${c.issues[0]?.msg||'多个 STAR 维度缺失'}`+(c.rewrite?`（已生成改写示例，向上滚动查看）`:'')});
+  });
+  if(ins.bizType&&!p.selfEval?.includes(ins.bizType))priority.push({lvl:'P1',text:`JD 是「${ins.bizType}」方向，简历中未体现行业认知（建议在自我评价或某段经历中点出）`});
+  if(topKws[0]&&!p.skills?.includes(topKws[0]))priority.push({lvl:'P2',text:`核心关键词「${topKws[0]}」未出现在技能栏，建议补上（如真实掌握）`});
+  // 隐性考察点提醒
+  const hiddenReminders=role.hidden.filter(h=>{
+    const text=(p.selfEval||'')+p.internships.map(e=>e.desc).join(' ');
+    return !text.includes(h);
+  }).slice(0,4);
+  return{role,ins,dim,expCoaching,topKws,oneLiner,selfEvals,priority,hiddenReminders};
+}
+const ACTION_VERBS=['负责','主导','搭建','构建','设计','开发','优化','提升','推动','落地','策划','执行','分析','调研','协调','管理','撰写','运营','实现','完成','增长','降低','改进','复盘','梳理','翻译','编写','维护'];
+const RESULT_WORDS=['提升','增长','降低','提高','减少','获得','达成','带来','转化','覆盖','超过','达到','贡献','_result_'];
+function starCheck(desc){
+  const d=desc||'';
+  return {
+    quant:/(\d+(?:\.\d+)?)\s*(%|％|万|w|W|K|k|倍|人|次|个|篇|天|小时|分钟|元|单|份|场|字|DAU|GMV|PV|UV)/.test(d),
+    action:ACTION_VERBS.some(v=>d.includes(v)),
+    result:RESULT_WORDS.some(v=>d.includes(v))
+  };
+}
+function analyze(){
+  collectForm();
+  const p=state.profile, jd=state.jd;
+  const kws=extractKeywords(jd);
+  const rText=collectResumeText(p).toLowerCase();
+  const matched=kws.filter(k=>rText.includes(k.term.toLowerCase()));
+  const missing=kws.filter(k=>!rText.includes(k.term.toLowerCase()));
+  const score=kws.length?Math.round(matched.length/kws.length*100):0;
+  const expChecks=[...p.internships.map(e=>({label:(e.company||'实习')+'·'+(e.title||''),...starCheck(e.desc),type:'实习'})),
+                   ...p.projects.map(e=>({label:e.name||'项目',...starCheck(e.desc),type:'项目'}))];
+  // 旧建议保留作 fallback
+  const suggestions=[];
+  if(!p.name||!p.phone||!p.email)suggestions.push('基本信息不完整：姓名 / 电话 / 邮箱是硬性项，务必补全');
+  if(!p.school)suggestions.push('缺少教育背景：学校、专业、毕业时间需补充');
+  if(missing.length)suggestions.push('<b>关键词缺口：</b>JD 反复强调的「'+missing.slice(0,6).map(k=>k.term).join('、')+'」未在简历中出现 —— 若真实掌握，请补充到技能栏或经历描述中');
+  expChecks.filter(c=>!c.quant).forEach(c=>suggestions.push('<b>量化不足：</b>「'+esc(c.label)+'」缺少数字化成果，建议补充 <b>百分比 / 数量 / 金额 / 时长</b>（如：参与率45%、服务用户6000+）'));
+  expChecks.filter(c=>!c.action).forEach(c=>suggestions.push('<b>动词缺失：</b>「'+esc(c.label)+'」建议以动作动词开头改写（主导 / 搭建 / 策划 / 优化…）'));
+  if(p.internships.length+p.projects.length===0)suggestions.push('暂无任何经历：请至少补充 1 段实习或项目，校园经历 / 课程项目也可以');
+  if(!p.skills)suggestions.push('技能栏为空：将 JD 高频关键词中你真实掌握的写入技能栏');
+  // 教练诊断
+  const coach=buildCoachAdvice(p,jd,{kws,matched,missing,score});
+  return {kws,matched,missing,score,expChecks,suggestions,coach,ts:Date.now()};
+}
+
+/* ---------- 分析渲染 ---------- */
+function renderAnalysis(a){
+  $('#analysisCard').style.display='';
+  const coach=a.coach;
+  const col=a.score>=75?'var(--green)':a.score>=45?'var(--orange)':'var(--red)';
+  const deg=Math.round(a.score*3.6);
+
+  // 顶部：岗位识别 + 匹配度
+  let html=`<div class="score-wrap">
+    <div class="ring" style="background:conic-gradient(${col} ${deg}deg,#EDEFF7 0deg)"><div class="num" style="color:${col}">${a.score}%<small>JD匹配度</small></div></div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:700;margin-bottom:2px">命中 ${a.matched.length} / ${a.kws.length} 个 JD 关键词</div>
+      <div style="font-size:12px;color:var(--sub)">${a.score>=75?'匹配度优秀，继续保持':a.score>=45?'还有提升空间，优先补齐下方橙色关键词':'差距较大，建议重写经历并补齐关键词'}</div>
+    </div></div>`;
+
+  // AI 教练报告区
+  html+=`<div class="coach-box" style="margin-top:12px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,#F5F4FF 0%,#FFFFFF 60%);padding:14px 16px">`;
+  html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:15px;font-weight:800;color:#4649D8">🤖 AI 简历教练诊断报告</span><span style="font-size:11px;color:var(--sub);background:#EEF0FE;padding:2px 8px;border-radius:10px">识别为：${esc(coach.role.name)}</span></div>`;
+
+  // 优先级清单
+  if(coach.priority.length){
+    html+=`<div style="font-size:12px;font-weight:700;margin:4px 0 6px;display:flex;gap:6px;align-items:center">🚦 紧急度排序（按重要程度）</div>`;
+    html+=coach.priority.map(s=>{
+      const c=s.lvl==='P0'?'#E0394D':s.lvl==='P1'?'#E0862A':'#5A8C2A';
+      const bg=s.lvl==='P0'?'#FFF1F1':s.lvl==='P1'?'#FFF6E8':'#F5FBEE';
+      return `<div class="sug" style="background:${bg};border-color:${c}33"><span class="n" style="background:${c};color:#fff;font-weight:700">${s.lvl}</span><div>${esc(s.text)}</div></div>`;
+    }).join('');
+  }else{
+    html+=`<div class="sug" style="background:#F6FBF9;border-color:#D9EFE6"><span class="n" style="background:var(--green-soft);color:var(--green)">✓</span><div><b>整体状态良好</b>，继续打磨措辞与量化数据即可投递。</div></div>`;
+  }
+
+  // 维度评分
+  html+=`<div style="font-size:12px;font-weight:700;margin:10px 0 6px">📊 5 维度评估（按岗位权重加权）</div>`;
+  html+=`<div style="display:grid;grid-template-columns:1fr;gap:6px">`;
+  Object.entries(coach.dim.score).forEach(([dim,sc])=>{
+    const w=coach.role.dimWeights[dim]||0;
+    const pct=Math.round(w*100);
+    const c=sc>=75?'#0B8A66':sc>=45?'#E0862A':'#E0394D';
+    const cBg=sc>=75?'#F6FBF9':sc>=45?'#FFF6E8':'#FFF1F1';
+    html+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:${cBg};border-radius:6px">
+      <div style="width:78px;font-size:12px;font-weight:700">${esc(dim)}</div>
+      <div style="flex:1;height:6px;background:#fff;border-radius:3px;overflow:hidden;border:1px solid #E5E7F0"><div style="width:${sc}%;height:100%;background:${c}"></div></div>
+      <div style="width:42px;text-align:right;font-size:12px;font-weight:700;color:${c}">${sc}分</div>
+      <div style="width:54px;text-align:right;font-size:11px;color:var(--sub)">权重 ${pct}%</div>
+    </div>`;
+  });
+  html+=`</div>`;
+
+  // 逐段改写建议
+  if(coach.expCoaching.length){
+    const badOnes=coach.expCoaching.filter(c=>c.issues.length>=2);
+    if(badOnes.length){
+      html+=`<div style="font-size:12px;font-weight:700;margin:10px 0 6px">✍️ 经历改写示例（点击展开）</div>`;
+      badOnes.slice(0,4).forEach((c,i)=>{
+        html+=`<details style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:6px">
+          <summary style="cursor:pointer;font-size:12.5px;font-weight:700">${esc(c.label)} <span style="color:var(--sub);font-weight:400;font-size:11px">（${c.issues.length} 个问题）</span></summary>
+          <div style="margin-top:8px;font-size:12px">
+            <div style="color:var(--sub);margin-bottom:2px">问题诊断：</div>
+            <div style="margin-bottom:8px">${c.issues.map(iss=>`<span style="display:inline-block;padding:1px 6px;background:#FFF1F1;color:#E0394D;border-radius:3px;font-size:11px;margin:0 4px 4px 0">${esc(iss.tag)}：${esc(iss.msg)}</span>`).join('')}</div>
+            ${c.rewrite?`<div style="background:#F5F4FF;border-left:3px solid #5B5FEF;padding:8px 10px;border-radius:0 6px 6px 0"><div style="color:#4649D8;font-weight:700;margin-bottom:4px">改写思路</div><div style="white-space:pre-wrap;color:#333;font-size:12px;line-height:1.7">${esc(c.rewrite.after)}</div></div>`:''}
+          </div>
+        </details>`;
+      });
+    }
+  }
+
+  // 隐性考察点
+  if(coach.hiddenReminders.length){
+    html+=`<div style="font-size:12px;font-weight:700;margin:10px 0 6px">🔍 该岗位隐性考察点（简历没体现）</div>`;
+    html+=`<div style="font-size:12px;color:var(--sub);margin-bottom:4px">JD 没明说但 ${esc(coach.role.name)} 通常会考察：</div>`;
+    html+=`<div>${coach.hiddenReminders.map(h=>`<span style="display:inline-block;padding:2px 8px;background:#FFF6E8;color:#B47409;border-radius:10px;font-size:11px;margin:0 4px 4px 0">${esc(h)}</span>`).join('')}</div>`;
+    html+=`<div style="font-size:11px;color:var(--sub);margin-top:4px">💡 建议：在自我评价或某段经历的结尾用 1-2 句话体现这些特质。</div>`;
+  }
+
+  // 关键词命中/缺失
+  if(a.matched.length)html+='<div style="font-size:12px;font-weight:700;color:#0B8A66;margin:10px 0 4px">✅ 已命中</div><div class="kwzone">'+a.matched.map(k=>`<span class="kw m">${esc(k.term)}</span>`).join('')+'</div>';
+  if(a.missing.length)html+='<div style="font-size:12px;font-weight:700;color:#B47409;margin:8px 0 4px">⚠️ 缺失（按优先级补齐）</div><div class="kwzone">'+a.missing.map(k=>`<span class="kw x">${esc(k.term)}</span>`).join('')+'</div>';
+
+  // 1 句话推荐语
+  html+=`<div style="font-size:12px;font-weight:700;margin:12px 0 6px">🎯 1 句话核心推荐语（求职信/自我介绍可用）</div>`;
+  html+=`<div style="background:#fff;border:1px dashed #5B5FEF;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.7;position:relative">
+    <div id="oneLinerText">${esc(coach.oneLiner)}</div>
+    <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('oneLinerText').textContent);toast('已复制到剪贴板','ok')" style="position:absolute;top:8px;right:8px;background:#EEF0FE;color:#4649D8;border:none;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">📋 复制</button>
+  </div>`;
+
+  // 自我评价三选一
+  html+=`<div style="font-size:12px;font-weight:700;margin:12px 0 6px">💎 自我评价 3 版（点击填入）</div>`;
+  html+=`<div style="display:grid;gap:6px">`;
+  [
+    {k:'concise',t:'📌 简洁版',v:coach.selfEvals.concise},
+    {k:'story',t:'📖 故事版',v:coach.selfEvals.story},
+    {k:'data',t:'📊 数据版',v:coach.selfEvals.data}
+  ].forEach(s=>{
+    html+=`<div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-size:12px;font-weight:700">${s.t}</div>
+        <button type="button" onclick="state.profile.selfEval='${esc(s.v).replace(/'/g,"\\'").replace(/\n/g,'\\n')}';document.querySelector('[data-field=selfEval]').value=state.profile.selfEval;save();toast('已填入自我评价，记得 Ctrl+S 同步','ok')" style="background:#EEF0FE;color:#4649D8;border:none;padding:2px 10px;border-radius:6px;font-size:11px;cursor:pointer">使用此版本</button>
+      </div>
+      <div style="font-size:12px;color:#444;line-height:1.6">${esc(s.v)}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+
+  html+=`</div>`; // close coach-box
+
+  // 旧 STAR 体检保留（精简版）
+  if(a.expChecks.length){
+    html+='<div style="font-size:12px;font-weight:700;margin:10px 0 6px">🩺 STAR 体检</div>';
+    a.expChecks.forEach(c=>{
+      const ok=c.quant&&c.action&&c.result;
+      html+=`<div class="sug" style="${ok?'background:#F6FBF9;border-color:#D9EFE6':''}"><span class="n" style="${ok?'background:var(--green-soft);color:var(--green)':''}">${ok?'✓':'!'}</span><div><b>${esc(c.label)}</b>（${c.type}）　量化${c.quant?'✅':'❌'} 动词${c.action?'✅':'❌'} 结果${c.result?'✅':'❌'}</div></div>`;
+    });
+  }
+
+  $('#analysisBox').innerHTML=html;
+  // 同步表单内的 STAR 标签
+  const tags=$$('#internList .star-tag, #projList .star-tag');
+  a.expChecks.slice(0,tags.length).forEach((c,i)=>{const bad=!c.quant||!c.action||!c.result;tags[i].textContent=bad?'待量化':'STAR ✓';tags[i].className='star-tag '+(bad?'star-warn':'star-ok');tags[i].style.display=''});
+}
+
+/* ================================================================
+   三、优化后简历构建（预览 + Word）
+================================================================ */
+function boldKws(text,kws){
+  let h=esc(text);
+  kws.map(k=>k.term).sort((a,b)=>b.length-a.length).forEach(t=>{
+    h=h.replace(new RegExp(regEsc(t),'g'),m=>`⟦K⟧${m}⟦/K⟧`);
+  });
+  return h.replace(/⟦K⟧/g,'<b class="kw-hit">').replace(/⟦\/K⟧/g,'</b>');
+}
+function bulletsFrom(desc,kws,forWord){
+  const lines=String(desc||'').split(/\n|；|;|(?=。)/).map(s=>s.replace(/^[·•\-\s]+/,'').replace(/。$/,'').trim()).filter(Boolean);
+  if(!lines.length)return '';
+  return '<ul>'+lines.map(l=>{
+    const c=starCheck(l);
+    const hint=(c.quant||c.result)?'':' <span class="ph">【量化提示：补充数字成果，如提升30% / 覆盖1000人】</span>';
+    return '<li>'+boldKws(l,kws)+(forWord?String(hint).replace(/class="ph"/g,'style="color:#C47F17"'):'')+'</li>';
+  }).join('')+'</ul>';
+}
+function buildResumeHTML(p,a,opts){
+  const kws=a?a.kws:[], matched=a?a.matched:[], missing=a?a.missing:[];
+  const autoAdd=opts&&opts.autoKw&&missing.length;
+  let skillsRaw=(p.skills||'').split(/[,，、\n]+/).map(s=>s.trim()).filter(Boolean);
+  if(autoAdd)missing.forEach(k=>{if(!skillsRaw.some(s=>s.toLowerCase()===k.term.toLowerCase()))skillsRaw.push('◈'+k.term)});
+  const ct=[p.phone,p.email,p.city,p.intent?'求职意向：'+p.intent:''].filter(Boolean).join(' ｜ ');
+  let h=`<div class="rh"><h1>${esc(p.name||'姓名')}</h1><div class="ct">${esc(ct)}</div></div>`;
+  if(p.school||p.major||p.grad||p.gpa){
+    h+=`<h3>教育背景</h3><div class="edu"><b>${esc(p.school)}</b>　${esc(p.major)}　${esc(p.degree)}<span class="r">${esc(p.grad)}${p.gpa?'　'+esc(p.gpa):''}</span></div>`;
+  }
+  if(skillsRaw.length){
+    h+=`<h3>专业技能</h3><div>${skillsRaw.map(s=>s.startsWith('◈')?`<span class="kw-new">◈${esc(s.slice(1))}</span>`:boldKws(s,kws)).join(' · ')}</div>`;
+  }
+  if(p.internships.length){
+    h+='<h3>实习经历</h3>';
+    p.internships.forEach(e=>{h+=`<div style="margin-bottom:6px"><b style="font-size:12.5px">${esc(e.company)}</b>　${esc(e.title)}<span class="time" style="float:right">${esc(e.duration)}</span></div>`+bulletsFrom(e.desc,kws,opts&&opts.forWord)});
+  }
+  if(p.projects.length){
+    h+='<h3>项目经历</h3>';
+    p.projects.forEach(e=>{h+=`<div style="margin-bottom:6px"><b style="font-size:12.5px">${esc(e.name)}</b>　${esc(e.role)}<span class="time" style="float:right">${esc(e.duration)}</span></div>`+bulletsFrom(e.desc,kws,opts&&opts.forWord)});
+  }
+  if(p.honors)h+=`<h3>荣誉奖项</h3><div>${boldKws(p.honors,kws)}</div>`;
+  if(p.selfEval)h+=`<h3>自我评价</h3><div>${boldKws(p.selfEval,kws)}</div>`;
+  return h;
+}
+function renderPreview(a){
+  $('#previewCard').style.display='';
+  const autoKw=$('#autoKw').checked;
+  $('#resumePreview').innerHTML=buildResumeHTML(state.profile,a,{autoKw});
+  const len=collectResumeText(state.profile).length;
+  if(len>1400)toast('内容较多，导出 Word 后请精简至 1 页 A4','warn');
+}
+$('#autoKw').addEventListener('change',()=>{if(state.lastAnalysis)renderPreview(state.lastAnalysis)});
+
+/* ---------- Word 导出 ---------- */
+function exportWord(html,filename){
+  const header=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>document</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]--><style>
+  @page{size:595.3pt 841.9pt;margin:42pt 40pt}
+  body{font-family:"微软雅黑","Microsoft YaHei",sans-serif;font-size:10.5pt;color:#222;line-height:1.5}
+  h1{font-size:17pt;letter-spacing:3pt;margin:0}
+  .rh{border-bottom:2pt solid #5B5FEF;padding-bottom:5pt;margin-bottom:8pt}
+  .ct{font-size:9pt;color:#555;margin-top:2pt}
+  h3{font-size:11.5pt;color:#4649D8;border-left:3pt solid #5B5FEF;padding-left:5pt;margin:9pt 0 4pt;letter-spacing:1pt}
+  ul{margin:2pt 0 6pt 16pt;padding-left:12pt}
+  li{margin-bottom:2pt}
+  .kw-hit{color:#4649D8;font-weight:bold}
+  .kw-new{color:#B47409;font-weight:bold}
+  .ph{color:#C47F17}
+  .time{font-size:9pt;color:#777}
+  </style></head><body>`;
+  const blob=new Blob(['\ufeff',header+html+'</body></html>'],{type:'application/msword;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename+'.doc';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+function exportResumeWord(){
+  collectForm();
+  const a=state.lastAnalysis||analyze();
+  const autoKw=$('#autoKw').checked;
+  const html=buildResumeHTML(state.profile,a,{autoKw,forWord:true});
+  const co=state.jdCompany||state.jdPosition||'通用';
+  exportWord(html,`简历_${state.profile.name||'我'}_${co}`);
+  if(autoKw&&a.missing.length)toast('已自动补充 '+a.missing.length+' 个JD关键词到技能栏（◈），请在Word中确认真实性后删除标记','ok');
+}
+
+/* ---------- 优化主流程 ---------- */
+function doOptimize(analyzeOnly){
+  if(!state.jd.trim()&&!$('#jdInput').value.trim()){toast('请先粘贴目标岗位 JD','warn');return}
+  const a=analyze();
+  if(!a.kws.length){toast('未能从JD中提取到关键词，请检查JD内容','warn');return}
+  state.lastAnalysis=a;
+  renderAnalysis(a);renderPreview(a);
+  if(!analyzeOnly){
+    createVersion(a);
+  }
+  save();
+}
+function createVersion(a){
+  collectForm();
+  const v={
+    id:'v'+Date.now(), name:'V'+state.seq,
+    company:state.jdCompany||'', position:state.jdPosition||state.profile.intent||'',
+    score:a.score, ts:Date.now(),
+    kws:a.kws.map(k=>k.term).slice(0,10),
+    jd:state.jd,
+    profile:JSON.parse(JSON.stringify(state.profile))
+  };
+  state.versions.unshift(v);state.seq++;
+  renderVersions();renderVersionOptions();renderTopChips();
+  toast('已生成新版本 '+v.name+(v.company?'（'+v.company+'·'+v.position+'）':'')+'，可在「版本管理」中查看','ok');
+}
+
+/* ================================================================
+   四、版本管理
+================================================================ */
+function renderVersions(){
+  const box=$('#verList');
+  if(!state.versions.length){box.innerHTML='<div class="empty"><div class="big">🗂️</div>还没有版本 —— 去「简历智能优化」点击「开始智能优化」自动生成</div>';return}
+  box.innerHTML=state.versions.map(v=>{
+    const sp=v.score>=75?'sp-hi':v.score>=45?'sp-mid':'sp-lo';
+    const d=new Date(v.ts),ds=d.toLocaleDateString('zh-CN')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    return `<div class="ver-item">
+      <div class="ver-badge">${esc(v.name)}</div>
+      <div class="ver-main">
+        <div class="t">${esc(v.company||'未命名公司')} <span style="color:var(--line)">|</span> ${esc(v.position||'未命名岗位')}</div>
+        <div class="m">${ds} · ${v.profile.internships.length}段实习 · ${v.profile.projects.length}个项目</div>
+        <div class="ver-kws">关键词：${esc(v.kws.join('、'))||'—'}</div>
+      </div>
+      <span class="score-pill ${sp}">${v.score}%</span>
+      <div class="ver-ops">
+        <button class="btn btn-soft btn-sm" onclick="restoreVersion('${v.id}')">↩️ 恢复到编辑器</button>
+        <button class="btn btn-ghost btn-sm" onclick="previewVersion('${v.id}')">👁️ 预览</button>
+        <button class="btn btn-ghost btn-sm" onclick="renameVersion('${v.id}')">✏️ 命名</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportVerWord('${v.id}')">📥 Word</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportVerJson('${v.id}')">💾 JSON</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteVersion('${v.id}')">删除</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function findV(id){return state.versions.find(v=>v.id===id)}
+function restoreVersion(id){
+  const v=findV(id);if(!v)return;
+  state.profile=JSON.parse(JSON.stringify(v.profile));
+  state.jd=v.jd;state.jdCompany=v.company;state.jdPosition=v.position;
+  fillForm();save();switchTab('resume');toast('已将 '+v.name+' 恢复到编辑器','ok');
+}
+function previewVersion(id){
+  const v=findV(id);if(!v)return;
+  const a={kws:(v.kws||[]).map(t=>({term:t})),matched:[],missing:[]};
+  const html=buildResumeHTML(v.profile,a,{autoKw:false});
+  openModal('预览 '+esc(v.name)+' · '+esc(v.company||'')+' '+esc(v.position||''),
+    `<div style="max-height:60vh;overflow:auto"><div class="a4">${html}</div></div>`,
+    `<button class="btn btn-p" onclick="exportVerWord('${v.id}')">📥 导出 Word</button><button class="btn btn-ghost" onclick="closeModal()">关闭</button>`);
+}
+function renameVersion(id){
+  const v=findV(id);if(!v)return;
+  openModal('重命名版本 '+esc(v.name),
+    `<div class="grid2"><div><label>投递公司</label><input id="rnCo" value="${esc(v.company)}" placeholder="腾讯"></div><div><label>岗位</label><input id="rnPo" value="${esc(v.position)}" placeholder="产品运营"></div></div>`,
+    `<button class="btn btn-p" onclick="doRename('${id}')">保存</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function doRename(id){
+  const v=findV(id);if(!v)return;
+  v.company=$('#rnCo').value.trim();v.position=$('#rnPo').value.trim();
+  save();renderVersions();renderVersionOptions();closeModal();toast('已更新版本命名','ok');
+}
+function exportVerWord(id){
+  const v=findV(id);if(!v)return;
+  const a={kws:(v.kws||[]).map(t=>({term:t}))};
+  const html=buildResumeHTML(v.profile,a,{autoKw:false,forWord:true});
+  exportWord(html,`简历_${v.profile.name||'我'}_${v.company||v.position||v.name}`);
+}
+function exportVerJson(id){
+  const v=findV(id);if(!v)return;
+  downloadJSON(v,`简历版本_${v.name}_${v.company||''}.json`);
+}
+function deleteVersion(id){
+  const v=findV(id);if(!v)return;
+  openModal('删除确认',`<p>确定删除版本 <b>${esc(v.name)}（${esc(v.company||'')} ${esc(v.position||'')}）</b> 吗？此操作不可撤销。</p>`,
+    `<button class="btn btn-danger" onclick="doDeleteVersion('${id}')">确认删除</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function doDeleteVersion(id){
+  state.versions=state.versions.filter(v=>v.id!==id);
+  save();renderVersions();renderVersionOptions();closeModal();toast('版本已删除');
+}
+function importVersion(inp){
+  const f=inp.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const v=JSON.parse(rd.result);
+      if(!v.profile)throw 0;
+      v.id='v'+Date.now();v.ts=v.ts||Date.now();v.name='V'+state.seq;v.company=v.company||'';v.position=v.position||'';v.kws=v.kws||[];v.jd=v.jd||'';
+      state.versions.unshift(v);state.seq++;
+      save();renderVersions();renderVersionOptions();toast('已导入版本 '+v.name,'ok');
+    }catch(e){toast('版本文件解析失败','err')}
+    inp.value='';
+  };
+  rd.readAsText(f,'utf-8');
+}
+function renderVersionOptions(){
+  const opts=['<option value="">✏️ 当前编辑器内容（未保存版本）</option>']
+    .concat(state.versions.map(v=>`<option value="${v.id}">${esc(v.name)} · ${esc(v.company||'未命名')} · ${esc(v.position||'')} · ${v.score}%</option>`))
+    .join('');
+  $('#ivVersion').innerHTML=opts;
+}
+
+/* ================================================================
+   五、面试准备生成
+================================================================ */
+const CAT_RULES=[
+  ['产品',['产品经理','产品','PRD','Axure','需求分析','用户调研','竞品']],
+  ['运营',['运营','增长','私域','社群','新媒体','用户增长','内容运营']],
+  ['数据',['数据分析','SQL','BI','统计','数据挖掘','指标体系']],
+  ['技术',['开发','Java','前端','后端','算法','测试','工程师','编程','C++','Python']],
+  ['市场',['市场','品牌','营销','公关','广告','投放']],
+  ['人力',['人力','HR','招聘','薪酬','绩效']],
+  ['财务',['财务','会计','审计','税务','金融','投行','券商','估值']]
+];
+const IV_BANK={
+  通用:['你对我们公司/这个行业有什么了解？','你认为自己最大的优势和短板分别是什么？','如果这次没有通过面试，你会怎么办？'],
+  行为:['说一次你和团队意见不一致的经历，你是如何处理的？','讲一个你从失败/挫折中走出来的经历。','说一次你在高压或时间紧迫下完成任务的经历。','举例说明你如何快速学习一项全新技能。','描述一次你主动承担额外责任的经历。'],
+  动机:['为什么选择我们公司，而不是同行业的其他公司？','为什么选择这个岗位？你的职业规划是什么？','你还投递了哪些公司？如何做取舍？','你能接受的实习/入职时间与地点是？'],
+  产品:['讲一个你最喜欢的产品，并分析它为什么成功。','如果让你负责我们产品的一个模块，第一个月你会做什么？','如何验证一个新功能是否应该上线？','你如何做竞品分析？'],
+  运营:['如果给你一个新社群，冷启动阶段你会怎么做？','一场活动上线后数据不及预期，你会如何复盘和优化？','如何提升一款产品的用户留存？','你如何搭建用户分层运营体系？'],
+  数据:['讲一个你用数据驱动决策的完整案例。','如果核心指标突然下跌20%，你会如何排查？','SQL 窗口函数了解吗？请说出常用场景。','如何设计一套指标体系衡量业务健康度？'],
+  技术:['介绍一个你最有成就感的技术项目，难点在哪里？','讲讲你对（岗位相关核心技术）的理解。','遇到线上 bug，你的排查思路是什么？','平时如何保持技术学习？'],
+  市场:['如何为一款新产品策划上市推广方案？','你如何评估一次投放活动的 ROI？','讲一个你印象最深的营销案例。'],
+  人力:['如何评估一个候选人是否适合某个岗位？','校园招聘和社招在筛选逻辑上有什么不同？','如果业务部门和HR在录用人选上有分歧，你会怎么办？'],
+  财务:['讲讲三张报表之间的勾稽关系。','如何快速判断一家公司的经营健康度？','你如何搭建一个简单的财务/估值模型？']
+};
+const REASK=['这个岗位入职后前3个月的核心目标是什么？','团队目前的协作方式是怎样的？我的直接对接人会是谁？','公司对校招生/实习生的培养机制是怎样的？','您在这家公司工作最大的感受是什么？'];
+function detectCategory(text){
+  const t=(text||'');
+  let best='通用',n=0;
+  CAT_RULES.forEach(([cat,words])=>{
+    const c=words.reduce((s,w)=>s+(t.split(w).length-1),0);
+    if(c>n){n=c;best=cat}
+  });
+  return best;
+}
+function fillInterviewSetting(){
+  $('#ivJd').value=$('#ivJd').value||state.jd||'';
+  if(!$('#ivCompany').value)$('#ivCompany').value=state.jdCompany||'';
+  if(!$('#ivPosition').value)$('#ivPosition').value=state.jdPosition||state.profile.intent||'';
+}
+function oneLiner(desc){
+  const l=String(desc||'').split(/\n|；|;|。/).map(s=>s.trim()).filter(Boolean);
+  return l[0]?(l[0].length>60?l[0].slice(0,60)+'…':l[0]):'（请补充你的核心成果）';
+}
+function generateInterview(){
+  const vid=$('#ivVersion').value;
+  const p=vid?findV(vid).profile:state.profile;
+  const jd=$('#ivJd').value.trim();
+  const company=$('#ivCompany').value.trim(),position=$('#ivPosition').value.trim()||p.intent||'目标岗位';
+  if(!p.name&&!p.internships.length&&!p.projects.length){toast('请先在「简历优化」中填写简历内容','warn');return}
+  const cat=detectCategory(position+' '+jd);
+  const kws=extractKeywords(jd||position).slice(0,5);
+  const groups=[];
+  // 1 开场
+  const nExp=p.internships.length+p.projects.length;
+  let self=`面试官您好！我是${p.name||'○○'}，${p.degree||''}，就读于${p.school||'○○大学'}${p.major||''}专业，预计${p.grad||'○○'}毕业。我的求职意向是${position}方向。\n大学期间我共有${nExp}段实习/项目经历：`;
+  p.internships.slice(0,2).forEach(e=>{self+=`\n· 在${e.company||'○○'}担任${e.title||'○○'}，${oneLiner(e.desc)}；`});
+  p.projects.slice(0,1).forEach(e=>{self+=`\n· ${e.name||'○○'}项目中担任${e.role||'核心成员'}，${oneLiner(e.desc)}。`});
+  self+=`\n这些经历让我积累了${kws.slice(0,2).map(k=>k.term).join('、')||(p.skills.split(/[,，、]/)[0]||'岗位相关')}等能力，与贵司岗位要求高度契合，非常希望能加入团队！`;
+  groups.push({title:'🚀 开场必问',items:[
+    {q:'请做一个 1 分钟的自我介绍。',a:self,tip:'控制在60-90秒：基本信息10% + 匹配经历70% + 求职动机20%。语速平稳，眼睛看面试官。'}
+  ]});
+  // 2 经历深挖
+  const expQs=[];
+  p.internships.forEach(e=>expQs.push({q:`详细介绍你在「${e.company}」的${e.title||'实习'}经历，你最大的贡献是什么？`,
+    a:`【S 情境】在${e.company}做${e.title}期间，我面对的核心任务是……（一句话概括业务背景与目标）\n【T 任务】我具体负责……\n【A 行动】${(e.desc||'').split(/\n|；|;/).slice(0,3).map(s=>'· '+s.trim()).join('\n')||'· （按原经历拆解2-3个动作要点）'}\n【R 结果】建议补充量化成果：如效率提升X%、覆盖X名用户、带来X转化。`,
+    tip:'STAR 法则：结果必须有数字；主动把话题引向你最擅长的那段经历。'}));
+  p.projects.forEach(e=>expQs.push({q:`讲讲你的「${e.name}」项目，你在其中扮演什么角色？`,
+    a:`【S/T】${e.name}是……（项目背景与目标），我作为${e.role||'核心成员'}负责……\n【A】${(e.desc||'').split(/\n|；|;/).slice(0,3).map(s=>'· '+s.trim()).join('\n')||'· （拆解关键动作）'}\n【R】建议量化：如用户量、订单量、成绩排名等。`,
+    tip:'突出你的独特贡献而非团队整体；准备好被追问细节（数据来源、决策依据）。'}));
+  if(expQs.length)groups.push({title:'📖 经历深挖（基于你的简历）',items:expQs});
+  // 3 岗位专业题
+  const catQs=(IV_BANK[cat]||IV_BANK['通用']).map(q=>({
+    q,a:`【答题框架】观点先行 → 结合自身经历举例 → 回扣岗位价值。\n【参考】我认为……（直接给出核心观点）。例如在${(p.internships[0]&&p.internships[0].company)||(p.projects[0]&&p.projects[0].name)||'我的实习/项目'}经历中，我曾……（用具体行动佐证）。如果能加入贵司，我会把这个思路复用到${position}的实际业务中。`,
+    tip:'岗位专业题不要求答案完美，考察的是结构化表达与业务理解。'
+  }));
+  groups.push({title:`🎯 ${cat}岗位专业题`,items:catQs});
+  // 4 JD 关键词题
+  if(kws.length){
+    groups.push({title:'🔑 JD 高频关键词追问',items:kws.map(k=>({
+      q:`JD 中多次提到「${k.term}」，你是怎么理解和运用它的？`,
+      a:`【框架】概念定义 → 自身实践 → 方法论总结。\n【参考】我理解「${k.term}」是指……（用一句话给出你的定义）。在${(p.internships[0]&&p.internships[0].company)||'我的项目'}经历中，我通过……实践了${k.term}，最终……（量化结果）。如果有机会，我希望在贵司的${position}岗位上更深入地运用它。`,
+      tip:'如果没实践过，坦诚说“了解过但实践有限”，再讲学习计划，切忌编造。'
+    }))});
+  }
+  // 5 行为面试
+  groups.push({title:'🤝 行为面试经典题',items:IV_BANK['行为'].map(q=>({
+    q,a:`【框架】选真实小事例 + 倾听对齐 + 结果导向。\n【参考】在${(p.internships[0]&&p.internships[0].company)||(p.projects[0]&&p.projects[0].name)||'团队协作'}中，我曾经遇到类似情况：当时……（简述冲突/挑战），我先……（倾听与数据/目标对齐），然后……（行动），最终……（结果与复盘）。`,
+    tip:'避免说“我没遇到过分歧/失败”；故事要真实、有细节、有反思。'
+  }))});
+  // 6 动机 + 反问
+  groups.push({title:'💼 动机与稳定性',items:IV_BANK['动机'].map(q=>({
+    q,a:`【参考】我的核心考量是：岗位匹配度（${position}与我的经历和能力高度契合）+ 平台成长性（贵司在${cat}方向的业务积累）+ 长期发展（我希望在${cat}领域深耕3-5年）。\n【注意】提前查公司最近的业务动态/产品更新，面试中自然带出，会显著加分。`,
+    tip:'不要只谈钱和离家近；回答要体现“我了解你们、我认真选过”。'
+  }))});
+  groups.push({title:'🙋 反问环节（务必准备2-3个）',items:REASK.map(q=>({q,a:'（此环节由你提问，认真倾听并适当追问即可）',tip:'反问体现求职诚意；不要问薪资加班等敏感问题（HR面除外）。'}))});
+
+  state.interview={company,position,cat,groups,ts:Date.now()};
+  save();renderInterview();
+  toast('已生成 '+groups.reduce((s,g)=>s+g.items.length,0)+' 道面试题（'+cat+'方向）','ok');
+}
+function renderInterview(){
+  const iv=state.interview;
+  if(!iv){$('#ivResult').innerHTML='<div class="empty"><div class="big">🎯</div>选择版本并点击上方按钮，开始生成专属面试题</div>';return}
+  $('#ivResult').innerHTML=`<div class="hint" style="margin-bottom:14px">岗位方向：<b>${esc(iv.cat)}</b> ｜ 目标：<b>${esc(iv.company||'—')}</b> · ${esc(iv.position)} ｜ 点击题目展开参考回答</div>`+
+    iv.groups.map(g=>`<div class="qa-group"><h3>${g.title}（${g.items.length}题）</h3>`+
+      g.items.map(it=>`<details class="qa"><summary>${esc(it.q)}</summary><div class="body">
+        <span style="display:block;font-size:12px;color:var(--sub);margin-bottom:8px">💡 ${esc(it.tip)}</span>
+        <div class="ans"><span class="tag">参考回答</span>${esc(it.a)}</div>
+      </div></details>`).join('')+'</div>').join('');
+}
+function exportInterviewWord(){
+  const iv=state.interview;
+  if(!iv){toast('请先生成面试题','warn');return}
+  let h=`<div class="rh"><h1>面试作战手册</h1><div class="ct">${esc(iv.company||'')} ｜ ${esc(iv.position)} ｜ ${esc(iv.cat)}方向 ｜ 生成于 ${new Date().toLocaleString('zh-CN')}</div></div>`;
+  iv.groups.forEach(g=>{
+    h+=`<h3>${g.title}</h3>`;
+    g.items.forEach((it,i)=>{
+      h+=`<p style="font-weight:bold;margin:8pt 0 2pt">Q${i+1}. ${esc(it.q)}</p><p style="font-size:9pt;color:#888;margin:0 0 3pt">💡 ${esc(it.tip)}</p><p style="margin:0 0 8pt;white-space:pre-wrap">【参考回答】${esc(it.a)}</p>`;
+    });
+  });
+  exportWord(h,`面试手册_${iv.company||''}_${iv.position}`);
+}
+
+/* ================================================================
+   六、投递看板
+================================================================ */
+const STATUSES=['待投递','已投递','一面','二面','终面','offer','拒信','流程终止'];
+const ST_COLOR={'待投递':'#94A3B8','已投递':'#3B82F6','一面':'#06B6D4','二面':'#8B5CF6','终面':'#F59E0B','offer':'#10B981','拒信':'#EF4444','流程终止':'#64748B'};
+const CHANNELS=['官网','校招网站','BOSS直聘','实习僧','牛客','内推','招聘会','猎聘','其他'];
+let dragId=null,justDragged=false;
+function renderBoard(){
+  const b=$('#board');
+  b.innerHTML=STATUSES.map(st=>{
+    const apps=state.applications.filter(a=>a.status===st);
+    return `<div class="col" data-st="${st}">
+      <div class="col-h" style="color:${ST_COLOR[st]}"><span style="width:8px;height:8px;border-radius:3px;background:${ST_COLOR[st]};display:inline-block"></span>${st}<span class="cnt" style="background:${ST_COLOR[st]}">${apps.length}</span></div>
+      <div class="col-list">${apps.map(a=>appCardHTML(a)).join('')}</div>
+    </div>`;
+  }).join('');
+  // 绑定拖拽
+  $$('#board .col').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('over')});
+    col.addEventListener('dragleave',()=>col.classList.remove('over'));
+    col.addEventListener('drop',e=>{
+      e.preventDefault();col.classList.remove('over');
+      if(dragId)updateStatus(dragId,col.dataset.st);
+    });
+  });
+}
+function appCardHTML(a){
+  const ver=a.version?'<span>📄 '+esc(a.version)+'</span>':'';
+  return `<div class="app-card" draggable="true" data-id="${a.id}" style="border-top-color:${ST_COLOR[a.status]||'#ccc'}" onclick="openAppModal('${a.id}')">
+    <div class="co">${esc(a.company)}</div>
+    <div class="po">${esc(a.position)}</div>
+    <div class="meta">${a.date?'<span>📅 '+esc(a.date)+'</span>':''}${a.channel?'<span>📡 '+esc(a.channel)+'</span>':''}${ver}</div>
+    ${a.notes?'<div style="font-size:10.5px;color:#A5A8B8;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">📝 '+esc(a.notes)+'</div>':''}
+  </div>`;
+}
+document.addEventListener('dragstart',e=>{
+  const card=e.target.closest&&e.target.closest('.app-card');
+  if(card){dragId=card.dataset.id;card.classList.add('dragging');
+    card.addEventListener('dragend',()=>{card.classList.remove('dragging');justDragged=true;setTimeout(()=>justDragged=false,100);dragId=null},{once:true});}
+});
+function renderBoardStats(){
+  const s=state.applications;
+  const cnt=st=>s.filter(a=>a.status===st).length;
+  const inFlow=st=>s.filter(a=>STATUSES.indexOf(a.status)>=STATUSES.indexOf(st)&&a.status!=='待投递').length;
+  const interviewing=s.filter(a=>['一面','二面','终面'].includes(a.status)).length;
+  const rate=(n,d)=>d?Math.round(n/d*100)+'%':'—';
+  $('#boardStats').innerHTML=
+    `<span class="bstat"><b>${s.length}</b>总投递</span>
+     <span class="bstat"><b>${cnt('待投递')}</b>待投递</span>
+     <span class="bstat"><b>${cnt('已投递')}</b>已投递</span>
+     <span class="bstat"><b>${interviewing}</b>面试中</span>
+     <span class="bstat"><b>${cnt('offer')}</b>Offer 🎉</span>
+     <span class="bstat"><b>${cnt('拒信')}</b>拒信</span>
+     <span class="bstat"><b>${cnt('流程终止')}</b>流程终止</span>
+     <span class="bstat" style="background:var(--primary-soft);border-color:#D9DCFF">简历通过率（进面/投递）<b style="color:var(--primary)">${rate(s.filter(a=>['一面','二面','终面','offer','拒信','流程终止'].includes(a.status)).length,inFlow('已投递'))}</b></span>
+     <span class="bstat" style="background:var(--green-soft);border-color:#C9EEDF">Offer 率 <b style="color:var(--green)">${rate(cnt('offer'),inFlow('已投递'))}</b></span>`;
+}
+function renderTopChips(){
+  const s=state.applications;
+  const ing=s.filter(a=>['已投递','一面','二面','终面'].includes(a.status)).length;
+  const offer=s.filter(a=>a.status==='offer').length;
+  const rej=s.filter(a=>a.status==='拒信').length;
+  $('#topChips').innerHTML=
+    `<span class="chip">📦 投递 <b>${s.length}</b></span>
+     <span class="chip">🚀 进行中 <b>${ing}</b></span>
+     <span class="chip ok">🎉 Offer <b>${offer}</b></span>
+     <span class="chip bad">💔 拒信 <b>${rej}</b></span>
+     <span class="chip">🗂️ 简历版本 <b>${state.versions.length}</b></span>`;
+}
+function openAppModal(id){
+  if(id&&justDragged)return;
+  const a=id?state.applications.find(x=>x.id===id):null;
+  const verOpts=['<option value="">不关联</option>'].concat(state.versions.map(v=>`<option value="${esc(v.name)}" ${a&&a.version===v.name?'selected':''}>${esc(v.name)} · ${esc(v.company||'')} · ${esc(v.position||'')}</option>`)).join('');
+  const stOpts=STATUSES.map(st=>`<option ${a&&a.status===st?'selected':''}>${st}</option>`).join('');
+  const chOpts=CHANNELS.map(c=>`<option ${a&&a.channel===c?'selected':''}>${c}</option>`).join('');
+  let timeline='';
+  if(a&&a.history&&a.history.length){
+    timeline='<label>状态时间线</label><div class="timeline">'+a.history.map(h=>`<div class="tl"><b style="color:${ST_COLOR[h.status]||'#888'}">${esc(h.status)}</b> · ${esc(new Date(h.ts).toLocaleString('zh-CN'))}${h.note?' · '+esc(h.note):''}</div>`).join('')+'</div>';
+  }
+  openModal(a?'编辑投递 · '+esc(a.company):'＋ 记录一次投递',
+    `<div class="grid2">
+      <div><label>公司 *</label><input id="apCo" value="${esc(a?a.company:'')}" placeholder="腾讯"></div>
+      <div><label>岗位 *</label><input id="apPo" value="${esc(a?a.position:'')}" placeholder="产品运营"></div>
+      <div><label>投递日期</label><input id="apDate" type="date" value="${esc(a?a.date:new Date().toISOString().slice(0,10))}"></div>
+      <div><label>渠道</label><select id="apCh">${chOpts}</select></div>
+      <div><label>当前状态</label><select id="apSt">${stOpts}</select></div>
+      <div><label>关联简历版本</label><select id="apVer">${verOpts}</select></div>
+    </div>
+    <div style="margin-top:10px"><label>备注（如：内推人 / 面试时间 / 岗位链接）</label><textarea id="apNote" style="min-height:60px">${esc(a?a.notes:'')}</textarea></div>
+    ${timeline}`,
+    (a?`<button class="btn btn-danger" style="margin-right:auto" onclick="deleteApp('${a.id}')">删除记录</button>`:'')+
+    `<button class="btn btn-p" onclick="saveApp('${id||''}')">保存</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function saveApp(id){
+  const co=$('#apCo').value.trim(),po=$('#apPo').value.trim();
+  if(!co||!po){toast('公司和岗位为必填项','warn');return}
+  const st=$('#apSt').value;
+  const data={company:co,position:po,date:$('#apDate').value,channel:$('#apCh').value,status:st,version:$('#apVer').value,notes:$('#apNote').value.trim()};
+  if(id){
+    const a=state.applications.find(x=>x.id===id);
+    const oldSt=a.status;
+    Object.assign(a,data);
+    if(oldSt!==st)a.history.push({status:st,ts:Date.now(),note:'手动更新'});
+  }else{
+    state.applications.unshift(Object.assign({id:'a'+Date.now(),history:[{status:st,ts:Date.now(),note:'创建'}]},data));
+  }
+  save();renderBoard();renderBoardStats();renderTopChips();closeModal();toast('投递记录已保存','ok');
+}
+function deleteApp(id){
+  state.applications=state.applications.filter(x=>x.id!==id);
+  save();renderBoard();renderBoardStats();renderTopChips();closeModal();toast('记录已删除');
+}
+function updateStatus(id,st){
+  const a=state.applications.find(x=>x.id===id);
+  if(!a||a.status===st)return;
+  a.status=st;a.history.push({status:st,ts:Date.now(),note:'看板拖拽更新'});
+  save();renderBoard();renderBoardStats();renderTopChips();
+  toast(`${a.company} → 「${st}」`,'ok');
+}
+
+/* ================================================================
+   七、数据导入导出 / 示例
+================================================================ */
+function downloadJSON(obj,filename){
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+function exportAll(){
+  downloadJSON(Object.assign({},state,{exportedAt:new Date().toISOString()}),`秋招工作台备份_${new Date().toISOString().slice(0,10)}.json`);
+  toast('已导出全量备份 JSON','ok');
+}
+function importAll(inp){
+  const f=inp.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const d=JSON.parse(rd.result);
+      if(!d.profile)throw 0;
+      state=Object.assign(state,d);
+      save();fillForm();renderAll();
+      toast('数据已恢复','ok');
+    }catch(e){toast('备份文件解析失败','err')}
+    inp.value='';
+  };
+  rd.readAsText(f,'utf-8');
+}
+function seedSample(){
+  if(state.applications.length||state.versions.length){
+    openModal('加载示例数据','<p>当前已有数据，加载示例会<b>覆盖全部现有数据</b>（可先点顶栏「备份」导出）。确定继续吗？</p>',
+      `<button class="btn btn-danger" onclick="doSeed()">覆盖并加载</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+  }else doSeed();
+}
+function doSeed(){
+  state={
+    profile:{name:'林晓萌',phone:'13800001234',email:'linxiaomeng@mail.com',intent:'产品运营',city:'深圳',grad:'2027.06',school:'华南理工大学',major:'工商管理（市场营销方向）',degree:'本科',gpa:'3.7 / 4.0（专业前10%）',
+      skills:'用户调研, 数据分析, SQL, Excel, 新媒体运营, 文案撰写, 活动策划, 私域运营, 用户增长, A/B测试',
+      honors:'国家奖学金（前1%）；"挑战杯"省赛二等奖；校园十佳新媒体人',
+      selfEval:'对用户与数据敏感，习惯用数据验证直觉；抗压能力强，能在快节奏环境中同时推进多条任务线。',
+      internships:[
+        {company:'字节跳动',title:'产品运营实习生',duration:'2026.03 - 2026.08',desc:'负责教育类APP社群运营，维护12个用户群共6000+用户；\n策划3场打卡活动，参与率45%，带动次日留存提升8%；\n搭建选题库并输出30+篇图文，平均阅读量1.2万；\n通过问卷与访谈完成200份用户调研，输出3份洞察报告推动功能迭代。'},
+        {company:'欧莱雅',title:'市场部实习生',duration:'2025.06 - 2025.09',desc:'参与新品上市推广，负责小红书种草内容投放，合作20位KOC，笔记曝光量50万+；\n活动期间天猫旗舰店销量环比提升25%。'}
+      ],
+      projects:[
+        {name:'校园二手书小程序「书循」',role:'发起人 / 产品负责人',duration:'2025.09 - 2026.02',desc:'从0到1搭建产品：完成150份用户调研、5款竞品分析，输出PRD与原型；\n运营3个月累计用户3000+，交易订单1200单；\n组建6人团队，负责需求评审与迭代管理。'}
+      ]},
+    jd:'【岗位职责】1、负责C端产品的用户运营与活动运营，通过社群、私域等场景提升用户留存与活跃；2、基于数据分析搭建用户分层体系，设计转化与增长策略，持续优化核心指标（DAU、留存率、转化率）；3、策划线上线下活动，联动新媒体渠道（公众号、小红书、抖音）进行内容投放与拉新；4、与产品、设计协作推动功能迭代，通过A/B测试验证方案效果。【任职要求】1、本科及以上学历，2027届毕业生，专业不限；2、具备优秀的沟通能力与团队协作精神，抗压能力强；3、熟练使用Excel、SQL等工具进行数据分析；4、有互联网运营实习经历者优先；5、对用户增长充满热情，学习能力与执行力强。',
+    jdCompany:'腾讯',jdPosition:'产品运营',
+    versions:[],applications:[
+      {id:'a1',company:'腾讯',position:'产品运营',date:'2026-09-01',channel:'官网',status:'二面',version:'',notes:'9.10 二面，准备项目深挖',history:[{status:'已投递',ts:Date.now()-7*864e5,note:'创建'},{status:'一面',ts:Date.now()-3*864e5,note:'看板更新'},{status:'二面',ts:Date.now()-864e5,note:'看板更新'}]},
+      {id:'a2',company:'京东',position:'用户增长运营',date:'2026-08-28',channel:'BOSS直聘',status:'一面',version:'',notes:'',history:[{status:'已投递',ts:Date.now()-9*864e5,note:'创建'},{status:'一面',ts:Date.now()-2*864e5,note:'看板更新'}]},
+      {id:'a3',company:'网易',position:'内容运营',date:'2026-09-03',channel:'内推',status:'已投递',version:'',notes:'学长内推',history:[{status:'已投递',ts:Date.now()-4*864e5,note:'创建'}]},
+      {id:'a4',company:'美团',position:'产品运营',date:'2026-08-20',channel:'校招网站',status:'终面',version:'',notes:'HR说一周内出结果',history:[{status:'已投递',ts:Date.now()-16*864e5,note:'创建'},{status:'一面',ts:Date.now()-10*864e5,note:'看板更新'},{status:'二面',ts:Date.now()-6*864e5,note:'看板更新'},{status:'终面',ts:Date.now()-864e5,note:'看板更新'}]},
+      {id:'a5',company:'拼多多',position:'运营管培生',date:'2026-08-15',channel:'官网',status:'拒信',version:'',notes:'',history:[{status:'已投递',ts:Date.now()-20*864e5,note:'创建'},{status:'拒信',ts:Date.now()-5*864e5,note:'看板更新'}]},
+      {id:'a6',company:'小红书',position:'社区运营',date:'',channel:'内推',status:'待投递',version:'',notes:'用最新版简历投',history:[{status:'待投递',ts:Date.now(),note:'创建'}]}
+    ],
+    interview:null,seq:1
+  };
+  save();fillForm();renderAll();
+  doOptimize(); // 自动生成第一个版本，演示完整链路
+  toast('示例数据已加载：简历 + JD 已填好，V1 版本与看板就绪','ok');
+}
+function renderAll(){
+  fillForm();renderEntries();renderVersions();renderVersionOptions();renderBoard();renderBoardStats();renderTopChips();renderInterview();
+}
+
+/* ---------- 访问口令门禁 ---------- */
+function passHash(s){let h=0xcbf29ce484222325n,p=0x100000001b3n;for(const c of s){h^=BigInt(c.charCodeAt(0));h=(h*p)&0xffffffffffffffffn}return h.toString(16)}
+function gateAuthorized(){try{return sessionStorage.getItem('qz_gate_ok')==='1'}catch(e){return false}}
+function gateBoot(){
+  if(!ACCESS_PASS_HASH)return;
+  if(gateAuthorized()){maybeWelcome();return}
+  // 支持分享链接带 #p=口令 自动放行
+  try{
+    const m=(location.hash||'').match(/[#&]p=([^&]+)/);
+    if(m&&passHash(decodeURIComponent(m[1]))===ACCESS_PASS_HASH){sessionStorage.setItem('qz_gate_ok','1');maybeWelcome();return}
+  }catch(e){}
+  const g=$('#gate');if(!g)return;
+  g.style.display='flex';
+  const inp=$('#gatePwd');if(inp)setTimeout(()=>{try{inp.focus()}catch(e){}},60);
+}
+function gateTry(){
+  const inp=$('#gatePwd');if(!inp)return;
+  if(passHash(inp.value)===ACCESS_PASS_HASH){
+    try{sessionStorage.setItem('qz_gate_ok','1')}catch(e){}
+    const g=$('#gate');if(g)g.style.display='none';
+    toast('口令正确，欢迎使用！🍂','ok');
+    maybeWelcome();
+  }else toast('口令不正确，请向分享者确认','err');
+}
+/* ---------- 打开即见"注册/登录"（App 式引导，仅分享版弹出；本地个人版不打扰） ---------- */
+function welcomeDone(){try{return sessionStorage.getItem('qz_welcomed')==='1'}catch(e){return false}}
+function markWelcome(){try{sessionStorage.setItem('qz_welcomed','1')}catch(e){}}
+function welcome(){
+  markWelcome();
+  const body=`<div class="lc-form" style="text-align:center;padding:4px 6px">
+    <div style="font-size:44px;line-height:1">🎓</div>
+    <div style="font-size:18px;font-weight:800;margin:10px 0 6px">欢迎来到秋招作战室</div>
+    <div style="font-size:12.5px;color:var(--sub);line-height:1.9">注册一个<b>自己的账号</b>：<br>简历 · 面试题 · 投递进度只属于你，同学之间互不可见；<br>换电脑 / 手机登录同一账号，数据自动同步回来。</div>
+  </div>`;
+  openModal('☁️ 账号',body,
+    `<button class="btn btn-p" onclick="cloud.gotoAuth('signup')">📝 注册新账号（免费）</button>
+     <button class="btn btn-soft" onclick="cloud.gotoAuth('login')">🔓 已有账号，登录</button>
+     <button class="btn btn-ghost" onclick="closeModal()">先随便逛逛</button>`);
+}
+function maybeWelcome(){
+  if(!ACCESS_PASS_HASH)return;              // 本地个人版不弹
+  if(cloud.user||welcomeDone())return;      // 已登录 / 本次会话已看过 → 不打扰
+  setTimeout(()=>{if(cloud.user||welcomeDone())return;welcome()},900);  // 等口令页与静默恢复先完成
+}
+/* ---------- 启动 ---------- */
+load();
+fillForm();
+renderVersionOptions();
+renderBoard();
+renderBoardStats();
+renderTopChips();
+renderVersions();
+/* 云端账号：渲染入口按钮 + 尝试恢复登录态并静默同步 */
+cloud.renderBtn();
+if(cloud.hasCfg())cloud.restoreSession().catch(()=>{});
+/* 访问口令门禁（ACCESS_PASS_HASH 为空时直接放行） */
+gateBoot();
+if(!state.applications.length&&!state.profile.name){
+  // 首次使用：温和引导
+  toast('欢迎使用秋招作战室！可点右上角「示例数据」快速体验','ok');
+}
+</script>
+</body>
+</html>
