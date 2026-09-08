@@ -281,11 +281,21 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
         <button class="addbtn" onclick="addEntry('proj')">＋ 添加一个项目经历</button>
       </div>
 
+      <div class="card" style="margin-bottom:16px">
+        <h2><span class="dot"></span>校园经历 <span style="font-size:11px;color:var(--sub);font-weight:500">（社团 / 学生会 / 班级职务 / 社会实践）</span></h2>
+        <div id="campusList"></div>
+        <button class="addbtn" onclick="addEntry('campus')">＋ 添加一段校园经历</button>
+      </div>
+
       <div class="card">
         <h2><span class="dot"></span>技能 · 荣誉 · 自我评价</h2>
         <div class="field-full"><label>专业技能（逗号分隔，尽量使用 JD 中的关键词）</label><textarea data-p="skills" placeholder="用户调研, 数据分析, SQL, Excel, 新媒体运营"></textarea></div>
         <div class="field-full"><label>荣誉奖项</label><textarea data-p="honors" placeholder="国家奖学金；挑战杯省赛二等奖…"></textarea></div>
         <div class="field-full" style="margin-bottom:0"><label>自我评价</label><textarea data-p="selfEval" placeholder="对用户与数据敏感，抗压能力强…"></textarea></div>
+        <div class="rowbtns" style="margin-top:12px">
+          <button class="btn btn-p" onclick="saveAsVersion()">💾 保存为简历版本</button>
+          <span style="font-size:11.5px;color:var(--sub)">填完点保存 → 自动存进「简历版本管理」，可随时恢复 / 编辑</span>
+        </div>
       </div>
     </div>
 
@@ -354,10 +364,11 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 
 <!-- ============ 页3：版本管理 ============ -->
 <section class="page" id="page-versions">
-  <div class="hint">每次「开始智能优化」都会自动快照一个新版本；可按投递公司 / 岗位重命名，支持恢复到编辑器、导出 Word / JSON、导入他人或历史备份的版本。</div>
+  <div class="hint">简历页填完点「💾 保存为简历版本」即自动存一份到这里；也可以「＋ 新建版本」手动创建，支持编辑内容、重命名、恢复、导出、删除。</div>
   <div class="card">
     <h2><span class="dot"></span>历史版本
       <span style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-p btn-sm" onclick="newVersion()">＋ 新建版本</button>
         <button class="btn btn-soft btn-sm" onclick="document.getElementById('verFile').click()">⬆️ 导入版本</button>
         <input type="file" id="verFile" accept=".json" style="display:none" onchange="importVersion(this)">
       </span>
@@ -410,7 +421,7 @@ const SB_PRESET={url:'https://pekbwjoahlwadthnzybj.supabase.co',anon:'eyJhbGciOi
 
 /* ---------- 状态 ---------- */
 let state={
-  profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},
+  profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[],campus:[]},
   jd:'', jdCompany:'', jdPosition:'',
   versions:[], applications:[], interview:null, manuals:[], seq:1
 };
@@ -418,8 +429,8 @@ function save(){
   try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){console.warn('存储失败',e)}
   if(cloud.on())cloud.schedulePush();   // 已登录账号 → 延迟同步到云端
 }
-function load(){try{const r=localStorage.getItem(STORE_KEY);if(r){const d=JSON.parse(r);state=Object.assign(state,d);state.profile=Object.assign({internships:[],projects:[]},d.profile||{});if(!Array.isArray(state.manuals))state.manuals=[]}}catch(e){}}
-function blankState(){const t={profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[]},jd:'',jdCompany:'',jdPosition:'',versions:[],applications:[],interview:null,manuals:[],seq:1};return t}
+function load(){try{const r=localStorage.getItem(STORE_KEY);if(r){const d=JSON.parse(r);state=Object.assign(state,d);state.profile=Object.assign({internships:[],projects:[],campus:[]},d.profile||{});if(!Array.isArray(state.profile.campus))state.profile.campus=[];if(!Array.isArray(state.manuals))state.manuals=[]}}catch(e){}}
+function blankState(){const t={profile:{name:'',phone:'',email:'',intent:'',city:'',grad:'',school:'',major:'',degree:'本科',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[],campus:[]},jd:'',jdCompany:'',jdPosition:'',versions:[],applications:[],interview:null,manuals:[],seq:1};return t}
 function replaceState(ns){state=ns;if(!Array.isArray(state.manuals))state.manuals=[];try{localStorage.setItem(STORE_KEY,JSON.stringify(state))}catch(e){}}
 
 /* ================================================================
@@ -800,35 +811,48 @@ $('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal()});
    一、简历编辑区
 ================================================================ */
 function entryHTML(type,e){
-  const isI=type==='intern';
+  const isI=type==='intern', isC=type==='campus';
+  const f1=isI?'company':'name', f2=isI?'title':'role';
+  const l1=isI?'公司':(isC?'社团 / 组织名称':'项目名称');
+  const l2=isI?'岗位':(isC?'担任职务':'担任角色');
+  const p1=isI?'字节跳动':(isC?'校学生会 / 营销协会':'校园二手书小程序');
+  const p2=isI?'产品运营实习生':(isC?'部长 / 负责人':'发起人 / 产品负责人');
+  const pDesc=isC?'带领8人团队负责校级活动宣传，公众号粉丝从3000增长至1.2万；统筹迎新晚会宣传，单条推文阅读量破5万…':'负责xx社群运营，维护12个用户群共6000+用户；策划3场打卡活动，参与率45%，带动次日留存提升8%…';
   return `<div class="entry" data-type="${type}">
     <button class="del" title="删除" onclick="removeEntry(this)">✕</button>
     <span class="star-tag" style="display:none"></span>
     <div class="grid3">
-      <div><label>${isI?'公司':'项目名称'}</label><input data-e="${isI?'company':'name'}" value="${esc(e[isI?'company':'name']||'')}" placeholder="${isI?'字节跳动':'校园二手书小程序'}"></div>
-      <div><label>${isI?'岗位':'担任角色'}</label><input data-e="${isI?'title':'role'}" value="${esc(e[isI?'title':'role']||'')}" placeholder="${isI?'产品运营实习生':'发起人 / 产品负责人'}"></div>
+      <div><label>${l1}</label><input data-e="${f1}" value="${esc(e[f1]||'')}" placeholder="${p1}"></div>
+      <div><label>${l2}</label><input data-e="${f2}" value="${esc(e[f2]||'')}" placeholder="${p2}"></div>
       <div><label>时间</label><input data-e="duration" value="${esc(e.duration||'')}" placeholder="2026.03 - 2026.08"></div>
     </div>
     <div style="margin-top:9px"><label>经历描述（建议 2-4 条，动词开头，含量化数据）</label>
-    <textarea data-e="desc" style="min-height:96px" placeholder="负责xx社群运营，维护12个用户群共6000+用户；策划3场打卡活动，参与率45%，带动次日留存提升8%…">${esc(e.desc||'')}</textarea></div>
+    <textarea data-e="desc" style="min-height:96px" placeholder="${pDesc}">${esc(e.desc||'')}</textarea></div>
   </div>`;
 }
+const ENTRY_LIST={intern:'internList',proj:'projList',campus:'campusList'};
 function renderEntries(){
   const p=state.profile;
   $('#internList').innerHTML=p.internships.map(e=>entryHTML('intern',e)).join('')||'<div class="empty" style="padding:14px;font-size:12px">暂无实习经历，点击下方按钮添加</div>';
   $('#projList').innerHTML=p.projects.map(e=>entryHTML('proj',e)).join('')||'<div class="empty" style="padding:14px;font-size:12px">暂无项目经历，点击下方按钮添加</div>';
+  $('#campusList').innerHTML=(p.campus||[]).map(e=>entryHTML('campus',e)).join('')||'<div class="empty" style="padding:14px;font-size:12px">暂无校园经历，点击下方按钮添加</div>';
 }
 function addEntry(type){
   const p=state.profile, blank={duration:''};
   if(type==='intern'){blank.company='';blank.title='';blank.desc='';p.internships.push(blank)}
+  else if(type==='campus'){blank.name='';blank.role='';blank.desc='';if(!Array.isArray(p.campus))p.campus=[];p.campus.push(blank)}
   else{blank.name='';blank.role='';blank.desc='';p.projects.push(blank)}
   renderEntries();collectForm();save();
-  $$('#'+(type==='intern'?'internList':'projList')+' .entry').pop().scrollIntoView({behavior:'smooth',block:'center'});
+  const last=$$('#'+(ENTRY_LIST[type]||'projList')+' .entry').pop();
+  if(last&&last.scrollIntoView)last.scrollIntoView({behavior:'smooth',block:'center'});
 }
 function removeEntry(btn){
   const box=btn.closest('.entry'),type=box.dataset.type;
   const list=box.parentElement.children,idx=[...list].indexOf(box);
-  if(type==='intern')state.profile.internships.splice(idx,1);else state.profile.projects.splice(idx,1);
+  const p=state.profile;
+  if(type==='intern')p.internships.splice(idx,1);
+  else if(type==='campus')(p.campus||[]).splice(idx,1);
+  else p.projects.splice(idx,1);
   renderEntries();save();toast('已删除该段经历');
 }
 function collectForm(){
@@ -836,6 +860,7 @@ function collectForm(){
   $$('[data-p]').forEach(el=>p[el.dataset.p]=el.value);
   p.internships=[...$$('#internList .entry')].map(b=>({company:b.querySelector('[data-e=company]').value,title:b.querySelector('[data-e=title]').value,duration:b.querySelector('[data-e=duration]').value,desc:b.querySelector('[data-e=desc]').value}));
   p.projects=[...$$('#projList .entry')].map(b=>({name:b.querySelector('[data-e=name]').value,role:b.querySelector('[data-e=duration]')&&b.querySelector('[data-e=role]').value,duration:b.querySelector('[data-e=duration]').value,desc:b.querySelector('[data-e=desc]').value}));
+  p.campus=[...$$('#campusList .entry')].map(b=>({name:b.querySelector('[data-e=name]').value,role:b.querySelector('[data-e=role]').value,duration:b.querySelector('[data-e=duration]').value,desc:b.querySelector('[data-e=desc]').value}));
   state.jd=$('#jdInput').value;state.jdCompany=$('#jdCompany').value;state.jdPosition=$('#jdPosition').value;
 }
 function fillForm(){
@@ -928,7 +953,7 @@ function parseResumeStructured(raw){
     return m[2].trim()?[m[1],m[2].trim()]:[m[1]];
   });
   const full=lines.join('\n');
-  const R={name:'',phone:'',email:'',school:'',major:'',degree:'',grad:'',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[],warn:[]};
+  const R={name:'',phone:'',email:'',school:'',major:'',degree:'',grad:'',gpa:'',skills:'',honors:'',selfEval:'',internships:[],projects:[],campus:[],warn:[]};
   const marks=[];
   lines.forEach((ln,i)=>{const h=headerOf(ln);if(h&&!marks.some(m=>m[0]===h))marks.push([h,i])});
   marks.sort((a,b)=>a[1]-b[1]);
@@ -965,7 +990,7 @@ function parseResumeStructured(raw){
   else{const gd=eduTxt.match(DATE_RE)||eduTxt.match(/20\d{2}\s*年\s*\d{1,2}\s*月/)||eduTxt.match(/20\d{2}[.\/-]\d{1,2}(?![\d.])/);if(gd)R.grad=gd[0].replace(/\s+/g,' ')}
   if(secs.intern)R.internships=parseExpLines(secs.intern,'intern');
   if(secs.proj)R.projects=parseExpLines(secs.proj,'proj');
-  if(secs.campus)R.projects=R.projects.concat(parseExpLines(secs.campus,'proj'));
+  if(secs.campus)R.campus=parseExpLines(secs.campus,'proj');
   if(!marks.length)R.internships=parseExpLines(lines,'intern');
   if(secs.skill){R.skills=[...new Set(secs.skill.join('\n').split(/[,，、;；•\n|｜\/]+/).map(s=>s.trim()).filter(Boolean).flatMap(s=>{
     if(/\s{2,}/.test(s)||(/[\u4e00-\u9fa5]/.test(s)&&/\s/.test(s)))return s.split(/\s+/); // 空格分隔的技能列表
@@ -1185,11 +1210,14 @@ function openParseConfirm(R,ext){
     <button class="addbtn" onclick="addPmEntry('intern')">＋ 添加一段实习</button>
     <label style="margin-top:12px;font-weight:700;color:var(--ink)">项目经历（${R.projects.length}个）</label>
     <div id="pmProjs">${R.projects.map(e=>pmEntryHTML('proj',e)).join('')}</div>
-    <button class="addbtn" onclick="addPmEntry('proj')">＋ 添加一个项目</button>`,
+    <button class="addbtn" onclick="addPmEntry('proj')">＋ 添加一个项目</button>
+    <label style="margin-top:12px;font-weight:700;color:var(--ink)">校园经历（${(R.campus||[]).length}段）</label>
+    <div id="pmCampus">${(R.campus||[]).map(e=>pmEntryHTML('campus',e)).join('')}</div>
+    <button class="addbtn" onclick="addPmEntry('campus')">＋ 添加一段校园经历</button>`,
     `<button class="btn btn-p" onclick="applyParseConfirm()">✅ 确认填入表单</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
 }
 function addPmEntry(type){
-  const box=$(type==='intern'?'#pmInterns':'#pmProjs');
+  const box=$({intern:'#pmInterns',proj:'#pmProjs',campus:'#pmCampus'}[type]);
   box.insertAdjacentHTML('beforeend',pmEntryHTML(type,{company:'',title:'',name:'',role:'',duration:'',desc:''}));
   box.lastElementChild.scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -1201,6 +1229,7 @@ function applyParseConfirm(){
   p.skills=$('#pmSkills').value.trim();p.honors=$('#pmHonors').value.trim();p.selfEval=$('#pmSelf').value.trim();
   p.internships=[...$$('#pmInterns .pm-e')].map(b=>({company:b.querySelector('[data-e=company]').value.trim(),title:b.querySelector('[data-e=title]').value.trim(),duration:b.querySelector('[data-e=duration]').value.trim(),desc:b.querySelector('[data-e=desc]').value.trim()})).filter(e=>e.company||e.title||e.desc);
   p.projects=[...$$('#pmProjs .pm-e')].map(b=>({name:b.querySelector('[data-e=name]').value.trim(),role:b.querySelector('[data-e=role]').value.trim(),duration:b.querySelector('[data-e=duration]').value.trim(),desc:b.querySelector('[data-e=desc]').value.trim()})).filter(e=>e.name||e.role||e.desc);
+  p.campus=[...$$('#pmCampus .pm-e')].map(b=>({name:b.querySelector('[data-e=name]').value.trim(),role:b.querySelector('[data-e=role]').value.trim(),duration:b.querySelector('[data-e=duration]').value.trim(),desc:b.querySelector('[data-e=desc]').value.trim()})).filter(e=>e.name||e.role||e.desc);
   fillForm();save();closeModal();switchTab('resume');
   toast('已填入 '+p.internships.length+' 段实习、'+p.projects.length+' 个项目，请继续核对补充','ok');
 }
@@ -1234,7 +1263,8 @@ function extractKeywords(jd){
 function collectResumeText(p){
   return [p.skills,p.honors,p.selfEval,p.intent,p.major,
     ...p.internships.map(e=>e.company+' '+e.title+' '+e.desc),
-    ...p.projects.map(e=>e.name+' '+e.role+' '+e.desc)].join(' ');
+    ...p.projects.map(e=>e.name+' '+e.role+' '+e.desc),
+    ...(p.campus||[]).map(e=>e.name+' '+e.role+' '+e.desc)].join(' ');
 }
 
 /* ================================================================
@@ -1503,7 +1533,8 @@ function analyze(){
   const missing=kws.filter(k=>!rText.includes(k.term.toLowerCase()));
   const score=kws.length?Math.round(matched.length/kws.length*100):0;
   const expChecks=[...p.internships.map(e=>({label:(e.company||'实习')+'·'+(e.title||''),...starCheck(e.desc),type:'实习'})),
-                   ...p.projects.map(e=>({label:e.name||'项目',...starCheck(e.desc),type:'项目'}))];
+                   ...p.projects.map(e=>({label:e.name||'项目',...starCheck(e.desc),type:'项目'})),
+                   ...(p.campus||[]).map(e=>({label:e.name||'校园',...starCheck(e.desc),type:'校园'}))];
   // 旧建议保留作 fallback
   const suggestions=[];
   if(!p.name||!p.phone||!p.email)suggestions.push('基本信息不完整：姓名 / 电话 / 邮箱是硬性项，务必补全');
@@ -1511,7 +1542,7 @@ function analyze(){
   if(missing.length)suggestions.push('<b>关键词缺口：</b>JD 反复强调的「'+missing.slice(0,6).map(k=>k.term).join('、')+'」未在简历中出现 —— 若真实掌握，请补充到技能栏或经历描述中');
   expChecks.filter(c=>!c.quant).forEach(c=>suggestions.push('<b>量化不足：</b>「'+esc(c.label)+'」缺少数字化成果，建议补充 <b>百分比 / 数量 / 金额 / 时长</b>（如：参与率45%、服务用户6000+）'));
   expChecks.filter(c=>!c.action).forEach(c=>suggestions.push('<b>动词缺失：</b>「'+esc(c.label)+'」建议以动作动词开头改写（主导 / 搭建 / 策划 / 优化…）'));
-  if(p.internships.length+p.projects.length===0)suggestions.push('暂无任何经历：请至少补充 1 段实习或项目，校园经历 / 课程项目也可以');
+  if(p.internships.length+p.projects.length+(p.campus||[]).length===0)suggestions.push('暂无任何经历：请至少补充 1 段实习或项目，校园经历 / 课程项目也可以');
   if(!p.skills)suggestions.push('技能栏为空：将 JD 高频关键词中你真实掌握的写入技能栏');
   // 教练诊断
   const coach=buildCoachAdvice(p,jd,{kws,matched,missing,score});
@@ -1678,6 +1709,10 @@ function buildResumeHTML(p,a,opts){
     h+='<h3>项目经历</h3>';
     p.projects.forEach(e=>{h+=`<div style="margin-bottom:6px"><b style="font-size:12.5px">${esc(e.name)}</b>　${esc(e.role)}<span class="time" style="float:right">${esc(e.duration)}</span></div>`+bulletsFrom(e.desc,kws,opts&&opts.forWord)});
   }
+  if((p.campus||[]).length){
+    h+='<h3>校园经历</h3>';
+    (p.campus||[]).forEach(e=>{h+=`<div style="margin-bottom:6px"><b style="font-size:12.5px">${esc(e.name)}</b>　${esc(e.role)}<span class="time" style="float:right">${esc(e.duration)}</span></div>`+bulletsFrom(e.desc,kws,opts&&opts.forWord)});
+  }
   if(p.honors)h+=`<h3>荣誉奖项</h3><div>${boldKws(p.honors,kws)}</div>`;
   if(p.selfEval)h+=`<h3>自我评价</h3><div>${boldKws(p.selfEval,kws)}</div>`;
   return h;
@@ -1754,7 +1789,7 @@ function createVersion(a){
 ================================================================ */
 function renderVersions(){
   const box=$('#verList');
-  if(!state.versions.length){box.innerHTML='<div class="empty"><div class="big">🗂️</div>还没有版本 —— 去「简历智能优化」点击「开始智能优化」自动生成</div>';return}
+  if(!state.versions.length){box.innerHTML='<div class="empty"><div class="big">🗂️</div>还没有版本 —— 在简历页填完点「💾 保存为简历版本」，或点右上角「＋ 新建版本」手动创建</div>';return}
   box.innerHTML=state.versions.map(v=>{
     const sp=v.score>=75?'sp-hi':v.score>=45?'sp-mid':'sp-lo';
     const d=new Date(v.ts),ds=d.toLocaleDateString('zh-CN')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
@@ -1762,11 +1797,12 @@ function renderVersions(){
       <div class="ver-badge">${esc(v.name)}</div>
       <div class="ver-main">
         <div class="t">${esc(v.company||'未命名公司')} <span style="color:var(--line)">|</span> ${esc(v.position||'未命名岗位')}</div>
-        <div class="m">${ds} · ${v.profile.internships.length}段实习 · ${v.profile.projects.length}个项目</div>
+        <div class="m">${ds} · ${v.profile.internships.length}段实习 · ${v.profile.projects.length}个项目${(v.profile.campus||[]).length?' · '+(v.profile.campus||[]).length+'段校园':''}</div>
         <div class="ver-kws">关键词：${esc(v.kws.join('、'))||'—'}</div>
       </div>
-      <span class="score-pill ${sp}">${v.score}%</span>
+      <span class="score-pill ${sp}">${(v.kws&&v.kws.length)?v.score+'%':'—'}</span>
       <div class="ver-ops">
+        <button class="btn btn-p btn-sm" onclick="editVersion('${v.id}')">✏️ 编辑内容</button>
         <button class="btn btn-soft btn-sm" onclick="restoreVersion('${v.id}')">↩️ 恢复到编辑器</button>
         <button class="btn btn-ghost btn-sm" onclick="previewVersion('${v.id}')">👁️ 预览</button>
         <button class="btn btn-ghost btn-sm" onclick="renameVersion('${v.id}')">✏️ 命名</button>
@@ -1781,6 +1817,7 @@ function findV(id){return state.versions.find(v=>v.id===id)}
 function restoreVersion(id){
   const v=findV(id);if(!v)return;
   state.profile=JSON.parse(JSON.stringify(v.profile));
+  if(!Array.isArray(state.profile.campus))state.profile.campus=[];
   state.jd=v.jd;state.jdCompany=v.company;state.jdPosition=v.position;
   fillForm();save();switchTab('resume');toast('已将 '+v.name+' 恢复到编辑器','ok');
 }
@@ -1821,6 +1858,115 @@ function deleteVersion(id){
 function doDeleteVersion(id){
   state.versions=state.versions.filter(v=>v.id!==id);
   save();renderVersions();renderVersionOptions();closeModal();toast('版本已删除');
+}
+/* ---------- 简历页「保存为简历版本」：把当前编辑器内容快照进版本管理 ---------- */
+function saveAsVersion(){
+  collectForm();
+  const p=state.profile;
+  if(!p.name&&!p.internships.length&&!p.projects.length&&!(p.campus||[]).length){toast('简历还是空的，先填写内容再保存','warn');return}
+  const a=state.jd.trim()?analyze():{kws:[],matched:[],missing:[],score:0};
+  if(state.jd.trim())state.lastAnalysis=a;
+  createVersion(a);
+  switchTab('versions');
+}
+/* ---------- 新建 / 编辑版本 ---------- */
+function newVersion(){
+  collectForm();
+  const base=JSON.parse(JSON.stringify(state.profile));
+  ['internships','projects','campus'].forEach(k=>{if(!Array.isArray(base[k]))base[k]=[]});
+  const v={id:'v'+Date.now(),name:'V'+state.seq,company:state.jdCompany||'',position:state.jdPosition||state.profile.intent||'',
+    score:0,ts:Date.now(),kws:[],jd:state.jd||'',profile:base};
+  state.versions.unshift(v);state.seq++;
+  save();renderVersions();renderVersionOptions();renderTopChips();
+  toast('已新建版本 '+v.name+'，可直接编辑内容','ok');
+  editVersion(v.id);
+}
+let _editVerId=null;
+function editVersion(id){
+  const v=findV(id);if(!v)return;
+  _editVerId=id;
+  const p=v.profile||{};
+  ['internships','projects','campus'].forEach(k=>{if(!Array.isArray(p[k]))p[k]=[]});
+  const body=`
+    <div class="grid3">
+      <div><label>版本名</label><input id="veName" value="${esc(v.name)}"></div>
+      <div><label>投递公司</label><input id="veCompany" value="${esc(v.company||'')}" placeholder="腾讯"></div>
+      <div><label>目标岗位</label><input id="vePosition" value="${esc(v.position||'')}" placeholder="产品运营"></div>
+    </div>
+    <div class="grid3" style="margin-top:10px">
+      <div><label>姓名</label><input id="vePName" value="${esc(p.name||'')}"></div>
+      <div><label>电话</label><input id="vePhone" value="${esc(p.phone||'')}"></div>
+      <div><label>邮箱</label><input id="veEmail" value="${esc(p.email||'')}"></div>
+    </div>
+    <div class="grid3" style="margin-top:10px">
+      <div><label>学校</label><input id="veSchool" value="${esc(p.school||'')}"></div>
+      <div><label>专业</label><input id="veMajor" value="${esc(p.major||'')}"></div>
+      <div><label>毕业时间</label><input id="veGrad" value="${esc(p.grad||'')}"></div>
+    </div>
+    <div style="margin-top:10px"><label>专业技能（逗号分隔）</label><textarea id="veSkills" style="min-height:52px">${esc(p.skills||'')}</textarea></div>
+    <div class="grid2" style="margin-top:10px">
+      <div><label>荣誉奖项</label><textarea id="veHonors" style="min-height:52px">${esc(p.honors||'')}</textarea></div>
+      <div><label>自我评价</label><textarea id="veSelf" style="min-height:52px">${esc(p.selfEval||'')}</textarea></div>
+    </div>
+    ${verEntryBlock('internships','实习经历',p.internships)}
+    ${verEntryBlock('projects','项目经历',p.projects)}
+    ${verEntryBlock('campus','校园经历',p.campus)}`;
+  openModal('✏️ 编辑版本 '+esc(v.name),body,
+    `<button class="btn btn-p" onclick="saveVersionEdit()">💾 保存修改</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function verEntryBlock(kind,label,arr){
+  return `<label style="margin-top:14px;font-weight:700;color:var(--ink);display:block">${label}（${arr.length}）</label>
+    <div id="ve_${kind}">${arr.map(e=>verEntryHTML(kind,e)).join('')||'<div class="empty" style="padding:10px;font-size:12px">暂无，点下方按钮添加</div>'}</div>
+    <button class="addbtn" onclick="verAddEntry('${kind}')">＋ 添加一段${label}</button>`;
+}
+function verEntryHTML(kind,e){
+  const isI=kind==='internships';
+  const l1=isI?'公司':(kind==='campus'?'社团 / 组织名称':'项目名称');
+  const l2=isI?'岗位':(kind==='campus'?'担任职务':'担任角色');
+  const v1=isI?(e.company||''):(e.name||''), v2=isI?(e.title||''):(e.role||'');
+  return `<div class="entry" data-kind="${kind}">
+    <button class="del" title="删除" onclick="verDelEntry(this)">✕</button>
+    <div class="grid3">
+      <div><label>${l1}</label><input data-e="n1" value="${esc(v1)}"></div>
+      <div><label>${l2}</label><input data-e="n2" value="${esc(v2)}"></div>
+      <div><label>时间</label><input data-e="dur" value="${esc(e.duration||'')}"></div>
+    </div>
+    <div style="margin-top:8px"><label>描述</label><textarea data-e="desc" style="min-height:70px">${esc(e.desc||'')}</textarea></div>
+  </div>`;
+}
+function collectVersionEdit(){
+  const v=findV(_editVerId);if(!v)return null;
+  const p=v.profile;
+  const g=s=>{const el=$(s);return el?el.value.trim():''};
+  const nm=g('#veName');if(nm)v.name=nm;
+  v.company=g('#veCompany');v.position=g('#vePosition');
+  p.name=g('#vePName');p.phone=g('#vePhone');p.email=g('#veEmail');
+  p.school=g('#veSchool');p.major=g('#veMajor');p.grad=g('#veGrad');
+  p.skills=$('#veSkills').value.trim();p.honors=$('#veHonors').value.trim();p.selfEval=$('#veSelf').value.trim();
+  p.internships=[...$$('#ve_internships .entry')].map(b=>({company:b.querySelector('[data-e=n1]').value,title:b.querySelector('[data-e=n2]').value,duration:b.querySelector('[data-e=dur]').value,desc:b.querySelector('[data-e=desc]').value}));
+  p.projects=[...$$('#ve_projects .entry')].map(b=>({name:b.querySelector('[data-e=n1]').value,role:b.querySelector('[data-e=n2]').value,duration:b.querySelector('[data-e=dur]').value,desc:b.querySelector('[data-e=desc]').value}));
+  p.campus=[...$$('#ve_campus .entry')].map(b=>({name:b.querySelector('[data-e=n1]').value,role:b.querySelector('[data-e=n2]').value,duration:b.querySelector('[data-e=dur]').value,desc:b.querySelector('[data-e=desc]').value}));
+  return v;
+}
+function verAddEntry(kind){
+  const v=collectVersionEdit();if(!v)return;
+  const blank={duration:'',desc:''};
+  if(kind==='internships'){blank.company='';blank.title=''}else{blank.name='';blank.role=''}
+  v.profile[kind].push(blank);
+  editVersion(_editVerId);
+}
+function verDelEntry(btn){
+  const v=collectVersionEdit();if(!v)return;
+  const box=btn.closest('.entry'),kind=box.dataset.kind;
+  const idx=[...box.parentElement.children].indexOf(box);
+  v.profile[kind].splice(idx,1);
+  editVersion(_editVerId);
+}
+function saveVersionEdit(){
+  const v=collectVersionEdit();if(!v)return;
+  v.ts=Date.now();
+  save();renderVersions();renderVersionOptions();renderTopChips();closeModal();
+  toast('版本 '+v.name+' 已更新','ok');
 }
 function importVersion(inp){
   const f=inp.files[0];if(!f)return;
@@ -1898,7 +2044,7 @@ function generateInterview(){
   const kws=extractKeywords(jd||position).slice(0,5);
   const groups=[];
   // 1 开场
-  const nExp=p.internships.length+p.projects.length;
+  const nExp=p.internships.length+p.projects.length+(p.campus||[]).length;
   let self=`面试官您好！我是${p.name||'○○'}，${p.degree||''}，就读于${p.school||'○○大学'}${p.major||''}专业，预计${p.grad||'○○'}毕业。我的求职意向是${position}方向。\n大学期间我共有${nExp}段实习/项目经历：`;
   p.internships.slice(0,2).forEach(e=>{self+=`\n· 在${e.company||'○○'}担任${e.title||'○○'}，${oneLiner(e.desc)}；`});
   p.projects.slice(0,1).forEach(e=>{self+=`\n· ${e.name||'○○'}项目中担任${e.role||'核心成员'}，${oneLiner(e.desc)}。`});
@@ -1914,6 +2060,11 @@ function generateInterview(){
   p.projects.forEach(e=>expQs.push({q:`讲讲你的「${e.name}」项目，你在其中扮演什么角色？`,
     a:`【S/T】${e.name}是……（项目背景与目标），我作为${e.role||'核心成员'}负责……\n【A】${(e.desc||'').split(/\n|；|;/).slice(0,3).map(s=>'· '+s.trim()).join('\n')||'· （拆解关键动作）'}\n【R】建议量化：如用户量、订单量、成绩排名等。`,
     tip:'突出你的独特贡献而非团队整体；准备好被追问细节（数据来源、决策依据）。'}));
+  (p.campus||[]).forEach(e=>expQs.push({q:`讲讲你在「${e.name}」的校园经历，你从中收获了什么？`,
+    a:`【S/T】${e.name}期间我担任${e.role||'主要负责人'}，面对的任务是……
+【A】${(e.desc||'').split(/\n|；|;/).slice(0,3).map(s=>'· '+s.trim()).join('\n')||'· （拆解关键动作）'}
+【R】建议量化：如覆盖人数、增长数据、获奖名次。`,
+    tip:'校园经历要体现组织协调与影响力，别只写"参与了什么"。'}));
   if(expQs.length)groups.push({title:'📖 经历深挖（基于你的简历）',items:expQs});
   // 3 岗位专业题
   const catQs=(IV_BANK[cat]||IV_BANK['通用']).map(q=>({
@@ -2133,8 +2284,9 @@ function doSeed(){
         {company:'欧莱雅',title:'市场部实习生',duration:'2025.06 - 2025.09',desc:'参与新品上市推广，负责小红书种草内容投放，合作20位KOC，笔记曝光量50万+；\n活动期间天猫旗舰店销量环比提升25%。'}
       ],
       projects:[
-        {name:'校园二手书小程序「书循」',role:'发起人 / 产品负责人',duration:'2025.09 - 2026.02',desc:'从0到1搭建产品：完成150份用户调研、5款竞品分析，输出PRD与原型；\n运营3个月累计用户3000+，交易订单1200单；\n组建6人团队，负责需求评审与迭代管理。'}
-      ]},
+        {name:'校园二手书小程序「书循」',role:'发起人 / 产品负责人',duration:'2025.09 - 2026.02',desc:'从0到1搭建产品：完成150份用户调研、5款竞品分析，输出PRD与原型；\n运营3个月累计用户3000+，交易订单1200单；\n组建6人团队，负责需求评审与迭代管理。'}],
+      campus:[{name:'校学生会 新媒体部',role:'部长',duration:'2024.09 - 2025.09',desc:'带领8人团队负责校级活动宣传，公众号粉丝从3000增长至1.2万；\n统筹迎新晚会线上宣传，单条推文阅读量破5万。'}]
+    },
     jd:'【岗位职责】1、负责C端产品的用户运营与活动运营，通过社群、私域等场景提升用户留存与活跃；2、基于数据分析搭建用户分层体系，设计转化与增长策略，持续优化核心指标（DAU、留存率、转化率）；3、策划线上线下活动，联动新媒体渠道（公众号、小红书、抖音）进行内容投放与拉新；4、与产品、设计协作推动功能迭代，通过A/B测试验证方案效果。【任职要求】1、本科及以上学历，2027届毕业生，专业不限；2、具备优秀的沟通能力与团队协作精神，抗压能力强；3、熟练使用Excel、SQL等工具进行数据分析；4、有互联网运营实习经历者优先；5、对用户增长充满热情，学习能力与执行力强。',
     jdCompany:'腾讯',jdPosition:'产品运营',
     versions:[],applications:[
