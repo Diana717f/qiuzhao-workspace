@@ -8,28 +8,28 @@
 <link rel="apple-touch-icon" href="favicon.png">
 <style>
 :root{
-  --bg:#F6F4F0; --card:#FFFFFF; --ink:#3E3934; --sub:#7C7671; --line:#E7E3DD;
-  --primary:#6E5B4B; --primary-deep:#574737; --primary-soft:#F1EEE8;
-  --green:#7A6A44; --green-soft:#F3EFE1; --orange:#B08F55; --orange-soft:#F6F3EA;
-  --red:#C77B70; --red-soft:#F6EFED; --teal:#7E9C99; --blue:#7E8E9E;
-  --purple:#9A8FA0; --slate:#A9A49C; --radius:14px;
-  --shadow:0 2px 10px rgba(62,57,52,.06);
+  --bg:#F7F4EC; --card:#FFFFFF; --ink:#3F3830; --sub:#7B7268; --line:#E8E2D7;
+  --primary:#6F5A45; --primary-deep:#55422D; --primary-soft:#F3EFE5;
+  --green:#7D6B3E; --green-soft:#F5F1E0; --orange:#B5904F; --orange-soft:#F7F3E7;
+  --red:#C4746A; --red-soft:#F7EFEC; --teal:#9BA18C; --blue:#9A9B90;
+  --purple:#9C8E9B; --slate:#B0A79A; --radius:14px;
+  --shadow:0 2px 10px rgba(74,63,48,.06);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
-input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink);border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:#FDFCF9;outline:none;transition:border .15s;width:100%}
+input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink);border:1.5px solid var(--line);border-radius:9px;padding:8px 10px;background:#FDFBF4;outline:none;transition:border .15s;width:100%}
 input:focus,select:focus,textarea:focus{border-color:var(--primary);background:#fff}
 textarea{resize:vertical;min-height:74px;line-height:1.65}
 label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-bottom:4px}
 ::-webkit-scrollbar{height:8px;width:8px}
-::-webkit-scrollbar-thumb{background:#D9D5CE;border-radius:4px}
+::-webkit-scrollbar-thumb{background:#DAD2C6;border-radius:4px}
 ::-webkit-scrollbar-track{background:transparent}
 
 /* ===== 顶栏 ===== */
 .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:.5px}
-.brand .logo{width:34px;height:34px;border-radius:50%;background:#6E5B4B;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;overflow:hidden;flex-shrink:0}
+.brand .logo{width:34px;height:34px;border-radius:50%;background:#6F5A45;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;overflow:hidden;flex-shrink:0}
 .brand .logo img{width:100%;height:100%;object-fit:cover;display:block}
 .brand small{font-size:11px;color:var(--sub);font-weight:500;display:block;letter-spacing:0}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
@@ -43,11 +43,11 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .btn-p{background:var(--primary);color:#fff}
 .btn-p:hover{background:var(--primary-deep);transform:translateY(-1px)}
 .btn-soft{background:var(--primary-soft);color:var(--primary)}
-.btn-soft:hover{background:#EAE7E0}
+.btn-soft:hover{background:#ECE6DA}
 .btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
 .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
 .btn-danger{background:var(--red-soft);color:var(--red)}
-.btn-danger:hover{background:#E9DCD8}
+.btn-danger:hover{background:#EADBD6}
 .btn-sm{padding:4px 10px;font-size:12px;border-radius:7px}
 .btn:active{transform:scale(.97)}
 
@@ -55,7 +55,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .tabs{display:flex;gap:6px;padding:12px 22px 0;max-width:1440px;margin:0 auto;width:100%}
 .tab{padding:9px 18px;border-radius:11px 11px 0 0;font-weight:600;font-size:13.5px;color:var(--sub);border:1px solid transparent;border-bottom:none}
 .tab:hover{color:var(--primary)}
-.tab.active{background:var(--card);color:var(--primary);border-color:var(--line);box-shadow:0 -2px 8px rgba(62,57,52,.04)}
+.tab.active{background:var(--card);color:var(--primary);border-color:var(--line);box-shadow:0 -2px 8px rgba(74,63,48,.04)}
 .wrap{max-width:1440px;margin:0 auto;padding:0 22px 50px;width:100%}
 .page{display:none}
 .page.active{display:block;animation:fade .25s}
@@ -69,12 +69,12 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 12px}
 .resume-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
-.entry{border:1.5px dashed var(--line);border-radius:11px;padding:12px;margin-bottom:10px;position:relative;background:#FAF9F6}
+.entry{border:1.5px dashed var(--line);border-radius:11px;padding:12px;margin-bottom:10px;position:relative;background:#FBF8F2}
 .entry .del{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:6px;color:var(--red);background:var(--red-soft);font-size:12px;line-height:22px;text-align:center}
 .entry .star-tag{position:absolute;top:8px;right:36px;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700}
 .star-ok{background:var(--green-soft);color:var(--green)}
 .star-warn{background:var(--orange-soft);color:var(--orange)}
-.addbtn{width:100%;border:1.5px dashed #CBC7BE;color:var(--primary);border-radius:11px;padding:9px;font-size:13px;font-weight:600;background:var(--primary-soft)}
+.addbtn{width:100%;border:1.5px dashed #CCC3B4;color:var(--primary);border-radius:11px;padding:9px;font-size:13px;font-weight:600;background:var(--primary-soft)}
 .addbtn:hover{border-color:var(--primary)}
 
 /* ===== JD / 分析 ===== */
@@ -87,37 +87,37 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .ring .num small{font-size:10px;color:var(--sub);display:block;text-align:center;font-weight:500}
 .kwzone{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
 .kw{font-size:12px;padding:3px 10px;border-radius:99px;font-weight:600}
-.kw.m{background:var(--green-soft);color:#7A6A44}
-.kw.x{background:var(--orange-soft);color:#7C6A2E;border:1px dashed #D2C69E}
-.sug{background:#FCFBF8;border:1px solid #E9E6DF;border-radius:10px;padding:9px 12px;margin-bottom:7px;font-size:12.5px;color:#6E675E;display:flex;gap:7px}
-.sug b{color:#7C6A2E}
+.kw.m{background:var(--green-soft);color:#7D6B3E}
+.kw.x{background:var(--orange-soft);color:#7F6C2B;border:1px dashed #D4C795}
+.sug{background:#FCF9F2;border:1px solid #EBE5DA;border-radius:10px;padding:9px 12px;margin-bottom:7px;font-size:12.5px;color:#6F6659;display:flex;gap:7px}
+.sug b{color:#7F6C2B}
 .sug .n{flex-shrink:1;width:17px;height:17px;border-radius:50%;background:var(--orange-soft);color:var(--orange);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px}
 
 /* ===== A4 预览 ===== */
-.a4{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 6px 24px rgba(62,57,52,.09);padding:34px 38px;min-height:600px;font-size:12px;line-height:1.65;color:#37332F}
+.a4{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 6px 24px rgba(74,63,48,.09);padding:34px 38px;min-height:600px;font-size:12px;line-height:1.65;color:#39342D}
 .a4 .rh{border-bottom:2px solid var(--primary);padding-bottom:9px;margin-bottom:13px}
 .a4 .rh h1{font-size:19px;letter-spacing:2px}
-.a4 .rh .ct{font-size:11px;color:#6B6660;margin-top:3px}
+.a4 .rh .ct{font-size:11px;color:#6C665C;margin-top:3px}
 .a4 h3{font-size:13px;color:var(--primary-deep);border-left:3.5px solid var(--primary);padding-left:7px;margin:13px 0 6px;letter-spacing:1px}
 .a4 .edu b{font-size:12.5px}
-.a4 .edu .r{float:right;color:#6B6660;font-size:11px}
+.a4 .edu .r{float:right;color:#6C665C;font-size:11px}
 .a4 ul{padding-left:16px}
 .a4 li{margin-bottom:3px}
 .a4 .kw-hit{color:var(--primary-deep);font-weight:700}
-.a4 .ph{color:#96773C;background:#F7F5EC;border-radius:3px;padding:0 3px}
-.a4 .time{font-size:10.5px;color:#86817B}
+.a4 .ph{color:#99793A;background:#F8F5EA;border-radius:3px;padding:0 3px}
+.a4 .time{font-size:10.5px;color:#878177}
 
 /* ===== 版本管理 ===== */
 .ver-item{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;flex-wrap:wrap;transition:border .15s}
-.ver-item:hover{border-color:#CCC7BE}
-.ver-badge{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#6E5B4B,#C7BCAE);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ver-item:hover{border-color:#CDC3B3}
+.ver-badge{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#6F5A45,#C8BAA7);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ver-main{flex:1;min-width:220px}
 .ver-main .t{font-weight:700;font-size:14px}
 .ver-main .m{font-size:12px;color:var(--sub);margin-top:2px}
 .ver-kws{max-width:100%;font-size:11.5px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ver-ops{display:flex;gap:6px;flex-wrap:wrap}
 .score-pill{font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px}
-.sp-hi{background:var(--green-soft);color:#7A6A44}.sp-mid{background:var(--orange-soft);color:#7C6A2E}.sp-lo{background:var(--red-soft);color:#A5625C}
+.sp-hi{background:var(--green-soft);color:#7D6B3E}.sp-mid{background:var(--orange-soft);color:#7F6C2B}.sp-lo{background:var(--red-soft);color:#A5635B}
 
 /* ===== 面试 ===== */
 .qa-group{margin-bottom:16px}
@@ -126,8 +126,8 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .qa summary{padding:11px 14px;font-weight:700;font-size:13.5px;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:flex-start;background:#fff}
 .qa summary::-webkit-details-marker{display:none}
 .qa summary::before{content:'💬';flex-shrink:0}
-.qa[open] summary{border-bottom:1px dashed var(--line);background:#FAF9F6}
-.qa .body{padding:12px 15px;background:#FDFCF9;font-size:13px}
+.qa[open] summary{border-bottom:1px dashed var(--line);background:#FBF8F2}
+.qa .body{padding:12px 15px;background:#FDFBF4;font-size:13px}
 .ans{border-left:3px solid var(--primary);background:#fff;border-radius:0 9px 9px 0;padding:10px 13px;white-space:pre-wrap}
 .ans .tip{color:var(--sub);font-size:12px;margin-bottom:7px;display:block}
 .ans .tag{font-size:10.5px;color:#fff;background:var(--primary);border-radius:5px;padding:1px 7px;margin-right:6px;font-weight:600}
@@ -137,36 +137,36 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .bstat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--sub)}
 .bstat b{font-size:15px;color:var(--ink);margin-right:2px}
 .board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(168px,1fr);gap:9px;overflow-x:auto;padding-bottom:8px;align-items:stretch}
-.col{background:#F0EEEA;border-radius:12px;padding:7px;height:var(--board-h,60vh);min-height:300px;display:flex;flex-direction:column;transition:background .15s,box-shadow .15s}
-.col.over{background:#E6E2DC;box-shadow:inset 0 0 0 2px var(--primary)}
+.col{background:#F3EFE6;border-radius:12px;padding:7px;height:var(--board-h,60vh);min-height:300px;display:flex;flex-direction:column;transition:background .15s,box-shadow .15s}
+.col.over{background:#EAE3D8;box-shadow:inset 0 0 0 2px var(--primary)}
 .col-h{display:flex;align-items:center;gap:6px;padding:4px 6px 7px;font-size:12.5px;font-weight:800;flex-shrink:0}
 .col-h .cnt{margin-left:auto;font-size:11px;color:#fff;border-radius:99px;padding:1px 8px;font-weight:700}
 .col-list{flex:1;min-height:40px;border-radius:8px;overflow-y:auto;overflow-x:hidden;padding-right:2px}
 .col-list::-webkit-scrollbar{width:6px}
-.col-list::-webkit-scrollbar-thumb{background:#D8D4CD;border-radius:99px}
-.col-list::-webkit-scrollbar-thumb:hover{background:#B9B4AC}
+.col-list::-webkit-scrollbar-thumb{background:#D9D1C4;border-radius:99px}
+.col-list::-webkit-scrollbar-thumb:hover{background:#BAB1A2}
 .col-list::-webkit-scrollbar-track{background:transparent}
 .col-more{font-size:11px;color:var(--sub);text-align:center;padding:6px 0;cursor:pointer;border-radius:6px}
-.col-more:hover{background:#EAE6E0;color:var(--ink)}
-.col-empty{font-size:11px;color:#B0ACA4;text-align:center;padding:14px 0}
-.app-card{background:#fff;border-radius:8px;padding:7px 9px;margin-bottom:6px;box-shadow:0 1px 3px rgba(62,57,52,.08);cursor:pointer;border-top:3px solid transparent;transition:transform .12s,box-shadow .12s;position:relative}
-.app-card:hover{transform:translateY(-1px);box-shadow:0 3px 9px rgba(62,57,52,.13)}
+.col-more:hover{background:#ECE5D9;color:var(--ink)}
+.col-empty{font-size:11px;color:#B2A99C;text-align:center;padding:14px 0}
+.app-card{background:#fff;border-radius:8px;padding:7px 9px;margin-bottom:6px;box-shadow:0 1px 3px rgba(74,63,48,.08);cursor:pointer;border-top:3px solid transparent;transition:transform .12s,box-shadow .12s;position:relative}
+.app-card:hover{transform:translateY(-1px);box-shadow:0 3px 9px rgba(74,63,48,.13)}
 .app-card.dragging{opacity:.4}
 .app-card .co{font-weight:800;font-size:12.5px;line-height:1.3}
 .app-card .po{font-size:11px;color:var(--sub);margin:1px 0 4px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.app-card .meta{display:flex;gap:4px;flex-wrap:wrap;font-size:10px;color:#8E8A84}
+.app-card .meta{display:flex;gap:4px;flex-wrap:wrap;font-size:10px;color:#8F8A80}
 .app-card .meta span{background:var(--bg);border-radius:5px;padding:1px 5px}
-.app-card .note{font-size:10px;color:#A8A49D;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-card .note{font-size:10px;color:#A9A396;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .board-filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:9px 11px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
 .board-filter input,.board-filter select{width:auto;flex:0 0 auto;padding:5px 9px;font-size:12px;border-radius:7px}
 .board-filter input{flex:1;min-width:150px}
 .board-filter .fstat{font-size:11.5px;color:var(--sub);margin-left:auto;white-space:nowrap}
 .board-filter .fstat b{color:var(--primary);font-size:13px}
-.app-card .arrow{position:absolute;right:8px;top:9px;font-size:11px;color:#C4C0B8;opacity:0;transition:opacity .15s}
+.app-card .arrow{position:absolute;right:8px;top:9px;font-size:11px;color:#C5BCAD;opacity:0;transition:opacity .15s}
 .app-card:hover .arrow{opacity:1}
 
 /* ===== 模态 / 提示 ===== */
-.mask{position:fixed;inset:0;background:rgba(62,57,52,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.mask{position:fixed;inset:0;background:rgba(74,63,48,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
 .mask.show{display:flex}
 .modal{background:#fff;border-radius:16px;max-width:640px;width:100%;max-height:86vh;display:flex;flex-direction:column;animation:pop .2s;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 @keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
@@ -174,7 +174,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .modal-h .x{width:26px;height:26px;border-radius:8px;background:var(--bg);color:var(--sub);font-size:14px}
 .modal-b{padding:18px 20px;overflow-y:auto}
 .modal-f{padding:13px 20px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-16px);background:#3E3934;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;z-index:200;opacity:0;transition:all .25s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-16px);background:#3F3830;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;z-index:200;opacity:0;transition:all .25s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok::before{content:'✅ '}.toast.warn::before{content:'⚠️ '}.toast.err::before{content:'❌ '}
 .timeline{margin:8px 0;border-left:2px solid var(--line);padding-left:14px}
@@ -187,10 +187,10 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 
 /* ===== 云账号 ===== */
 .acct-btn{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;transition:all .15s}
-.acct-btn.off{background:var(--primary-soft);color:var(--primary);border:1px solid #DDD9D2}
-.acct-btn.off:hover{background:#EAE7E0}
-.acct-btn.on{background:#F0EDE2;color:#7A6A44;border:1px solid #D6D0BF}
-.acct-btn.on:hover{background:#E8E4D8}
+.acct-btn.off{background:var(--primary-soft);color:var(--primary);border:1px solid #DED6C9}
+.acct-btn.off:hover{background:#ECE6DA}
+.acct-btn.on{background:#F2EEE0;color:#7D6B3E;border:1px solid #D8D0B8}
+.acct-btn.on:hover{background:#EAE4D4}
 .acct-btn .dotl{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.85}
 .lc-in{width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13.5px;background:#fff;color:var(--ink);outline:none}
 .lc-in:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
@@ -200,16 +200,16 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .lc-note b{color:var(--ink)}
 .lc-tag{display:inline-block;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px}
 .lc-hr{border:none;border-top:1px dashed var(--line);margin:14px 0}
-.lc-pill{display:inline-flex;align-items:center;gap:6px;background:#F2F0EB;border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--sub)}
-.lc-pill.ok{background:#F0EDE2;border-color:#D6D0BF;color:#7A6A44}
-.lc-pill.err{background:#F6EFED;border-color:#E4DDD9;color:#A5625C}
-.lc-spin{width:14px;height:14px;border:2px solid #DDD9D2;border-top-color:var(--primary);border-radius:50%;animation:lcspin .8s linear infinite;display:inline-block;vertical-align:-3px}
+.lc-pill{display:inline-flex;align-items:center;gap:6px;background:#F4F0E7;border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:12px;color:var(--sub)}
+.lc-pill.ok{background:#F2EEE0;border-color:#D8D0B8;color:#7D6B3E}
+.lc-pill.err{background:#F7EFEC;border-color:#E5DCD7;color:#A5635B}
+.lc-spin{width:14px;height:14px;border:2px solid #DED6C9;border-top-color:var(--primary);border-radius:50%;animation:lcspin .8s linear infinite;display:inline-block;vertical-align:-3px}
 @keyframes lcspin{to{transform:rotate(360deg)}}
 .lc-steps{counter-reset:st;list-style:none;padding:0;margin:0;font-size:12.5px;color:var(--ink);line-height:1.8}
 .lc-steps li{counter-increment:st;position:relative;padding-left:30px;margin-bottom:6px}
 .lc-steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
-.lc-code{background:#3E3934;color:#DCD6CB;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;padding:1px 6px;border-radius:5px}
-.lc-warn{background:#F7F5EF;border:1px solid #E6E0D2;color:#75663F;font-size:12px;border-radius:10px;padding:9px 12px;line-height:1.7}
+.lc-code{background:#3F3830;color:#DDD5C4;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;padding:1px 6px;border-radius:5px}
+.lc-warn{background:#F8F5ED;border:1px solid #E7E0CE;color:#776740;font-size:12px;border-radius:10px;padding:9px 12px;line-height:1.7}
 </style>
 </head>
 <body>
@@ -530,7 +530,7 @@ const cloud={
           <span style="font-size:12px;font-weight:700">📦 一键建表 SQL（第 2 步用）</span>
           <button class="btn btn-soft btn-sm" style="font-size:11px" onclick="cloud.copySql()">复制 SQL</button>
         </div>
-        <textarea id="sbSql" readonly spellcheck="false" style="width:100%;height:88px;font:11px/1.5 monospace;background:var(--bg2,#F5F4F0);border:1px solid var(--line);border-radius:6px;padding:6px;box-sizing:border-box">${esc(SB_MAKE_SQL)}</textarea>
+        <textarea id="sbSql" readonly spellcheck="false" style="width:100%;height:88px;font:11px/1.5 monospace;background:var(--bg2,#F7F4EC);border:1px solid var(--line);border-radius:6px;padding:6px;box-sizing:border-box">${esc(SB_MAKE_SQL)}</textarea>
       </div>
       <div><label style="font-size:12px;font-weight:700">Project URL</label><input class="lc-in" id="sbUrl" placeholder="如 https://abcxyz.supabase.co" value="${esc(c.url||'')}"></div>
       <div><label style="font-size:12px;font-weight:700">API Key（新版 publishable / 旧版 anon public 均可，一长串）</label><input class="lc-in" id="sbAnon" placeholder="eyJhbGciOiJIUzI1NiIs… 或 sb_publishable_…" value="${esc(c.anon||'')}"></div>
@@ -1670,26 +1670,26 @@ function renderAnalysis(a){
 
   // 顶部：岗位识别 + 匹配度
   let html=`<div class="score-wrap">
-    <div class="ring" style="background:conic-gradient(${col} ${deg}deg,#EFEDE7 0deg)"><div class="num" style="color:${col}">${a.score}%<small>JD匹配度</small></div></div>
+    <div class="ring" style="background:conic-gradient(${col} ${deg}deg,#F1EDE3 0deg)"><div class="num" style="color:${col}">${a.score}%<small>JD匹配度</small></div></div>
     <div style="flex:1">
       <div style="font-size:13px;font-weight:700;margin-bottom:2px">命中 ${a.matched.length} / ${a.kws.length} 个 JD 关键词</div>
       <div style="font-size:12px;color:var(--sub)">${a.score>=75?'匹配度优秀，继续保持':a.score>=45?'还有提升空间，优先补齐下方橙色关键词':'差距较大，建议重写经历并补齐关键词'}</div>
     </div></div>`;
 
   // AI 教练报告区
-  html+=`<div class="coach-box" style="margin-top:12px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,#F6F4F0 0%,#FFFFFF 60%);padding:14px 16px">`;
-  html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:15px;font-weight:800;color:#574737">🤖 AI 简历教练诊断报告</span><span style="font-size:11px;color:var(--sub);background:#F1EEE8;padding:2px 8px;border-radius:10px">识别为：${esc(coach.role.name)}</span></div>`;
+  html+=`<div class="coach-box" style="margin-top:12px;border-radius:10px;border:1px solid var(--line);background:linear-gradient(180deg,#F7F4EC 0%,#FFFFFF 60%);padding:14px 16px">`;
+  html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:15px;font-weight:800;color:#55422D">🤖 AI 简历教练诊断报告</span><span style="font-size:11px;color:var(--sub);background:#F3EFE5;padding:2px 8px;border-radius:10px">识别为：${esc(coach.role.name)}</span></div>`;
 
   // 优先级清单
   if(coach.priority.length){
     html+=`<div style="font-size:12px;font-weight:700;margin:4px 0 6px;display:flex;gap:6px;align-items:center">🚦 紧急度排序（按重要程度）</div>`;
     html+=coach.priority.map(s=>{
-      const c=s.lvl==='P0'?'#BC6F6B':s.lvl==='P1'?'#A8844E':'#7A6A44';
-      const bg=s.lvl==='P0'?'#F5EEED':s.lvl==='P1'?'#F5F2E9':'#F7F5ED';
+      const c=s.lvl==='P0'?'#BE6E68':s.lvl==='P1'?'#AB8546':'#7D6B3E';
+      const bg=s.lvl==='P0'?'#F6EEEC':s.lvl==='P1'?'#F6F2E6':'#F8F5E9';
       return `<div class="sug" style="background:${bg};border-color:${c}33"><span class="n" style="background:${c};color:#fff;font-weight:700">${s.lvl}</span><div>${esc(s.text)}</div></div>`;
     }).join('');
   }else{
-    html+=`<div class="sug" style="background:#F7F5ED;border-color:#DCD7C7"><span class="n" style="background:var(--green-soft);color:var(--green)">✓</span><div><b>整体状态良好</b>，继续打磨措辞与量化数据即可投递。</div></div>`;
+    html+=`<div class="sug" style="background:#F8F5E9;border-color:#DED7C2"><span class="n" style="background:var(--green-soft);color:var(--green)">✓</span><div><b>整体状态良好</b>，继续打磨措辞与量化数据即可投递。</div></div>`;
   }
 
   // 维度评分
@@ -1698,11 +1698,11 @@ function renderAnalysis(a){
   Object.entries(coach.dim.score).forEach(([dim,sc])=>{
     const w=coach.role.dimWeights[dim]||0;
     const pct=Math.round(w*100);
-    const c=sc>=75?'#7A6A44':sc>=45?'#A8844E':'#BC6F6B';
-    const cBg=sc>=75?'#F7F5ED':sc>=45?'#F5F2E9':'#F5EEED';
+    const c=sc>=75?'#7D6B3E':sc>=45?'#AB8546':'#BE6E68';
+    const cBg=sc>=75?'#F8F5E9':sc>=45?'#F6F2E6':'#F6EEEC';
     html+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:${cBg};border-radius:6px">
       <div style="width:78px;font-size:12px;font-weight:700">${esc(dim)}</div>
-      <div style="flex:1;height:6px;background:#fff;border-radius:3px;overflow:hidden;border:1px solid #E5E2DB"><div style="width:${sc}%;height:100%;background:${c}"></div></div>
+      <div style="flex:1;height:6px;background:#fff;border-radius:3px;overflow:hidden;border:1px solid #E7E2D6"><div style="width:${sc}%;height:100%;background:${c}"></div></div>
       <div style="width:42px;text-align:right;font-size:12px;font-weight:700;color:${c}">${sc}分</div>
       <div style="width:54px;text-align:right;font-size:11px;color:var(--sub)">权重 ${pct}%</div>
     </div>`;
@@ -1719,8 +1719,8 @@ function renderAnalysis(a){
           <summary style="cursor:pointer;font-size:12.5px;font-weight:700">${esc(c.label)} <span style="color:var(--sub);font-weight:400;font-size:11px">（${c.issues.length} 个问题）</span></summary>
           <div style="margin-top:8px;font-size:12px">
             <div style="color:var(--sub);margin-bottom:2px">问题诊断：</div>
-            <div style="margin-bottom:8px">${c.issues.map(iss=>`<span style="display:inline-block;padding:1px 6px;background:#F5EEED;color:#BC6F6B;border-radius:3px;font-size:11px;margin:0 4px 4px 0">${esc(iss.tag)}：${esc(iss.msg)}</span>`).join('')}</div>
-            ${c.rewrite?`<div style="background:#F6F4F0;border-left:3px solid #6E5B4B;padding:8px 10px;border-radius:0 6px 6px 0"><div style="color:#574737;font-weight:700;margin-bottom:4px">改写思路</div><div style="white-space:pre-wrap;color:#403B37;font-size:12px;line-height:1.7">${esc(c.rewrite.after)}</div></div>`:''}
+            <div style="margin-bottom:8px">${c.issues.map(iss=>`<span style="display:inline-block;padding:1px 6px;background:#F6EEEC;color:#BE6E68;border-radius:3px;font-size:11px;margin:0 4px 4px 0">${esc(iss.tag)}：${esc(iss.msg)}</span>`).join('')}</div>
+            ${c.rewrite?`<div style="background:#F7F4EC;border-left:3px solid #6F5A45;padding:8px 10px;border-radius:0 6px 6px 0"><div style="color:#55422D;font-weight:700;margin-bottom:4px">改写思路</div><div style="white-space:pre-wrap;color:#423B34;font-size:12px;line-height:1.7">${esc(c.rewrite.after)}</div></div>`:''}
           </div>
         </details>`;
       });
@@ -1731,19 +1731,19 @@ function renderAnalysis(a){
   if(coach.hiddenReminders.length){
     html+=`<div style="font-size:12px;font-weight:700;margin:10px 0 6px">🔍 该岗位隐性考察点（简历没体现）</div>`;
     html+=`<div style="font-size:12px;color:var(--sub);margin-bottom:4px">JD 没明说但 ${esc(coach.role.name)} 通常会考察：</div>`;
-    html+=`<div>${coach.hiddenReminders.map(h=>`<span style="display:inline-block;padding:2px 8px;background:#F5F2E9;color:#7C6A2E;border-radius:10px;font-size:11px;margin:0 4px 4px 0">${esc(h)}</span>`).join('')}</div>`;
+    html+=`<div>${coach.hiddenReminders.map(h=>`<span style="display:inline-block;padding:2px 8px;background:#F6F2E6;color:#7F6C2B;border-radius:10px;font-size:11px;margin:0 4px 4px 0">${esc(h)}</span>`).join('')}</div>`;
     html+=`<div style="font-size:11px;color:var(--sub);margin-top:4px">💡 建议：在自我评价或某段经历的结尾用 1-2 句话体现这些特质。</div>`;
   }
 
   // 关键词命中/缺失
-  if(a.matched.length)html+='<div style="font-size:12px;font-weight:700;color:#7A6A44;margin:10px 0 4px">✅ 已命中</div><div class="kwzone">'+a.matched.map(k=>`<span class="kw m">${esc(k.term)}</span>`).join('')+'</div>';
-  if(a.missing.length)html+='<div style="font-size:12px;font-weight:700;color:#7C6A2E;margin:8px 0 4px">⚠️ 缺失（按优先级补齐）</div><div class="kwzone">'+a.missing.map(k=>`<span class="kw x">${esc(k.term)}</span>`).join('')+'</div>';
+  if(a.matched.length)html+='<div style="font-size:12px;font-weight:700;color:#7D6B3E;margin:10px 0 4px">✅ 已命中</div><div class="kwzone">'+a.matched.map(k=>`<span class="kw m">${esc(k.term)}</span>`).join('')+'</div>';
+  if(a.missing.length)html+='<div style="font-size:12px;font-weight:700;color:#7F6C2B;margin:8px 0 4px">⚠️ 缺失（按优先级补齐）</div><div class="kwzone">'+a.missing.map(k=>`<span class="kw x">${esc(k.term)}</span>`).join('')+'</div>';
 
   // 1 句话推荐语
   html+=`<div style="font-size:12px;font-weight:700;margin:12px 0 6px">🎯 1 句话核心推荐语（求职信/自我介绍可用）</div>`;
-  html+=`<div style="background:#fff;border:1px dashed #6E5B4B;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.7;position:relative">
+  html+=`<div style="background:#fff;border:1px dashed #6F5A45;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.7;position:relative">
     <div id="oneLinerText">${esc(coach.oneLiner)}</div>
-    <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('oneLinerText').textContent);toast('已复制到剪贴板','ok')" style="position:absolute;top:8px;right:8px;background:#F1EEE8;color:#574737;border:none;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">复制</button>
+    <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('oneLinerText').textContent);toast('已复制到剪贴板','ok')" style="position:absolute;top:8px;right:8px;background:#F3EFE5;color:#55422D;border:none;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">复制</button>
   </div>`;
 
   // 自我评价三选一
@@ -1757,9 +1757,9 @@ function renderAnalysis(a){
     html+=`<div style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <div style="font-size:12px;font-weight:700">${s.t}</div>
-        <button type="button" onclick="state.profile.selfEval='${esc(s.v).replace(/'/g,"\\'").replace(/\n/g,'\\n')}';document.querySelector('[data-field=selfEval]').value=state.profile.selfEval;save();toast('已填入自我评价，记得 Ctrl+S 同步','ok')" style="background:#F1EEE8;color:#574737;border:none;padding:2px 10px;border-radius:6px;font-size:11px;cursor:pointer">使用此版本</button>
+        <button type="button" onclick="state.profile.selfEval='${esc(s.v).replace(/'/g,"\\'").replace(/\n/g,'\\n')}';document.querySelector('[data-field=selfEval]').value=state.profile.selfEval;save();toast('已填入自我评价，记得 Ctrl+S 同步','ok')" style="background:#F3EFE5;color:#55422D;border:none;padding:2px 10px;border-radius:6px;font-size:11px;cursor:pointer">使用此版本</button>
       </div>
-      <div style="font-size:12px;color:#57534E;line-height:1.6">${esc(s.v)}</div>
+      <div style="font-size:12px;color:#585249;line-height:1.6">${esc(s.v)}</div>
     </div>`;
   });
   html+=`</div>`;
@@ -1771,7 +1771,7 @@ function renderAnalysis(a){
     html+='<div style="font-size:12px;font-weight:700;margin:10px 0 6px">🩺 STAR 体检</div>';
     a.expChecks.forEach(c=>{
       const ok=c.quant&&c.action&&c.result;
-      html+=`<div class="sug" style="${ok?'background:#F7F5ED;border-color:#DCD7C7':''}"><span class="n" style="${ok?'background:var(--green-soft);color:var(--green)':''}">${ok?'✓':'!'}</span><div><b>${esc(c.label)}</b>（${c.type}）　量化${c.quant?'✅':'❌'} 动词${c.action?'✅':'❌'} 结果${c.result?'✅':'❌'}</div></div>`;
+      html+=`<div class="sug" style="${ok?'background:#F8F5E9;border-color:#DED7C2':''}"><span class="n" style="${ok?'background:var(--green-soft);color:var(--green)':''}">${ok?'✓':'!'}</span><div><b>${esc(c.label)}</b>（${c.type}）　量化${c.quant?'✅':'❌'} 动词${c.action?'✅':'❌'} 结果${c.result?'✅':'❌'}</div></div>`;
     });
   }
 
@@ -1797,7 +1797,7 @@ function bulletsFrom(desc,kws,forWord){
   return '<ul>'+lines.map(l=>{
     const c=starCheck(l);
     const hint=(c.quant||c.result)?'':' <span class="ph">【量化提示：补充数字成果，如提升30% / 覆盖1000人】</span>';
-    return '<li>'+boldKws(l,kws)+(forWord?String(hint).replace(/class="ph"/g,'style="color:#96773C"'):'')+'</li>';
+    return '<li>'+boldKws(l,kws)+(forWord?String(hint).replace(/class="ph"/g,'style="color:#99793A"'):'')+'</li>';
   }).join('')+'</ul>';
 }
 function buildResumeHTML(p,a,opts){
@@ -1834,16 +1834,16 @@ function buildResumeHTML(p,a,opts){
 function exportWord(html,filename){
   const header=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>document</title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]--><style>
   @page{size:595.3pt 841.9pt;margin:42pt 40pt}
-  body{font-family:"微软雅黑","Microsoft YaHei",sans-serif;font-size:10.5pt;color:#37332F;line-height:1.5}
+  body{font-family:"微软雅黑","Microsoft YaHei",sans-serif;font-size:10.5pt;color:#39342D;line-height:1.5}
   h1{font-size:17pt;letter-spacing:3pt;margin:0}
-  .rh{border-bottom:2pt solid #6E5B4B;padding-bottom:5pt;margin-bottom:8pt}
-  .ct{font-size:9pt;color:#6B6660;margin-top:2pt}
-  h3{font-size:11.5pt;color:#574737;border-left:3pt solid #6E5B4B;padding-left:5pt;margin:9pt 0 4pt;letter-spacing:1pt}
+  .rh{border-bottom:2pt solid #6F5A45;padding-bottom:5pt;margin-bottom:8pt}
+  .ct{font-size:9pt;color:#6C665C;margin-top:2pt}
+  h3{font-size:11.5pt;color:#55422D;border-left:3pt solid #6F5A45;padding-left:5pt;margin:9pt 0 4pt;letter-spacing:1pt}
   ul{margin:2pt 0 6pt 16pt;padding-left:12pt}
   li{margin-bottom:2pt}
-  .kw-hit{color:#574737;font-weight:bold}
-  .ph{color:#96773C}
-  .time{font-size:9pt;color:#86817B}
+  .kw-hit{color:#55422D;font-weight:bold}
+  .ph{color:#99793A}
+  .time{font-size:9pt;color:#878177}
   </style></head><body>`;
   const blob=new Blob(['\ufeff',header+html+'</body></html>'],{type:'application/msword;charset=utf-8'});
   const url=URL.createObjectURL(blob);
@@ -2233,7 +2233,7 @@ function exportInterviewWord(){
   iv.groups.forEach(g=>{
     h+=`<h3>${g.title}</h3>`;
     g.items.forEach((it,i)=>{
-      h+=`<p style="font-weight:bold;margin:8pt 0 2pt">Q${i+1}. ${esc(it.q)}</p><p style="font-size:9pt;color:#8E8A84;margin:0 0 3pt">💡 ${esc(it.tip)}</p><p style="margin:0 0 8pt;white-space:pre-wrap">【参考回答】${esc(it.a)}</p>`;
+      h+=`<p style="font-weight:bold;margin:8pt 0 2pt">Q${i+1}. ${esc(it.q)}</p><p style="font-size:9pt;color:#8F8A80;margin:0 0 3pt">💡 ${esc(it.tip)}</p><p style="margin:0 0 8pt;white-space:pre-wrap">【参考回答】${esc(it.a)}</p>`;
     });
   });
   exportWord(h,`面试手册_${iv.company||''}_${iv.position}`);
@@ -2243,7 +2243,7 @@ function exportInterviewWord(){
    六、投递看板
 ================================================================ */
 const STATUSES=['待投递','已投递','一面','二面','终面','offer','拒信','流程终止'];
-const ST_COLOR={'待投递':'#A9A49C','已投递':'#7E8E9E','一面':'#7E9C99','二面':'#9A8FA0','终面':'#B08F55','offer':'#AD9A6E','拒信':'#C77B70','流程终止':'#8C8880'};
+const ST_COLOR={'待投递':'#B0A79A','已投递':'#9A9B90','一面':'#9BA18C','二面':'#9C8E9B','终面':'#B5904F','offer':'#B0985F','拒信':'#C4746A','流程终止':'#8D857A'};
 const CHANNELS=['官网','校招网站','BOSS直聘','实习僧','牛客','内推','招聘会','猎聘','其他'];
 let dragId=null,justDragged=false;
 const BOARD_PAGE=60;
@@ -2330,8 +2330,8 @@ function renderBoardStats(){
      <span class="bstat"><b>${cnt('offer')}</b>Offer 🎉</span>
      <span class="bstat"><b>${cnt('拒信')}</b>拒信</span>
      <span class="bstat"><b>${cnt('流程终止')}</b>流程终止</span>
-     <span class="bstat" style="background:var(--primary-soft);border-color:#E2DFD8">简历通过率（进面/投递）<b style="color:var(--primary)">${rate(s.filter(a=>['一面','二面','终面','offer','拒信','流程终止'].includes(a.status)).length,inFlow('已投递'))}</b></span>
-     <span class="bstat" style="background:var(--green-soft);border-color:#DCD7C7">Offer 率 <b style="color:var(--green)">${rate(cnt('offer'),inFlow('已投递'))}</b></span>`;
+     <span class="bstat" style="background:var(--primary-soft);border-color:#E4DFD2">简历通过率（进面/投递）<b style="color:var(--primary)">${rate(s.filter(a=>['一面','二面','终面','offer','拒信','流程终止'].includes(a.status)).length,inFlow('已投递'))}</b></span>
+     <span class="bstat" style="background:var(--green-soft);border-color:#DED7C2">Offer 率 <b style="color:var(--green)">${rate(cnt('offer'),inFlow('已投递'))}</b></span>`;
   const el=$('#bfStat');
   if(el){
     const f=(typeof boardFiltered==='function')?boardFiltered().length:s.length;
@@ -2358,7 +2358,7 @@ function openAppModal(id){
   const chOpts=CHANNELS.map(c=>`<option ${a&&a.channel===c?'selected':''}>${c}</option>`).join('');
   let timeline='';
   if(a&&a.history&&a.history.length){
-    timeline='<label>状态时间线</label><div class="timeline">'+a.history.map(h=>`<div class="tl"><b style="color:${ST_COLOR[h.status]||'#8E8A84'}">${esc(h.status)}</b> · ${esc(new Date(h.ts).toLocaleString('zh-CN'))}${h.note?' · '+esc(h.note):''}</div>`).join('')+'</div>';
+    timeline='<label>状态时间线</label><div class="timeline">'+a.history.map(h=>`<div class="tl"><b style="color:${ST_COLOR[h.status]||'#8F8A80'}">${esc(h.status)}</b> · ${esc(new Date(h.ts).toLocaleString('zh-CN'))}${h.note?' · '+esc(h.note):''}</div>`).join('')+'</div>';
   }
   openModal(a?'编辑投递 · '+esc(a.company):'＋ 记录一次投递',
     `<div class="grid2">
