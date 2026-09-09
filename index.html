@@ -194,28 +194,9 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .lc-steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
 .lc-code{background:#423926;color:#C9CEF0;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;padding:1px 6px;border-radius:5px}
 .lc-warn{background:#FFF8EF;border:1px solid #F5E6C2;color:#8A5A00;font-size:12px;border-radius:10px;padding:9px 12px;line-height:1.7}
-/* 访问口令门禁（仅在部署口令版时启用；普通本地版 ACCESS_PASS_HASH 为空不显示） */
-#gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#F3F5E7,#E8EBE0);display:flex;align-items:center;justify-content:center}
-#gate .gate-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px 34px 26px;width:min(92vw,370px);text-align:center;box-shadow:0 18px 50px rgba(70,71,4,.14)}
-#gate .gate-title{font-size:21px;font-weight:800;margin:12px 0 6px;color:var(--ink)}
-#gate .gate-sub{font-size:12.5px;color:var(--sub);line-height:1.7;margin:0 0 18px}
-#gate .gate-in{text-align:center;letter-spacing:3px;font-size:16px;padding:11px 12px;margin-bottom:14px}
-#gate .gate-hint{font-size:11px;color:var(--slate);margin-top:10px;line-height:1.6}
 </style>
 </head>
 <body>
-
-<!-- ============ 访问口令门禁（仅部署口令版启用） ============ -->
-<div id="gate" style="display:none">
-  <div class="gate-card">
-    <div style="font-size:42px;line-height:1">🍂</div>
-    <div class="gate-title">秋招工作台</div>
-    <div class="gate-sub">这个工作台目前只对内部同学开放。<br>请输入分享者告知的<b>访问口令</b>：</div>
-    <input class="gate-in" id="gatePwd" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')gateTry()">
-    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="gateTry()">进入工作台</button>
-    <div class="gate-hint">🔒 数据只保存在你自己的浏览器与账号云端，同学之间互不可见；<br>注册账号后换设备也能同步回来。</div>
-  </div>
-</div>
 
 <!-- ============ 顶栏 ============ -->
 <header class="topbar">
@@ -401,9 +382,6 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const regEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const STORE_KEY='autumnRecruitSOP_v1';
-/* 访问口令（部署分享版用）：填入口令的 FNV-1a 64 位哈希即开启门禁；留空 = 不启用。
-   生成哈希：node -e "console.log((()=>{let h=0xcbf29ce484222325n,p=0x100000001b3n;for(const c of process.argv[1]){h^=BigInt(c.charCodeAt(0));h=(h*p)&0xffffffffffffffffn}return h.toString(16)})())" "你的口令" */
-const ACCESS_PASS_HASH='28c719289fba91fa';   // 口令: qiuzhao2026
 /* 分享版可内嵌云端 Key：管理员（你）建好 Supabase 项目后填入这两项并重新部署，
    同学打开网页即自动连上、可直接注册/登录 —— 零配置，像 App 一样。
    留空 = 不内嵌，使用者需按界面引导自行配置一次。 */
@@ -2485,30 +2463,6 @@ function doManualDel(id){
   save();renderManuals();closeModal();toast('手册已删除');
 }
 
-/* ---------- 访问口令门禁 ---------- */
-function passHash(s){let h=0xcbf29ce484222325n,p=0x100000001b3n;for(const c of s){h^=BigInt(c.charCodeAt(0));h=(h*p)&0xffffffffffffffffn}return h.toString(16)}
-function gateAuthorized(){try{return sessionStorage.getItem('qz_gate_ok')==='1'}catch(e){return false}}
-function gateBoot(){
-  if(!ACCESS_PASS_HASH)return;
-  if(gateAuthorized()){maybeWelcome();return}
-  // 支持分享链接带 #p=口令 自动放行
-  try{
-    const m=(location.hash||'').match(/[#&]p=([^&]+)/);
-    if(m&&passHash(decodeURIComponent(m[1]))===ACCESS_PASS_HASH){sessionStorage.setItem('qz_gate_ok','1');maybeWelcome();return}
-  }catch(e){}
-  const g=$('#gate');if(!g)return;
-  g.style.display='flex';
-  const inp=$('#gatePwd');if(inp)setTimeout(()=>{try{inp.focus()}catch(e){}},60);
-}
-function gateTry(){
-  const inp=$('#gatePwd');if(!inp)return;
-  if(passHash(inp.value)===ACCESS_PASS_HASH){
-    try{sessionStorage.setItem('qz_gate_ok','1')}catch(e){}
-    const g=$('#gate');if(g)g.style.display='none';
-    toast('口令正确，欢迎使用！🍂','ok');
-    maybeWelcome();
-  }else toast('口令不正确，请向分享者确认','err');
-}
 /* ---------- 打开即见"注册/登录"（App 式引导，仅分享版弹出；本地个人版不打扰） ---------- */
 function welcomeDone(){try{return sessionStorage.getItem('qz_welcomed')==='1'}catch(e){return false}}
 function markWelcome(){try{sessionStorage.setItem('qz_welcomed','1')}catch(e){}}
@@ -2526,9 +2480,8 @@ function welcome(){
     </div>`);
 }
 function maybeWelcome(){
-  if(!ACCESS_PASS_HASH)return;              // 本地个人版不弹
   if(cloud.user||welcomeDone())return;      // 已登录 / 本次会话已看过 → 不打扰
-  setTimeout(()=>{if(cloud.user||welcomeDone())return;welcome()},900);  // 等口令页与静默恢复先完成
+  setTimeout(()=>{if(cloud.user||welcomeDone())return;welcome()},900);  // 等静默恢复先完成
 }
 /* ---------- 启动 ---------- */
 load();
@@ -2541,8 +2494,7 @@ renderVersions();
 /* 云端账号：渲染入口按钮 + 尝试恢复登录态并静默同步 */
 cloud.renderBtn();
 if(cloud.hasCfg())cloud.restoreSession().catch(()=>{});
-/* 访问口令门禁（ACCESS_PASS_HASH 为空时直接放行） */
-gateBoot();
+/* 无门禁：直接进入工作台 */
 if(!state.applications.length&&!state.profile.name){
   // 首次使用：温和引导
   toast('欢迎使用秋招工作台！可点右上角「示例数据」快速体验','ok');
