@@ -58,6 +58,11 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .tab.active{background:var(--card);color:var(--primary);border-color:var(--line);box-shadow:0 -2px 8px rgba(74,63,48,.04)}
 .tab-icon{height:22px;width:auto;margin-left:6px;vertical-align:middle}
 .tab-icon-lg{height:28px}
+.desk-pet{position:fixed;right:18px;bottom:18px;width:120px;z-index:40;pointer-events:auto;animation:petFloat 3s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(74,63,48,.12));transition:transform .2s}
+.page:not(.active) .desk-pet{display:none}
+.desk-pet img{width:100%;height:auto;display:block}
+.desk-pet:hover{transform:scale(1.08)}
+@keyframes petFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .wrap{max-width:1440px;margin:0 auto;padding:0 22px 50px;width:100%}
 .page{display:none}
 .page.active{display:block;animation:fade .25s}
@@ -320,6 +325,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
       </div>
     </div>
   </div>
+  <div class="desk-pet"><img src="assets/pet-resume.png" alt="轻松熊"></div>
 </section>
 
 <!-- ============ 页2：面试前期准备 ============ -->
@@ -349,6 +355,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div style="font-size:11.5px;color:var(--sub);margin:-4px 0 8px">保存 AI 生成的面试备战手册（HTML 文件）：登录账号后自动云同步，换设备登录不丢失。</div>
     <div id="manualList"></div>
   </div>
+  <div class="desk-pet"><img src="assets/pet-interview.png" alt="深棕熊弟"></div>
 </section>
 
 <!-- ============ 页3：版本管理 ============ -->
@@ -364,6 +371,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     </h2>
     <div id="verList"></div>
   </div>
+  <div class="desk-pet"><img src="assets/pet-versions.png" alt="熊妹"></div>
 </section>
 
 <!-- ============ 页4：投递看板 ============ -->
@@ -390,6 +398,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div class="board-stats" id="boardStats"></div>
   </div>
   <div class="board" id="board"></div>
+  <div class="desk-pet"><img src="assets/pet-kanban.png" alt="鼻孔鸡"></div>
 </section>
 
 </div>
