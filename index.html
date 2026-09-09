@@ -772,8 +772,18 @@ function switchTab(p){
 /* ---------- Toast / Modal ---------- */
 let toastTimer=null;
 function toast(msg,type){const t=$('#toast');t.textContent=msg;t.className='toast show '+(type||'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600)}
-function openModal(title,body,foot){$('#mTitle').innerHTML=title;$('#mBody').innerHTML=body;$('#mFoot').innerHTML=foot||'<button class="btn btn-ghost" onclick="closeModal()">关闭</button>';$('#mask').classList.add('show')}
-function closeModal(){$('#mask').classList.remove('show')}
+function openModal(title,body,foot,opts){
+  opts=opts||{};
+  const modal=$('#mask .modal');
+  if(opts.width){modal.dataset.tempWidth=opts.width;modal.style.maxWidth=opts.width}
+  else if(modal.dataset.tempWidth){delete modal.dataset.tempWidth;modal.style.maxWidth=''}
+  $('#mTitle').innerHTML=title;$('#mBody').innerHTML=body;$('#mFoot').innerHTML=foot||'<button class="btn btn-ghost" onclick="closeModal()">关闭</button>';$('#mask').classList.add('show')
+}
+function closeModal(){
+  $('#mask').classList.remove('show');
+  const modal=$('#mask .modal');
+  if(modal&&modal.dataset.tempWidth){delete modal.dataset.tempWidth;modal.style.maxWidth=''}
+}
 $('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal()});
 
 /* ================================================================
@@ -2478,7 +2488,7 @@ function welcome(){
       <button class="btn btn-p" onclick="cloud.gotoAuth('signup')">注册新账号</button>
       <button class="btn btn-soft" onclick="cloud.gotoAuth('login')">登录</button>
       <button class="btn btn-ghost" onclick="closeModal()">先随便逛逛</button>
-    </div>`);
+    </div>`,{width:'420px'});
 }
 function maybeWelcome(){
   if(cloud.user||welcomeDone())return;      // 已登录 / 本次会话已看过 → 不打扰
