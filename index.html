@@ -213,7 +213,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div class="gate-title">秋招工作台</div>
     <div class="gate-sub">这个工作台目前只对内部同学开放。<br>请输入分享者告知的<b>访问口令</b>：</div>
     <input class="gate-in" id="gatePwd" type="password" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')gateTry()">
-    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="gateTry()">🔓 进入工作台</button>
+    <button class="btn btn-p" style="width:100%;justify-content:center" onclick="gateTry()">进入工作台</button>
     <div class="gate-hint">🔒 数据只保存在你自己的浏览器与账号云端，同学之间互不可见；<br>注册账号后换设备也能同步回来。</div>
   </div>
 </div>
@@ -226,20 +226,20 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
   </div>
   <div class="chips" id="topChips"></div>
   <div class="topbtns">
-    <button class="acct-btn off" id="acctBtn" onclick="cloud.openAccountPanel()">☁️ 云端账号</button>
-    <button class="btn btn-ghost btn-sm" onclick="seedSample()">🧪 示例数据</button>
-    <button class="btn btn-ghost btn-sm" onclick="exportAll()">⬇️ 备份</button>
-    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">⬆️ 恢复</button>
+    <button class="acct-btn off" id="acctBtn" onclick="cloud.openAccountPanel()">云端账号</button>
+    <button class="btn btn-ghost btn-sm" onclick="seedSample()">示例数据</button>
+    <button class="btn btn-ghost btn-sm" onclick="exportAll()">备份</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">恢复</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importAll(this)">
   </div>
 </header>
 
 <!-- ============ Tabs ============ -->
 <nav class="tabs">
-  <button class="tab active" data-page="resume" onclick="switchTab('resume')">📄 简历智能优化</button>
-  <button class="tab" data-page="versions" onclick="switchTab('versions')">🗂️ 简历版本管理</button>
-  <button class="tab" data-page="interview" onclick="switchTab('interview')">🎤 面试前期准备</button>
-  <button class="tab" data-page="kanban" onclick="switchTab('kanban')">📊 秋招投递看板</button>
+  <button class="tab active" data-page="resume" onclick="switchTab('resume')">简历智能优化</button>
+  <button class="tab" data-page="versions" onclick="switchTab('versions')">简历版本管理</button>
+  <button class="tab" data-page="interview" onclick="switchTab('interview')">面试前期准备</button>
+  <button class="tab" data-page="kanban" onclick="switchTab('kanban')">秋招投递看板</button>
 </nav>
 
 <div class="wrap">
@@ -253,7 +253,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
         <h2><span class="dot"></span>基本信息</h2>
         <input type="file" id="resumeFile" accept=".pdf,.docx,.txt,.md,.html,.htm" style="display:none" onchange="handleResumeFile(this)">
         <div class="rowbtns" style="margin:-4px 0 12px">
-          <button class="btn btn-soft btn-sm" onclick="document.getElementById('resumeFile').click()">📎 上传已有简历（PDF / Word / txt / md / html）</button>
+          <button class="btn btn-soft btn-sm" onclick="document.getElementById('resumeFile').click()">上传已有简历（PDF / Word / txt / md / html）</button>
         </div>
         <div class="grid3">
           <div><label>姓名</label><input data-p="name" placeholder="张三"></div>
@@ -294,7 +294,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
         <div class="field-full"><label>荣誉奖项</label><textarea data-p="honors" placeholder="国家奖学金；挑战杯省赛二等奖…"></textarea></div>
         <div class="field-full" style="margin-bottom:0"><label>自我评价</label><textarea data-p="selfEval" placeholder="对用户与数据敏感，抗压能力强…"></textarea></div>
         <div class="rowbtns" style="margin-top:12px">
-          <button class="btn btn-p" onclick="saveAsVersion()">💾 保存为简历版本</button>
+          <button class="btn btn-p" onclick="saveAsVersion()">保存为简历版本</button>
           <span style="font-size:11.5px;color:var(--sub)">填完点保存 → 自动存进「简历版本管理」，可随时恢复 / 编辑</span>
         </div>
       </div>
@@ -310,8 +310,8 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
         <label>粘贴完整 JD（岗位职责 + 任职要求）</label>
         <textarea id="jdInput" placeholder="把招聘官网 / BOSS 直聘上的 JD 原文粘贴到这里…"></textarea>
         <div class="rowbtns">
-          <button class="btn btn-p" onclick="doOptimize()">✨ 开始智能优化</button>
-          <button class="btn btn-ghost" onclick="doOptimize(true)">👁️ 仅分析（不存版本）</button>
+          <button class="btn btn-p" onclick="doOptimize()">开始智能优化</button>
+          <button class="btn btn-ghost" onclick="doOptimize(true)">仅分析（不存版本）</button>
         </div>
       </div>
 
@@ -326,7 +326,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
           <label style="display:flex;align-items:center;gap:5px;margin:0;cursor:pointer;font-size:12px">
             <input type="checkbox" id="autoKw" checked style="width:auto"> 自动将缺失 JD 关键词补充到技能栏（<b style="color:#B47409">◈标记</b>，请确认真实掌握）
           </label>
-          <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="exportResumeWord()">📥 导出 Word 简历</button>
+          <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="exportResumeWord()">导出 Word 简历</button>
         </div>
         <div style="max-height:640px;overflow:auto"><div class="a4" id="resumePreview"></div></div>
       </div>
@@ -346,15 +346,15 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     </div>
     <div style="margin-top:10px"><label>岗位 JD（与简历优化共用）</label><textarea id="ivJd" placeholder="粘贴 JD 原文，生成的题目会更贴合岗位…"></textarea></div>
     <div class="rowbtns">
-      <button class="btn btn-p" onclick="generateInterview()">🎤 生成面试题与参考回答</button>
-      <button class="btn btn-ghost" onclick="exportInterviewWord()">📥 导出 Word 面试手册</button>
+      <button class="btn btn-p" onclick="generateInterview()">生成面试题与参考回答</button>
+      <button class="btn btn-ghost" onclick="exportInterviewWord()">导出 Word 面试手册</button>
     </div>
   </div>
-  <div class="card"><h2><span class="dot"></span>面试题库</h2><div id="ivResult"><div class="empty"><div class="big">🎯</div>选择版本并点击上方按钮，开始生成专属面试题</div></div></div>
+  <div class="card"><h2><span class="dot"></span>面试题库</h2><div id="ivResult"><div class="empty">选择版本并点击上方按钮，开始生成专属面试题</div></div></div>
   <div class="card" style="margin-top:16px">
     <h2><span class="dot"></span>📚 面试手册库
       <span style="margin-left:auto;display:flex;gap:8px">
-        <button class="btn btn-soft btn-sm" onclick="document.getElementById('manualFile').click()">⬆️ 上传面试手册</button>
+        <button class="btn btn-soft btn-sm" onclick="document.getElementById('manualFile').click()">上传面试手册</button>
         <input type="file" id="manualFile" accept=".html,.htm" style="display:none" onchange="manualsUpload(this)">
       </span>
     </h2>
@@ -370,7 +370,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <h2><span class="dot"></span>历史版本
       <span style="margin-left:auto;display:flex;gap:8px">
         <button class="btn btn-p btn-sm" onclick="newVersion()">＋ 新建版本</button>
-        <button class="btn btn-soft btn-sm" onclick="document.getElementById('verFile').click()">⬆️ 导入版本</button>
+        <button class="btn btn-soft btn-sm" onclick="document.getElementById('verFile').click()">导入版本</button>
         <input type="file" id="verFile" accept=".json" style="display:none" onchange="importVersion(this)">
       </span>
     </h2>
@@ -532,7 +532,7 @@ const cloud={
       <div style="border:1px dashed var(--line);border-radius:10px;padding:8px;margin:10px 0">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
           <span style="font-size:12px;font-weight:700">📦 一键建表 SQL（第 2 步用）</span>
-          <button class="btn btn-soft btn-sm" style="font-size:11px" onclick="cloud.copySql()">📋 复制 SQL</button>
+          <button class="btn btn-soft btn-sm" style="font-size:11px" onclick="cloud.copySql()">复制 SQL</button>
         </div>
         <textarea id="sbSql" readonly spellcheck="false" style="width:100%;height:88px;font:11px/1.5 monospace;background:var(--bg2,#f6f7f9);border:1px solid var(--line);border-radius:6px;padding:6px;box-sizing:border-box">${esc(SB_MAKE_SQL)}</textarea>
       </div>
@@ -541,7 +541,7 @@ const cloud={
       <div class="lc-warn">🔒 只填浏览器可用的 <b>publishable / anon public</b>，千万别复制 <b>secret key / service_role</b>（管理员密钥，泄露等于交出自己的数据）。每行数据由数据库 RLS 规则隔离，账号之间互不可见。</div>
     </div>`;
     openModal('☁️ 开启云端（一次性配置）',body,
-      `<button class="btn btn-ghost" onclick="cloud.testSetup()">🔌 测试并保存</button><button class="btn btn-ghost" onclick="closeModal()">稍后再说</button>`);
+      `<button class="btn btn-ghost" onclick="cloud.testSetup()">测试并保存</button><button class="btn btn-ghost" onclick="closeModal()">稍后再说</button>`);
   },
   async testSetup(){
     const url=$('#sbUrl').value.trim().replace(/\/+$/,''),anon=$('#sbAnon').value.trim();
@@ -576,11 +576,11 @@ const cloud={
       <div class="lc-note">✅ 云端已连接。<b>注册账号</b>后，你的简历、版本、面试题、投递看板会隔离地存到云端 —— 换电脑/手机登录同一账号即可找回；别人登录自己账号<b>看不到你的任何数据</b>。</div>
       <div><label style="font-size:12px;font-weight:700">邮箱（注册时的邮箱）</label><input class="lc-in" id="lcU" type="email" autocomplete="email" placeholder="如 name@qq.com"></div>
       <div><label style="font-size:12px;font-weight:700">密码</label><input class="lc-in" id="lcP" type="password" autocomplete="current-password" placeholder="至少 6 位"></div>
-      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doLogin()">🔓 登录</button></div>
+      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doLogin()">登录</button></div>
       <div style="font-size:12px;color:var(--sub);text-align:center">还没有账号？<a style="color:var(--primary);font-weight:700;cursor:pointer" onclick="cloud.viewSignup()">点此注册（免费）</a></div>
     </div>`;
     openModal('🔓 登录云端账号',body,
-      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">⚙️ 更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">暂不登录</button>`);
+      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">暂不登录</button>`);
   },
   viewSignup(msg){
     const body=`<div class="lc-form">
@@ -588,11 +588,11 @@ const cloud={
       <div><label style="font-size:12px;font-weight:700">邮箱（建议 QQ / 163 / 学校邮箱，它就是你的登录账号）</label><input class="lc-in" id="lcU" type="email" autocomplete="email" placeholder="如 name@qq.com"></div>
       <div><label style="font-size:12px;font-weight:700">密码</label><input class="lc-in" id="lcP" type="password" autocomplete="new-password" placeholder="至少 6 位"></div>
       <div><label style="font-size:12px;font-weight:700">再输一次密码</label><input class="lc-in" id="lcP2" type="password" placeholder="与上面一致"></div>
-      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doSignup()">📝 注册并登录</button></div>
+      <div class="lc-row"><button class="btn btn-p" style="flex:1;justify-content:center" onclick="cloud.doSignup()">注册并登录</button></div>
       <div style="font-size:12px;color:var(--sub);text-align:center">已有账号？<a style="color:var(--primary);font-weight:700;cursor:pointer" onclick="cloud.viewLogin()">直接登录</a></div>
     </div>`;
     openModal('📝 注册新账号',body,
-      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">⚙️ 更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+      `<button class="btn btn-ghost" onclick="cloud.viewSetup()">更换云配置</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
   },
   viewProfile(msg){
     const u=this.user;if(!u)return this.viewLogin();
@@ -611,7 +611,7 @@ const cloud={
         · 未登录时数据只存本机，不影响单独使用
       </div>
       <div class="lc-row">
-        <button class="btn btn-soft" style="flex:1;justify-content:center" onclick="cloud.syncNow(true)">🔄 立即同步</button>
+        <button class="btn btn-soft" style="flex:1;justify-content:center" onclick="cloud.syncNow(true)">立即同步</button>
         <button class="btn btn-danger" onclick="cloud.doLogout()">退出登录</button>
       </div>
       <div class="lc-row" style="justify-content:space-between;font-size:11px;color:var(--sub)">
@@ -692,7 +692,7 @@ const cloud={
       <br>（不迁移也可：本机数据会保留给"未登录"状态使用，但不会进入你的账号）</div>
     </div>`;
     openModal('发现本机数据',body,
-      `<button class="btn btn-p" onclick="cloud.migrateLocal()">⬆️ 上传到我的账号</button><button class="btn btn-ghost" onclick="closeModal()">不迁移</button>`);
+      `<button class="btn btn-p" onclick="cloud.migrateLocal()">上传到我的账号</button><button class="btn btn-ghost" onclick="closeModal()">不迁移</button>`);
   },
   migrateLocal(){try{this.saveTs();this.syncNow(true)}catch(e){toast('上传失败：'+sbErr(e),'err')}this.openAccountPanel();toast('已上传到账号云端','ok')},
   askChoose(remote){
@@ -1302,7 +1302,7 @@ function openParseConfirm(R,ext){
     <label style="margin-top:12px;font-weight:700;color:var(--ink)">校园经历（${(R.campus||[]).length}段）</label>
     <div id="pmCampus">${(R.campus||[]).map(e=>pmEntryHTML('campus',e)).join('')}</div>
     <button class="addbtn" onclick="addPmEntry('campus')">＋ 添加一段校园经历</button>`,
-    `<button class="btn btn-p" onclick="applyParseConfirm()">✅ 确认填入表单</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+    `<button class="btn btn-p" onclick="applyParseConfirm()">确认填入表单</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
 }
 function pmEduHTML(e){
   e=e||{};
@@ -1736,7 +1736,7 @@ function renderAnalysis(a){
   html+=`<div style="font-size:12px;font-weight:700;margin:12px 0 6px">🎯 1 句话核心推荐语（求职信/自我介绍可用）</div>`;
   html+=`<div style="background:#fff;border:1px dashed #464704;border-radius:8px;padding:10px 12px;font-size:12.5px;line-height:1.7;position:relative">
     <div id="oneLinerText">${esc(coach.oneLiner)}</div>
-    <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('oneLinerText').textContent);toast('已复制到剪贴板','ok')" style="position:absolute;top:8px;right:8px;background:#EBEDDF;color:#3A3B04;border:none;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">📋 复制</button>
+    <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText(document.getElementById('oneLinerText').textContent);toast('已复制到剪贴板','ok')" style="position:absolute;top:8px;right:8px;background:#EBEDDF;color:#3A3B04;border:none;padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer">复制</button>
   </div>`;
 
   // 自我评价三选一
@@ -1896,7 +1896,7 @@ function createVersion(a){
 ================================================================ */
 function renderVersions(){
   const box=$('#verList');
-  if(!state.versions.length){box.innerHTML='<div class="empty"><div class="big">🗂️</div>还没有版本 —— 在简历页填完点「💾 保存为简历版本」，或点右上角「＋ 新建版本」手动创建</div>';return}
+  if(!state.versions.length){box.innerHTML='<div class="empty">还没有版本 —— 在简历页填完点「💾 保存为简历版本」，或点右上角「＋ 新建版本」手动创建</div>';return}
   box.innerHTML=state.versions.map(v=>{
     const sp=v.score>=75?'sp-hi':v.score>=45?'sp-mid':'sp-lo';
     const d=new Date(v.ts),ds=d.toLocaleDateString('zh-CN')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
@@ -1909,12 +1909,12 @@ function renderVersions(){
       </div>
       <span class="score-pill ${sp}">${(v.kws&&v.kws.length)?v.score+'%':'—'}</span>
       <div class="ver-ops">
-        <button class="btn btn-p btn-sm" onclick="editVersion('${v.id}')">✏️ 编辑内容</button>
-        <button class="btn btn-soft btn-sm" onclick="restoreVersion('${v.id}')">↩️ 恢复到编辑器</button>
-        <button class="btn btn-ghost btn-sm" onclick="previewVersion('${v.id}')">👁️ 预览</button>
-        <button class="btn btn-ghost btn-sm" onclick="renameVersion('${v.id}')">✏️ 命名</button>
-        <button class="btn btn-ghost btn-sm" onclick="exportVerWord('${v.id}')">📥 Word</button>
-        <button class="btn btn-ghost btn-sm" onclick="exportVerJson('${v.id}')">💾 JSON</button>
+        <button class="btn btn-p btn-sm" onclick="editVersion('${v.id}')">编辑内容</button>
+        <button class="btn btn-soft btn-sm" onclick="restoreVersion('${v.id}')">恢复到编辑器</button>
+        <button class="btn btn-ghost btn-sm" onclick="previewVersion('${v.id}')">预览</button>
+        <button class="btn btn-ghost btn-sm" onclick="renameVersion('${v.id}')">命名</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportVerWord('${v.id}')">Word</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportVerJson('${v.id}')">JSON</button>
         <button class="btn btn-danger btn-sm" onclick="deleteVersion('${v.id}')">删除</button>
       </div>
     </div>`;
@@ -1934,7 +1934,7 @@ function previewVersion(id){
   const html=buildResumeHTML(v.profile,a,{autoKw:false});
   openModal('预览 '+esc(v.name)+' · '+esc(v.company||'')+' '+esc(v.position||''),
     `<div style="max-height:60vh;overflow:auto"><div class="a4">${html}</div></div>`,
-    `<button class="btn btn-p" onclick="exportVerWord('${v.id}')">📥 导出 Word</button><button class="btn btn-ghost" onclick="closeModal()">关闭</button>`);
+    `<button class="btn btn-p" onclick="exportVerWord('${v.id}')">导出 Word</button><button class="btn btn-ghost" onclick="closeModal()">关闭</button>`);
 }
 function renameVersion(id){
   const v=findV(id);if(!v)return;
@@ -2016,7 +2016,7 @@ function editVersion(id){
     ${verEntryBlock('projects','项目经历',p.projects)}
     ${verEntryBlock('campus','校园经历',p.campus)}`;
   openModal('✏️ 编辑版本 '+esc(v.name),body,
-    `<button class="btn btn-p" onclick="saveVersionEdit()">💾 保存修改</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+    `<button class="btn btn-p" onclick="saveVersionEdit()">保存修改</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
 }
 function verEntryBlock(kind,label,arr){
   return `<label style="margin-top:14px;font-weight:700;color:var(--ink);display:block">${label}（${arr.length}）</label>
@@ -2231,7 +2231,7 @@ function generateInterview(){
 }
 function renderInterview(){
   const iv=state.interview;
-  if(!iv){$('#ivResult').innerHTML='<div class="empty"><div class="big">🎯</div>选择版本并点击上方按钮，开始生成专属面试题</div>';return}
+  if(!iv){$('#ivResult').innerHTML='<div class="empty">选择版本并点击上方按钮，开始生成专属面试题</div>';return}
   $('#ivResult').innerHTML=`<div class="hint" style="margin-bottom:14px">岗位方向：<b>${esc(iv.cat)}</b> ｜ 目标：<b>${esc(iv.company||'—')}</b> · ${esc(iv.position)} ｜ 点击题目展开参考回答</div>`+
     iv.groups.map(g=>`<div class="qa-group"><h3>${g.title}（${g.items.length}题）</h3>`+
       g.items.map(it=>`<details class="qa"><summary>${esc(it.q)}</summary><div class="body">
@@ -2449,18 +2449,18 @@ function manualsEnsure(){if(!Array.isArray(state.manuals))state.manuals=[];retur
 function renderManuals(){
   const box=$('#manualList');if(!box)return;
   const list=manualsEnsure();
-  if(!list.length){box.innerHTML='<div class="empty"><div class="big">📚</div>还没有手册 —— 让 AI 生成「面试备战手册」后，把下载的 HTML 文件上传到这里保存</div>';return}
+  if(!list.length){box.innerHTML='<div class="empty">还没有手册 —— 让 AI 生成「面试备战手册」后，把下载的 HTML 文件上传到这里保存</div>';return}
   box.innerHTML=list.map(m=>{
     const d=new Date(m.at),ds=d.toLocaleDateString('zh-CN')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
     return `<div class="ver-item">
-      <div class="ver-badge">📕</div>
+      <div class="ver-badge">手册</div>
       <div class="ver-main">
         <div class="t">${esc(m.name)}</div>
         <div class="m">${ds} · ${(m.size/1024).toFixed(0)}KB</div>
       </div>
       <div class="ver-ops">
-        <button class="btn btn-soft btn-sm" onclick="manualView('${m.id}')">👁️ 查看</button>
-        <button class="btn btn-ghost btn-sm" onclick="manualDownload('${m.id}')">📥 下载</button>
+        <button class="btn btn-soft btn-sm" onclick="manualView('${m.id}')">查看</button>
+        <button class="btn btn-ghost btn-sm" onclick="manualDownload('${m.id}')">下载</button>
         <button class="btn btn-danger btn-sm" onclick="manualDel('${m.id}')">删除</button>
       </div>
     </div>`;
@@ -2551,8 +2551,8 @@ function welcome(){
   </div>`;
   openModal('☁️ 账号',body,
     `<div style="display:flex;justify-content:center;gap:10px;flex:1;">
-      <button class="btn btn-p" onclick="cloud.gotoAuth('signup')">📝 注册新账号</button>
-      <button class="btn btn-soft" onclick="cloud.gotoAuth('login')">🔓 登录</button>
+      <button class="btn btn-p" onclick="cloud.gotoAuth('signup')">注册新账号</button>
+      <button class="btn btn-soft" onclick="cloud.gotoAuth('login')">登录</button>
       <button class="btn btn-ghost" onclick="closeModal()">先随便逛逛</button>
     </div>`);
 }
