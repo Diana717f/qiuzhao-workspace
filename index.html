@@ -133,19 +133,32 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .board-stats{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
 .bstat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 13px;font-size:12px;color:var(--sub)}
 .bstat b{font-size:15px;color:var(--ink);margin-right:2px}
-.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(178px,1fr);gap:10px;overflow-x:auto;padding-bottom:8px;align-items:start}
-.col{background:#EDEBE1;border-radius:12px;padding:8px;min-height:320px;transition:background .15s,transform .15s}
-.col.over{background:#E1DFD3;transform:scale(1.015)}
-.col-h{display:flex;align-items:center;gap:6px;padding:4px 6px 8px;font-size:12.5px;font-weight:800}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(168px,1fr);gap:9px;overflow-x:auto;padding-bottom:8px;align-items:stretch}
+.col{background:#EDEBE1;border-radius:12px;padding:7px;height:var(--board-h,60vh);min-height:300px;display:flex;flex-direction:column;transition:background .15s,box-shadow .15s}
+.col.over{background:#E1DFD3;box-shadow:inset 0 0 0 2px var(--primary)}
+.col-h{display:flex;align-items:center;gap:6px;padding:4px 6px 7px;font-size:12.5px;font-weight:800;flex-shrink:0}
 .col-h .cnt{margin-left:auto;font-size:11px;color:#fff;border-radius:99px;padding:1px 8px;font-weight:700}
-.col-list{min-height:60px;border-radius:8px}
-.app-card{background:#fff;border-radius:10px;padding:9px 11px;margin-bottom:7px;box-shadow:0 1px 4px rgba(66,57,38,.08);cursor:pointer;border-top:3px solid transparent;transition:transform .12s,box-shadow .12s}
-.app-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(66,57,38,.13)}
+.col-list{flex:1;min-height:40px;border-radius:8px;overflow-y:auto;overflow-x:hidden;padding-right:2px}
+.col-list::-webkit-scrollbar{width:6px}
+.col-list::-webkit-scrollbar-thumb{background:#CFCBBB;border-radius:99px}
+.col-list::-webkit-scrollbar-thumb:hover{background:#B8B3A0}
+.col-list::-webkit-scrollbar-track{background:transparent}
+.col-more{font-size:11px;color:var(--sub);text-align:center;padding:6px 0;cursor:pointer;border-radius:6px}
+.col-more:hover{background:#E3E1D5;color:var(--ink)}
+.col-empty{font-size:11px;color:#B5B0A0;text-align:center;padding:14px 0}
+.app-card{background:#fff;border-radius:8px;padding:7px 9px;margin-bottom:6px;box-shadow:0 1px 3px rgba(66,57,38,.08);cursor:pointer;border-top:3px solid transparent;transition:transform .12s,box-shadow .12s;position:relative}
+.app-card:hover{transform:translateY(-1px);box-shadow:0 3px 9px rgba(66,57,38,.13)}
 .app-card.dragging{opacity:.4}
-.app-card .co{font-weight:800;font-size:13px}
-.app-card .po{font-size:11.5px;color:var(--sub);margin:1px 0 5px}
-.app-card .meta{display:flex;gap:5px;flex-wrap:wrap;font-size:10px;color:#888}
-.app-card .meta span{background:var(--bg);border-radius:5px;padding:1px 6px}
+.app-card .co{font-weight:800;font-size:12.5px;line-height:1.3}
+.app-card .po{font-size:11px;color:var(--sub);margin:1px 0 4px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.app-card .meta{display:flex;gap:4px;flex-wrap:wrap;font-size:10px;color:#888}
+.app-card .meta span{background:var(--bg);border-radius:5px;padding:1px 5px}
+.app-card .note{font-size:10px;color:#A5A8B8;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:9px 11px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.board-filter input,.board-filter select{width:auto;flex:0 0 auto;padding:5px 9px;font-size:12px;border-radius:7px}
+.board-filter input{flex:1;min-width:150px}
+.board-filter .fstat{font-size:11.5px;color:var(--sub);margin-left:auto;white-space:nowrap}
+.board-filter .fstat b{color:var(--primary);font-size:13px}
 .app-card .arrow{position:absolute;right:8px;top:9px;font-size:11px;color:#C8C2B4;opacity:0;transition:opacity .15s}
 .app-card:hover .arrow{opacity:1}
 
@@ -354,7 +367,20 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px">
       <h2 style="margin:0"><span class="dot"></span>秋招全局一览</h2>
       <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="openAppModal()">＋ 记录一次投递</button>
+      <button class="btn btn-soft btn-sm" onclick="openBulkImport()">批量导入</button>
       <span style="font-size:11.5px;color:var(--sub)">提示：卡片可拖拽到任意状态列，或点击卡片编辑 / 推进状态</span>
+    </div>
+    <div class="board-filter">
+      <input id="bfQ" placeholder="搜索公司 / 岗位 / 备注" oninput="onBoardFilter()">
+      <select id="bfCh" onchange="onBoardFilter()"></select>
+      <select id="bfPeriod" onchange="onBoardFilter()">
+        <option value="">全部时间</option>
+        <option value="7">最近 7 天</option>
+        <option value="30">最近 30 天</option>
+        <option value="90">最近 90 天</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="resetBoardFilter()">清除筛选</button>
+      <span class="fstat" id="bfStat"></span>
     </div>
     <div class="board-stats" id="boardStats"></div>
   </div>
@@ -2217,13 +2243,49 @@ const STATUSES=['待投递','已投递','一面','二面','终面','offer','拒�
 const ST_COLOR={'待投递':'#94A3B8','已投递':'#3B82F6','一面':'#06B6D4','二面':'#8B5CF6','终面':'#F59E0B','offer':'#10B981','拒信':'#EF4444','流程终止':'#64748B'};
 const CHANNELS=['官网','校招网站','BOSS直聘','实习僧','牛客','内推','招聘会','猎聘','其他'];
 let dragId=null,justDragged=false;
+const BOARD_PAGE=60;
+let boardShown={};
+function boardFiltered(){
+  const q=($('#bfQ')&&$('#bfQ').value||'').trim().toLowerCase();
+  const ch=($('#bfCh')&&$('#bfCh').value)||'';
+  const pd=($('#bfPeriod')&&$('#bfPeriod').value)||'';
+  const cut=pd?Date.now()-parseInt(pd,10)*864e5:0;
+  return state.applications.filter(a=>{
+    if(ch&&a.channel!==ch)return false;
+    if(pd){
+      const t=a.date?new Date(a.date+'T00:00:00').getTime():(a.history&&a.history.length?a.history[0].ts:0);
+      if(!t||t<cut)return false;
+    }
+    if(q){
+      const hay=((a.company||'')+' '+(a.position||'')+' '+(a.notes||'')+' '+(a.channel||'')).toLowerCase();
+      if(hay.indexOf(q)<0)return false;
+    }
+    return true;
+  });
+}
+function onBoardFilter(){boardShown={};renderBoard();renderBoardStats()}
+function resetBoardFilter(){
+  const q=$('#bfQ'),ch=$('#bfCh'),pd=$('#bfPeriod');
+  if(q)q.value='';if(ch)ch.value='';if(pd)pd.value='';
+  boardShown={};renderBoard();renderBoardStats();
+}
+function initBoardFilter(){
+  const ch=$('#bfCh');
+  if(ch)ch.innerHTML='<option value="">全部渠道</option>'+CHANNELS.map(c=>`<option>${c}</option>`).join('');
+}
 function renderBoard(){
   const b=$('#board');
+  const list=boardFiltered();
   b.innerHTML=STATUSES.map(st=>{
-    const apps=state.applications.filter(a=>a.status===st);
+    const apps=list.filter(a=>a.status===st);
+    const cap=boardShown[st]||BOARD_PAGE;
+    const slice=apps.slice(0,cap);
+    const rest=apps.length-slice.length;
+    const more=rest>0?`<div class="col-more" onclick="showMoreCol('${st}')">还有 ${rest} 条 · 点击加载更多</div>`:'';
+    const empty=!apps.length?`<div class="col-empty">${list.length?'无匹配':'暂无'}</div>`:'';
     return `<div class="col" data-st="${st}">
       <div class="col-h" style="color:${ST_COLOR[st]}"><span style="width:8px;height:8px;border-radius:3px;background:${ST_COLOR[st]};display:inline-block"></span>${st}<span class="cnt" style="background:${ST_COLOR[st]}">${apps.length}</span></div>
-      <div class="col-list">${apps.map(a=>appCardHTML(a)).join('')}</div>
+      <div class="col-list">${slice.map(a=>appCardHTML(a)).join('')}${empty}${more}</div>
     </div>`;
   }).join('');
   // 绑定拖拽
@@ -2236,13 +2298,14 @@ function renderBoard(){
     });
   });
 }
+function showMoreCol(st){boardShown[st]=(boardShown[st]||BOARD_PAGE)+BOARD_PAGE;renderBoard()}
 function appCardHTML(a){
-  const ver=a.version?'<span>📄 '+esc(a.version)+'</span>':'';
+  const ver=a.version?'<span>简历 '+esc(a.version)+'</span>':'';
   return `<div class="app-card" draggable="true" data-id="${a.id}" style="border-top-color:${ST_COLOR[a.status]||'#ccc'}" onclick="openAppModal('${a.id}')">
     <div class="co">${esc(a.company)}</div>
     <div class="po">${esc(a.position)}</div>
-    <div class="meta">${a.date?'<span>📅 '+esc(a.date)+'</span>':''}${a.channel?'<span>📡 '+esc(a.channel)+'</span>':''}${ver}</div>
-    ${a.notes?'<div style="font-size:10.5px;color:#A5A8B8;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">📝 '+esc(a.notes)+'</div>':''}
+    <div class="meta">${a.date?'<span>'+esc(a.date)+'</span>':''}${a.channel?'<span>'+esc(a.channel)+'</span>':''}${ver}</div>
+    ${a.notes?'<div class="note">'+esc(a.notes)+'</div>':''}
   </div>`;
 }
 document.addEventListener('dragstart',e=>{
@@ -2266,6 +2329,11 @@ function renderBoardStats(){
      <span class="bstat"><b>${cnt('流程终止')}</b>流程终止</span>
      <span class="bstat" style="background:var(--primary-soft);border-color:#D9DCFF">简历通过率（进面/投递）<b style="color:var(--primary)">${rate(s.filter(a=>['一面','二面','终面','offer','拒信','流程终止'].includes(a.status)).length,inFlow('已投递'))}</b></span>
      <span class="bstat" style="background:var(--green-soft);border-color:#C9EEDF">Offer 率 <b style="color:var(--green)">${rate(cnt('offer'),inFlow('已投递'))}</b></span>`;
+  const el=$('#bfStat');
+  if(el){
+    const f=(typeof boardFiltered==='function')?boardFiltered().length:s.length;
+    el.innerHTML=(f===s.length)?`共 <b>${s.length}</b> 条`:`筛选出 <b>${f}</b> / ${s.length} 条`;
+  }
 }
 function renderTopChips(){
   const s=state.applications;
@@ -2321,6 +2389,96 @@ function saveApp(id){
 function deleteApp(id){
   state.applications=state.applications.filter(x=>x.id!==id);
   save();renderBoard();renderBoardStats();renderTopChips();closeModal();toast('记录已删除');
+}
+
+/* ---------- 批量导入（海投场景：一次性录入几十上百条） ---------- */
+let bulkRows=[];
+function normDate(s){
+  s=(s||'').trim();
+  if(!s)return '';
+  let m=s.match(/(\d{4})\s*[-\/.年]\s*(\d{1,2})\s*[-\/.月]\s*(\d{1,2})/);
+  if(m)return m[1]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[3]).padStart(2,'0');
+  m=s.match(/^(\d{1,2})\s*[-\/.月]\s*(\d{1,2})/);
+  if(m)return new Date().getFullYear()+'-'+String(m[1]).padStart(2,'0')+'-'+String(m[2]).padStart(2,'0');
+  return '';
+}
+function parseBulk(text){
+  const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  if(!lines.length)return [];
+  let sep='\t';
+  const f=lines[0];
+  if(f.indexOf('\t')<0){
+    if(f.indexOf(',')>=0)sep=',';
+    else if(f.indexOf('|')>=0)sep='|';
+    else if(/\s{2,}/.test(f))sep='  ';
+  }
+  const split=l=>(sep==='  '?l.split(/\s{2,}/):l.split(sep)).map(s=>s.trim().replace(/^["']|["']$/g,''));
+  let rows=lines.map(split);
+  let map={co:0,po:1,ch:2,date:3,st:4,note:5};
+  const head=rows[0].map(s=>s.replace(/[\s*：:（）()]/g,''));
+  // 仅当单元格「本身就是字段名」才算命中（长度接近），避免「未知渠道公司」这类数据被误判为表头
+  const isField=(cell,names)=>names.some(n=>{
+    const c=cell.toLowerCase();
+    return c.indexOf(n)>=0&&c.length<=n.length+2;
+  });
+  const find=names=>head.findIndex(hh=>isField(hh,names));
+  const tCo=find(['公司','企业','company']),tPo=find(['岗位','职位','position','job']),
+        tCh=find(['渠道','来源','channel','平台']),tDt=find(['日期','时间','date']),
+        tSt=find(['状态','进度','status']),tNo=find(['备注','说明','note']);
+  // 至少识别出 2 个已知字段名才算表头
+  if([tCo,tPo,tCh,tDt,tSt,tNo].filter(i=>i>=0).length>=2){
+    map={co:tCo,po:tPo,ch:tCh,date:tDt,st:tSt,note:tNo};
+    rows=rows.slice(1);
+  }
+  const get=(r,i)=>(i>=0&&i<r.length)?r[i]:'';
+  const out=[];
+  rows.forEach(r=>{
+    const co=get(r,map.co),po=get(r,map.po);
+    if(!co&&!po)return;
+    let st=get(r,map.st);
+    if(!STATUSES.includes(st))st=st?((STATUSES.indexOf(st)>=0)?st:'已投递'):'已投递';
+    let ch=get(r,map.ch);
+    if(ch&&!CHANNELS.includes(ch))ch='其他';
+    out.push({company:co||'未填写',position:po||'未填写',date:normDate(get(r,map.date)),channel:ch,status:st,version:'',notes:get(r,map.note)});
+  });
+  return out;
+}
+function openBulkImport(){
+  openModal('批量导入投递记录',
+    `<div style="font-size:12px;color:var(--sub);line-height:1.75;margin-bottom:10px">
+      从 Excel / 飞书 / 腾讯文档 / 记事本里复制表格，直接粘贴到下面。<br>
+      支持 <b>Tab 分隔</b>、<b>逗号 CSV</b>、<b>竖线 |</b> 分隔。第一行如果是表头（含「公司」字样）会自动识别列顺序。<br>
+      默认列顺序：<b>公司 · 岗位 · 渠道 · 日期 · 状态 · 备注</b>（只有前两列必填）
+    </div>
+    <textarea id="bulkText" style="min-height:190px;font-family:ui-monospace,Menlo,monospace;font-size:12px" placeholder="腾讯&#9;产品运营&#9;官网&#9;2026-09-01&#9;已投递&#9;内推人张三&#10;字节跳动&#9;内容运营&#9;BOSS直聘&#9;2026/9/3"></textarea>
+    <div style="margin-top:8px;font-size:11.5px;color:var(--sub)">状态可写：${STATUSES.join(' / ')}，留空默认「已投递」</div>
+    <div id="bulkPreview" style="margin-top:10px"></div>`,
+    `<button class="btn btn-p" onclick="doBulkImport()">确认导入</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+  const ta=$('#bulkText');
+  if(ta)ta.addEventListener('input',()=>{
+    bulkRows=parseBulk(ta.value);
+    const el=$('#bulkPreview');
+    if(!el)return;
+    if(!bulkRows.length){el.innerHTML='';return}
+    el.innerHTML=`<div style="font-size:12px;font-weight:700;margin-bottom:6px">识别到 <b style="color:var(--primary)">${bulkRows.length}</b> 条，预览前 8 条：</div>
+      <div style="max-height:200px;overflow:auto;border:1px solid var(--line);border-radius:8px">
+      <table style="width:100%;font-size:11.5px;border-collapse:collapse">
+      <tr style="background:var(--bg)"><th style="padding:5px 7px;text-align:left">公司</th><th style="padding:5px 7px;text-align:left">岗位</th><th style="padding:5px 7px;text-align:left">渠道</th><th style="padding:5px 7px;text-align:left">日期</th><th style="padding:5px 7px;text-align:left">状态</th></tr>
+      ${bulkRows.slice(0,8).map(r=>`<tr style="border-top:1px solid var(--line)"><td style="padding:4px 7px">${esc(r.company)}</td><td style="padding:4px 7px">${esc(r.position)}</td><td style="padding:4px 7px">${esc(r.channel||'—')}</td><td style="padding:4px 7px">${esc(r.date||'—')}</td><td style="padding:4px 7px">${esc(r.status)}</td></tr>`).join('')}
+      </table></div>`;
+  });
+}
+function doBulkImport(){
+  const ta=$('#bulkText');
+  bulkRows=(ta&&ta.value)?parseBulk(ta.value):bulkRows;
+  if(!bulkRows.length){toast('没有识别到有效记录，请检查格式','warn');return}
+  const base=Date.now();
+  bulkRows.forEach((r,i)=>{
+    state.applications.unshift(Object.assign({id:'a'+base+'_'+i,history:[{status:r.status,ts:base,note:'批量导入'}]},r));
+  });
+  save();boardShown={};renderBoard();renderBoardStats();renderTopChips();
+  toast('已导入 '+bulkRows.length+' 条投递记录','ok');
+  bulkRows=[];closeModal();
 }
 function updateStatus(id,st){
   const a=state.applications.find(x=>x.id===id);
@@ -2498,6 +2656,7 @@ function maybeWelcome(){
 load();
 fillForm();
 renderVersionOptions();
+initBoardFilter();
 renderBoard();
 renderBoardStats();
 renderTopChips();
