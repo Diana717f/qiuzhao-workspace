@@ -64,10 +64,11 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .desk-pet .pet-float{animation:petFloat 3s ease-in-out infinite}
 .desk-pet .pet-float img{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 8px rgba(74,63,48,.12));transition:transform .2s}
 .desk-pet:hover .pet-float img{transform:scale(1.08)}
-.pet-bubble{position:absolute;left:50%;bottom:100%;transform:translateX(-50%) translateY(0);margin-bottom:10px;min-width:130px;max-width:240px;width:max-content;background:var(--card);color:var(--text);font-size:13px;line-height:1.45;padding:8px 14px;border-radius:15px;border:1px solid var(--line);box-shadow:0 6px 16px rgba(74,63,48,.18);pointer-events:none;opacity:0;transition:opacity .18s;text-align:center;z-index:41;white-space:normal}
-.pet-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--card)}
-.desk-pet.show-bubble .pet-bubble{opacity:1;animation:bubblePop .28s ease}
-@keyframes bubblePop{0%{transform:translateX(-50%) translateY(4px) scale(.82)}60%{transform:translateX(-50%) translateY(0) scale(1.05)}100%{transform:translateX(-50%) translateY(0) scale(1)}}
+.pet-bubble{position:absolute;left:50%;bottom:100%;transform:translateX(-50%) translateY(0);margin-bottom:14px;min-width:128px;max-width:240px;width:max-content;background:linear-gradient(180deg,#FFFFFF 0%,#FFF8ED 100%);color:var(--text);font-size:13px;line-height:1.5;font-weight:500;padding:11px 16px;border-radius:20px;border:1px solid rgba(201,184,156,.55);box-shadow:0 10px 24px rgba(74,63,48,.16),inset 0 1px 0 rgba(255,255,255,.85);pointer-events:none;opacity:0;transition:opacity .2s ease,transform .2s ease;text-align:center;z-index:41;white-space:normal;letter-spacing:.2px}
+.pet-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:12px solid #FFF8ED;filter:drop-shadow(0 3px 2px rgba(74,63,48,.06))}
+.pet-bubble::before{content:'';position:absolute;top:8px;left:16px;width:30px;height:12px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0));transform:rotate(-18deg);pointer-events:none}
+.desk-pet.show-bubble .pet-bubble{opacity:1;animation:bubblePop .32s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bubblePop{0%{transform:translateX(-50%) translateY(6px) scale(.7);opacity:0}55%{transform:translateX(-50%) translateY(-3px) scale(1.06);opacity:1}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
 @keyframes petFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .wrap{max-width:1440px;margin:0 auto;padding:0 22px 50px;width:100%}
 .page{display:none}
@@ -832,6 +833,19 @@ const PET_POOL={
   interview:ENCOURAGE.general.concat(ENCOURAGE.bear),
   kanban:ENCOURAGE.general.concat(ENCOURAGE.chicken)
 };
+/* 洗牌袋：每只宠物一个队列，一句话在整轮内不重复出现，轮间也避免紧接重复 */
+const petBag={};
+function nextPhrase(pet){
+  const pool=PET_POOL[pet]||ENCOURAGE.general;
+  if(!petBag[pet])petBag[pet]={queue:[],last:-1};
+  const bag=petBag[pet];
+  if(bag.queue.length===0){
+    bag.queue=pool.map((_,i)=>i);
+    for(let i=bag.queue.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag.queue[i],bag.queue[j]]=[bag.queue[j],bag.queue[i]]}
+    if(bag.queue.length>1&&bag.queue[0]===bag.last){bag.queue.push(bag.queue.shift())}
+  }
+  const i=bag.queue.pop();bag.last=i;return pool[i];
+}
 function initPetDrag(){
   const KEY='petPos';
   let saved={};
@@ -845,8 +859,7 @@ function initPetDrag(){
     let sx,sy,ox,oy;
     el._dragged=false;
     function showBubble(){
-      const pool=PET_POOL[el.dataset.pet]||ENCOURAGE.general;
-      const txt=pool[Math.floor(Math.random()*pool.length)];
+      const txt=nextPhrase(el.dataset.pet);
       const b=el.querySelector('.pet-bubble');
       b.textContent=txt;
       el.classList.remove('show-bubble');void el.offsetWidth;el.classList.add('show-bubble');
