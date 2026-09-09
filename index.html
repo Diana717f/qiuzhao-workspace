@@ -101,7 +101,6 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .a4 ul{padding-left:16px}
 .a4 li{margin-bottom:3px}
 .a4 .kw-hit{color:var(--primary-deep);font-weight:700}
-.a4 .kw-new{color:#B47409;font-weight:700}
 .a4 .ph{color:#C47F17;background:#FFF6E4;border-radius:3px;padding:0 3px}
 .a4 .time{font-size:10.5px;color:#777}
 
@@ -246,7 +245,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 
 <!-- ============ 页1：简历优化 ============ -->
 <section class="page active" id="page-resume">
-  <div class="hint">SOP 流程：① 填写简历（或上传文件自动解析）→ ② 粘贴目标岗位 JD → ③ 点击「开始智能优化」自动对齐关键词 + STAR 量化体检 → ④ 导出 1 页 A4 Word 简历（自动存为新版本）</div>
+  <div class="hint">SOP 流程：① 填写简历（或上传文件自动解析）→ ② 粘贴目标岗位 JD → ③ 点「开始 AI 诊断」获取针对这份简历的改写建议 / 关键词缺口 / 优先级排序 → ④ 据此手动改简历，可保存为新版本（简历由你自己掌控，AI 只给意见）</div>
   <div class="resume-layout">
     <div><!-- 左：编辑区 -->
       <div class="card" style="margin-bottom:16px">
@@ -310,25 +309,15 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
         <label>粘贴完整 JD（岗位职责 + 任职要求）</label>
         <textarea id="jdInput" placeholder="把招聘官网 / BOSS 直聘上的 JD 原文粘贴到这里…"></textarea>
         <div class="rowbtns">
-          <button class="btn btn-p" onclick="doOptimize()">开始智能优化</button>
+          <button class="btn btn-p" onclick="doOptimize()">开始 AI 诊断</button>
           <button class="btn btn-ghost" onclick="doOptimize(true)">仅分析（不存版本）</button>
+          <span style="font-size:11.5px;color:var(--sub)">不会直接改你的简历 —— 输出针对你这份简历的改写建议 / 优先级排序 / 关键词缺口</span>
         </div>
       </div>
 
-      <div class="card" id="analysisCard" style="margin-bottom:16px;display:none">
-        <h2><span class="dot"></span>J D 匹配分析</h2>
+      <div class="card" id="analysisCard" style="display:none">
+        <h2><span class="dot"></span>AI 诊断与改写建议</h2>
         <div id="analysisBox"></div>
-      </div>
-
-      <div class="card" id="previewCard" style="display:none">
-        <h2><span class="dot"></span>优化后简历预览（A4 · 1页）</h2>
-        <div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-          <label style="display:flex;align-items:center;gap:5px;margin:0;cursor:pointer;font-size:12px">
-            <input type="checkbox" id="autoKw" checked style="width:auto"> 自动将缺失 JD 关键词补充到技能栏（<b style="color:#B47409">◈标记</b>，请确认真实掌握）
-          </label>
-          <button class="btn btn-p btn-sm" style="margin-left:auto" onclick="exportResumeWord()">导出 Word 简历</button>
-        </div>
-        <div style="max-height:640px;overflow:auto"><div class="a4" id="resumePreview"></div></div>
       </div>
     </div>
   </div>
@@ -1795,9 +1784,7 @@ function bulletsFrom(desc,kws,forWord){
 }
 function buildResumeHTML(p,a,opts){
   const kws=a?a.kws:[], matched=a?a.matched:[], missing=a?a.missing:[];
-  const autoAdd=opts&&opts.autoKw&&missing.length;
-  let skillsRaw=(p.skills||'').split(/[,，、\n]+/).map(s=>s.trim()).filter(Boolean);
-  if(autoAdd)missing.forEach(k=>{if(!skillsRaw.some(s=>s.toLowerCase()===k.term.toLowerCase()))skillsRaw.push('◈'+k.term)});
+  const skillsRaw=(p.skills||'').split(/[,，、\n]+/).map(s=>s.trim()).filter(Boolean);
   const ct=[p.phone,p.email,p.city,p.intent?'求职意向：'+p.intent:''].filter(Boolean).join(' ｜ ');
   let h=`<div class="rh"><h1>${esc(p.name||'姓名')}</h1><div class="ct">${esc(ct)}</div></div>`;
   const eduArr=(Array.isArray(p.edu)&&p.edu.length)?p.edu:((p.school||p.major||p.grad||p.gpa)?[{school:p.school,major:p.major,degree:p.degree,grad:p.grad,gpa:p.gpa}]:[]);
@@ -1806,7 +1793,7 @@ function buildResumeHTML(p,a,opts){
     eduArr.forEach(e=>{if(e.school||e.major||e.grad)h+=`<div class="edu"><b>${esc(e.school)}</b>　${esc(e.major)}　${esc(e.degree)}<span class="r">${esc(e.grad)}${e.gpa?'　'+esc(e.gpa):''}</span></div>`});
   }
   if(skillsRaw.length){
-    h+=`<h3>专业技能</h3><div>${skillsRaw.map(s=>s.startsWith('◈')?`<span class="kw-new">◈${esc(s.slice(1))}</span>`:boldKws(s,kws)).join(' · ')}</div>`;
+    h+=`<h3>专业技能</h3><div>${skillsRaw.map(s=>boldKws(s,kws)).join(' · ')}</div>`;
   }
   if(p.internships.length){
     h+='<h3>实习经历</h3>';
@@ -1824,14 +1811,6 @@ function buildResumeHTML(p,a,opts){
   if(p.selfEval)h+=`<h3>自我评价</h3><div>${boldKws(p.selfEval,kws)}</div>`;
   return h;
 }
-function renderPreview(a){
-  $('#previewCard').style.display='';
-  const autoKw=$('#autoKw').checked;
-  $('#resumePreview').innerHTML=buildResumeHTML(state.profile,a,{autoKw});
-  const len=collectResumeText(state.profile).length;
-  if(len>1400)toast('内容较多，导出 Word 后请精简至 1 页 A4','warn');
-}
-$('#autoKw').addEventListener('change',()=>{if(state.lastAnalysis)renderPreview(state.lastAnalysis)});
 
 /* ---------- Word 导出 ---------- */
 function exportWord(html,filename){
@@ -1845,7 +1824,6 @@ function exportWord(html,filename){
   ul{margin:2pt 0 6pt 16pt;padding-left:12pt}
   li{margin-bottom:2pt}
   .kw-hit{color:#3A3B04;font-weight:bold}
-  .kw-new{color:#B47409;font-weight:bold}
   .ph{color:#C47F17}
   .time{font-size:9pt;color:#777}
   </style></head><body>`;
@@ -1854,15 +1832,6 @@ function exportWord(html,filename){
   const a=document.createElement('a');a.href=url;a.download=filename+'.doc';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),3000);
 }
-function exportResumeWord(){
-  collectForm();
-  const a=state.lastAnalysis||analyze();
-  const autoKw=$('#autoKw').checked;
-  const html=buildResumeHTML(state.profile,a,{autoKw,forWord:true});
-  const co=state.jdCompany||state.jdPosition||'通用';
-  exportWord(html,`简历_${state.profile.name||'我'}_${co}`);
-  if(autoKw&&a.missing.length)toast('已自动补充 '+a.missing.length+' 个JD关键词到技能栏（◈），请在Word中确认真实性后删除标记','ok');
-}
 
 /* ---------- 优化主流程 ---------- */
 function doOptimize(analyzeOnly){
@@ -1870,7 +1839,7 @@ function doOptimize(analyzeOnly){
   const a=analyze();
   if(!a.kws.length){toast('未能从JD中提取到关键词，请检查JD内容','warn');return}
   state.lastAnalysis=a;
-  renderAnalysis(a);renderPreview(a);
+  renderAnalysis(a);
   if(!analyzeOnly){
     createVersion(a);
   }
@@ -1931,7 +1900,7 @@ function restoreVersion(id){
 function previewVersion(id){
   const v=findV(id);if(!v)return;
   const a={kws:(v.kws||[]).map(t=>({term:t})),matched:[],missing:[]};
-  const html=buildResumeHTML(v.profile,a,{autoKw:false});
+  const html=buildResumeHTML(v.profile,a,{});
   openModal('预览 '+esc(v.name)+' · '+esc(v.company||'')+' '+esc(v.position||''),
     `<div style="max-height:60vh;overflow:auto"><div class="a4">${html}</div></div>`,
     `<button class="btn btn-p" onclick="exportVerWord('${v.id}')">导出 Word</button><button class="btn btn-ghost" onclick="closeModal()">关闭</button>`);
@@ -1950,7 +1919,7 @@ function doRename(id){
 function exportVerWord(id){
   const v=findV(id);if(!v)return;
   const a={kws:(v.kws||[]).map(t=>({term:t}))};
-  const html=buildResumeHTML(v.profile,a,{autoKw:false,forWord:true});
+  const html=buildResumeHTML(v.profile,a,{forWord:true});
   exportWord(html,`简历_${v.profile.name||'我'}_${v.company||v.position||v.name}`);
 }
 function exportVerJson(id){
