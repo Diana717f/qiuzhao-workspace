@@ -64,10 +64,19 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
 .desk-pet .pet-float{animation:petFloat 3s ease-in-out infinite}
 .desk-pet .pet-float img{width:100%;height:auto;display:block;filter:drop-shadow(0 4px 8px rgba(74,63,48,.12));transition:transform .2s}
 .desk-pet:hover .pet-float img{transform:scale(1.08)}
-.pet-bubble{position:absolute;left:50%;bottom:100%;transform:translateX(-50%) translateY(0);margin-bottom:14px;min-width:128px;max-width:240px;width:max-content;background:linear-gradient(180deg,#FFFFFF 0%,#FFF8ED 100%);color:var(--text);font-size:13px;line-height:1.5;font-weight:500;padding:11px 16px;border-radius:20px;border:1px solid rgba(201,184,156,.55);box-shadow:0 10px 24px rgba(74,63,48,.16),inset 0 1px 0 rgba(255,255,255,.85);pointer-events:none;opacity:0;transition:opacity .2s ease,transform .2s ease;text-align:center;z-index:41;white-space:normal;letter-spacing:.2px}
-.pet-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:12px solid #FFF8ED;filter:drop-shadow(0 3px 2px rgba(74,63,48,.06))}
-.pet-bubble::before{content:'';position:absolute;top:8px;left:16px;width:30px;height:12px;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0));transform:rotate(-18deg);pointer-events:none}
-.desk-pet.show-bubble .pet-bubble{opacity:1;animation:bubblePop .32s cubic-bezier(.34,1.56,.64,1)}
+.pet-bubble{position:absolute;left:50%;bottom:100%;transform:translateX(-50%) translateY(0);margin-bottom:18px;min-width:160px;max-width:260px;width:max-content;padding:15px 22px 18px;color:var(--text);font-size:13px;line-height:1.5;font-weight:500;text-align:center;white-space:normal;letter-spacing:.2px;opacity:0;transition:opacity .2s ease,transform .2s ease;z-index:41;pointer-events:none}
+.bubble-text{position:relative;z-index:2;display:inline-block}
+.cloud{position:absolute;inset:-16px -20px -50px -20px;z-index:1;pointer-events:none;filter:drop-shadow(0 8px 18px rgba(74,63,48,.15))}
+.puff,.tail{position:absolute;border-radius:50%;background:#FFF8ED;border:2px solid rgba(150,132,102,.8);box-sizing:border-box}
+.p-main{left:18%;top:20%;width:64%;height:52%;border-radius:46%}
+.p-tl{left:-8%;top:-8%;width:40%;height:54%}
+.p-tc{left:30%;top:-24%;width:40%;height:58%}
+.p-tr{right:-8%;top:-8%;width:40%;height:54%}
+.p-bl{left:-4%;bottom:8%;width:36%;height:48%}
+.p-br{right:-4%;bottom:8%;width:36%;height:48%}
+.tail.t1{left:50%;bottom:0;width:16px;height:16px;transform:translateX(-50%)}
+.tail.t2{left:50%;bottom:-22px;width:10px;height:10px;transform:translateX(-50%)}
+.desk-pet.show-bubble .pet-bubble{opacity:1;animation:bubblePop .34s cubic-bezier(.34,1.56,.64,1)}
 @keyframes bubblePop{0%{transform:translateX(-50%) translateY(6px) scale(.7);opacity:0}55%{transform:translateX(-50%) translateY(-3px) scale(1.06);opacity:1}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
 @keyframes petFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .wrap{max-width:1440px;margin:0 auto;padding:0 22px 50px;width:100%}
@@ -332,7 +341,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
       </div>
     </div>
   </div>
-  <div class="desk-pet" data-pet="resume" style="width:120px"><div class="pet-bubble"></div><div class="pet-float"><img src="assets/pet-resume.png" alt="轻松熊"></div></div>
+  <div class="desk-pet" data-pet="resume" style="width:120px"><div class="pet-bubble"><span class="bubble-text"></span><span class="cloud"><span class="puff p-main"></span><span class="puff p-tl"></span><span class="puff p-tc"></span><span class="puff p-tr"></span><span class="puff p-bl"></span><span class="puff p-br"></span><span class="tail t1"></span><span class="tail t2"></span></span></div><div class="pet-float"><img src="assets/pet-resume.png" alt="轻松熊"></div></div>
 </section>
 
 <!-- ============ 页2：面试前期准备 ============ -->
@@ -362,7 +371,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div style="font-size:11.5px;color:var(--sub);margin:-4px 0 8px">保存 AI 生成的面试备战手册（HTML 文件）：登录账号后自动云同步，换设备登录不丢失。</div>
     <div id="manualList"></div>
   </div>
-  <div class="desk-pet" data-pet="interview" style="width:85px"><div class="pet-bubble"></div><div class="pet-float"><img src="assets/pet-interview.png" alt="深棕熊弟"></div></div>
+  <div class="desk-pet" data-pet="interview" style="width:85px"><div class="pet-bubble"><span class="bubble-text"></span><span class="cloud"><span class="puff p-main"></span><span class="puff p-tl"></span><span class="puff p-tc"></span><span class="puff p-tr"></span><span class="puff p-bl"></span><span class="puff p-br"></span><span class="tail t1"></span><span class="tail t2"></span></span></div><div class="pet-float"><img src="assets/pet-interview.png" alt="深棕熊弟"></div></div>
 </section>
 
 <!-- ============ 页3：版本管理 ============ -->
@@ -378,7 +387,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     </h2>
     <div id="verList"></div>
   </div>
-  <div class="desk-pet" data-pet="versions" style="width:80px"><div class="pet-bubble"></div><div class="pet-float"><img src="assets/pet-versions.png" alt="熊妹"></div></div>
+  <div class="desk-pet" data-pet="versions" style="width:80px"><div class="pet-bubble"><span class="bubble-text"></span><span class="cloud"><span class="puff p-main"></span><span class="puff p-tl"></span><span class="puff p-tc"></span><span class="puff p-tr"></span><span class="puff p-bl"></span><span class="puff p-br"></span><span class="tail t1"></span><span class="tail t2"></span></span></div><div class="pet-float"><img src="assets/pet-versions.png" alt="熊妹"></div></div>
 </section>
 
 <!-- ============ 页4：投递看板 ============ -->
@@ -405,7 +414,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
     <div class="board-stats" id="boardStats"></div>
   </div>
   <div class="board" id="board"></div>
-  <div class="desk-pet" data-pet="kanban" style="width:82px"><div class="pet-bubble"></div><div class="pet-float"><img src="assets/pet-kanban.png" alt="鼻孔鸡"></div></div>
+  <div class="desk-pet" data-pet="kanban" style="width:82px"><div class="pet-bubble"><span class="bubble-text"></span><span class="cloud"><span class="puff p-main"></span><span class="puff p-tl"></span><span class="puff p-tc"></span><span class="puff p-tr"></span><span class="puff p-bl"></span><span class="puff p-br"></span><span class="tail t1"></span><span class="tail t2"></span></span></div><div class="pet-float"><img src="assets/pet-kanban.png" alt="鼻孔鸡"></div></div>
 </section>
 
 </div>
@@ -861,7 +870,7 @@ function initPetDrag(){
     function showBubble(){
       const txt=nextPhrase(el.dataset.pet);
       const b=el.querySelector('.pet-bubble');
-      b.textContent=txt;
+      b.querySelector('.bubble-text').textContent=txt;
       el.classList.remove('show-bubble');void el.offsetWidth;el.classList.add('show-bubble');
     }
     el.addEventListener('pointerdown',e=>{
