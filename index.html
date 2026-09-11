@@ -237,7 +237,7 @@ label{font-size:12px;color:var(--sub);font-weight:600;display:block;margin-botto
   <div class="chips" id="topChips"></div>
   <div class="topbtns">
     <button class="acct-btn off" id="acctBtn" onclick="cloud.openAccountPanel()">云端账号</button>
-    <button class="btn btn-ghost btn-sm" onclick="seedSample()">示例数据</button>
+    <button class="btn btn-ghost btn-sm" id="demoBtn" onclick="demoBtnClick()">示例数据</button>
     <button class="btn btn-ghost btn-sm" onclick="exportAll()">备份</button>
     <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">恢复</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importAll(this)">
@@ -2669,7 +2669,8 @@ function importAll(inp){
       const d=JSON.parse(rd.result);
       if(!d.profile)throw 0;
       state=Object.assign(state,d);
-      save();fillForm();renderAll();
+      state.demo=false;
+      save();fillForm();renderAll();updateDemoBtn();
       toast('数据已恢复','ok');
     }catch(e){toast('备份文件解析失败','err')}
     inp.value='';
@@ -2684,6 +2685,7 @@ function seedSample(){
 }
 function doSeed(){
   state={
+    demo:true,
     profile:{name:'林晓萌',phone:'13800001234',email:'linxiaomeng@mail.com',intent:'产品运营',city:'深圳',grad:'2027.06',school:'华南理工大学',major:'工商管理（市场营销方向）',degree:'本科',gpa:'3.7 / 4.0（专业前10%）',edu:[{school:'华南理工大学',major:'工商管理（市场营销方向）',degree:'本科',grad:'2027.06',gpa:'3.7 / 4.0（专业前10%）'}],
       skills:'用户调研, 数据分析, SQL, Excel, 新媒体运营, 文案撰写, 活动策划, 私域运营, 用户增长, A/B测试',
       honors:'国家奖学金（前1%）；"挑战杯"省赛二等奖；校园十佳新媒体人',
@@ -2710,7 +2712,30 @@ function doSeed(){
   };
   save();fillForm();renderAll();
   doOptimize(); // 自动生成第一个版本，演示完整链路
-  toast('示例数据已加载：简历 + JD 已填好，V1 版本与看板就绪','ok');
+  updateDemoBtn();
+  toast('示例数据已加载：看完效果后，点右上角「清除示例数据」即可一键清空，开始填写你自己的内容','ok');
+}
+/* ---------- 示例数据：加载 / 清除 ---------- */
+function isDemo(){return !!state.demo}
+function updateDemoBtn(){
+  const b=$('#demoBtn');if(!b)return;
+  const d=isDemo();
+  b.textContent=d?'清除示例数据':'示例数据';
+  b.title=d?'一键清空示例的简历、JD、版本与看板记录，开始填写你自己的数据':'先加载一份示例数据，快速了解这个工作台怎么用';
+  b.classList.toggle('btn-danger',d);
+}
+function demoBtnClick(){isDemo()?confirmClearDemo():seedSample()}
+function confirmClearDemo(){
+  openModal('清除示例数据','<p>将<b>清空全部当前数据</b>：示例的简历、JD、简历版本、投递看板与面试记录（包括你在示例上做过的修改）。</p><p style="color:var(--sub);font-size:12px">确认后即可从一张干净的表格开始填写你自己的内容。如需保留当前数据，请先点顶栏「备份」导出。</p>',
+    `<button class="btn btn-danger" onclick="clearDemo()">确认清除</button><button class="btn btn-ghost" onclick="closeModal()">取消</button>`);
+}
+function clearDemo(){
+  const b=blankState();
+  Object.keys(b).forEach(k=>{state[k]=b[k]});
+  state.demo=false;
+  save();fillForm();renderAll();updateDemoBtn();closeModal();
+  switchTab('resume');
+  toast('示例数据已清除，现在开始填写你自己的内容吧','ok');
 }
 function renderAll(){
   fillForm();renderEntries();renderVersions();renderVersionOptions();renderBoard();renderBoardStats();renderTopChips();renderInterview();renderManuals();
@@ -2814,6 +2839,7 @@ function maybeWelcome(){
 }
 /* ---------- 启动 ---------- */
 load();
+updateDemoBtn();
 fillForm();
 renderVersionOptions();
 initBoardFilter();
